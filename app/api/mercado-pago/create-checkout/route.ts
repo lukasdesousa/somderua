@@ -64,7 +64,7 @@ export async function POST(req: Request) {
             description: "Pack com mais de 4500 músicas",
             title: "Pack Som de Rua",
             quantity: 1,
-            unit_price: 0.9,
+            unit_price: 7.90,
             currency_id: "BRL",
             category_id: "5805",
           },

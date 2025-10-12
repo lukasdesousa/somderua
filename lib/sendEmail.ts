@@ -89,8 +89,8 @@ export async function sendPurchaseEmail(to: string, reference: string) {
       <div class="divider"></div>
 
       <p class="footer">
-        © ${new Date().getFullYear()} Pack de Som<br/>
-        Energia, ritmo e qualidade em cada batida.
+        © ${new Date().getFullYear()} Som de rua<br/>
+          Os melhores packs de músicas para pen-drives.
       </p>
     </div>
   </body>
