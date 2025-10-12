@@ -49,7 +49,7 @@ export async function POST(req: Request) {
         external_reference: id,
         metadata: { id },
 
-        // dados do pagador (opcionais)
+        // dados do pagador 
         ...(userEmail && {
           payer: {
             email: userEmail,
