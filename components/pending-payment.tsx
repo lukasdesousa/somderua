@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { sendPurchaseEmail } from "@/lib/sendEmail";
 
 export default function PendingPaymentPage() {
   const searchParams = useSearchParams();
@@ -29,7 +30,9 @@ export default function PendingPaymentPage() {
         console.log("Status do pagamento:", data);
 
         if (data?.status === true) {
+          const email = localStorage.getItem('user_email');
           clearInterval(interval);
+          await sendPurchaseEmail(email!, reference)
           router.replace(`/download?reference=${reference}`);
         }
       } catch (error) {
