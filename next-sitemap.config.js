@@ -31,7 +31,7 @@ module.exports = {
   trailingSlash: false,
 
   // Define um transformador customizado — útil para priorizar páginas específicas
-  transform: async (config: any, path: any) => {
+  transform: async (config, path) => {
     // Ajusta prioridades por tipo de página
     let priority = 0.7;
     let changefreq = "weekly";
