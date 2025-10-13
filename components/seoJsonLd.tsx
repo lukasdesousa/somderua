@@ -11,7 +11,7 @@ export default function SeoJsonLd() {
       "@type": "Offer",
       url: "https://somderua.com.br",
       priceCurrency: "BRL",
-      price: "7.90",
+      price: "5.0",
       availability: "https://schema.org/InStock",
       seller: {
         "@type": "Organization",
