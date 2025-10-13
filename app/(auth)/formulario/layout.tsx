@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import SeoJsonLd from "@/components/seoJsonLd";
 
 export const metadata: Metadata = {
     title: "Formulário de Compra | Som de Rua",
@@ -50,11 +49,8 @@ export const metadata: Metadata = {
 
 export default function FormularioLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="pt-BR">
-            <main className="flex-1 flex flex-col items-center justify-center p-6">
+            <main className="relative flex grow flex-col">
                 {children}
-                <SeoJsonLd />
             </main>
-        </html>
     );
 }
