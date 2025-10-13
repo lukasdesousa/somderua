@@ -61,9 +61,6 @@ module.exports = {
         disallow: ["/api/", "/admin/", "/_next/"],
       },
     ],
-    additionalSitemaps: [
-      "https://somderua.com.br/sitemap.xml",
-    ],
   },
 
   // Opção útil para debugar localmente (não precisa subir)
