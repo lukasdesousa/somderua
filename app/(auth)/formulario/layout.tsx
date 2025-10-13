@@ -1,0 +1,82 @@
+// app/formulario/layout.tsx
+import "./css/style.css";
+
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
+import { Metadata } from "next";
+import SeoJsonLd from "@/components/seoJsonLd";
+
+const inter = Inter({
+    subsets: ["latin"],
+    variable: "--font-inter",
+    display: "swap",
+});
+
+const nacelle = localFont({
+    src: [
+        { path: "../../public/fonts/nacelle-regular.woff2", weight: "400", style: "normal" },
+        { path: "../../public/fonts/nacelle-italic.woff2", weight: "400", style: "italic" },
+        { path: "../../public/fonts/nacelle-semibold.woff2", weight: "600", style: "normal" },
+        { path: "../../public/fonts/nacelle-semibolditalic.woff2", weight: "600", style: "italic" },
+    ],
+    variable: "--font-nacelle",
+    display: "swap",
+});
+
+export const metadata: Metadata = {
+    title: "Formulário de Compra | Som de Rua",
+    description:
+        "Preencha o formulário para comprar o pack de músicas para pen drive e paredão — +16GB, 4500+ faixas. Receba o download imediatamente após o pagamento.",
+    metadataBase: new URL("https://somderua.com.br"),
+    alternates: {
+        canonical: "https://somderua.com.br/formulario",
+    },
+    openGraph: {
+        title: "Formulário de Compra | Som de Rua",
+        description:
+            "Preencha o formulário para comprar o pack de músicas para pen drive e paredão — +16GB, 4500+ músicas.",
+        url: "https://somderua.com.br/formulario",
+        siteName: "Som de Rua",
+        images: [
+            {
+                url: "https://somderua.com.br/images/og-image.png",
+                width: 1200,
+                height: 630,
+                alt: "Som de Rua — Pack 16GB, 4500+ músicas",
+            },
+        ],
+        type: "website",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Formulário de Compra | Som de Rua",
+        description:
+            "Preencha o formulário para acessar o download do pack de músicas após pagamento.",
+        images: ["https://somderua.com.br/images/og-image.png"],
+    },
+    icons: {
+        icon: "/favicon.ico",
+        shortcut: "/favicon.ico",
+        apple: "/apple-touch-icon.png",
+    },
+    themeColor: [
+        { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+        { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+    ],
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    },
+};
+
+export default function FormularioLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <html lang="pt-BR">
+            <main className="flex-1 flex flex-col items-center justify-center p-6">
+                {children}
+                <SeoJsonLd />
+            </main>
+        </html>
+    );
+}
