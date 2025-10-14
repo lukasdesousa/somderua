@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Inicio - Som de rua",
+  title: "Músicas para pen-drive",
   description: "Melhor pack de músicas para pen drive 2025",
 };
 
