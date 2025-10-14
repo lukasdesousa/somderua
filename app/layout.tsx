@@ -44,7 +44,7 @@ const nacelle = localFont({
 export const metadata: Metadata = {
   title: {
     default: "Pack de músicas para pen drive",
-    template: "%s - Músicas para paredão",
+    template: "%s",
   },
   description:
     "Pack de músicas para pen drive e paredão — +16GB, 4500+ faixas. Download imediato após pagamento. Graves otimizados e sem faixas duplicadas.",
