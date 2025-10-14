@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Formulário de Compra | Som de Rua",
+    title: "Formulário de Compra",
     description:
         "Preencha o formulário para comprar o pack de músicas para pen drive e paredão — +16GB, 4500+ faixas. Receba o download imediatamente após o pagamento.",
     metadataBase: new URL("https://somderua.com.br"),
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
         canonical: "https://somderua.com.br/formulario",
     },
     openGraph: {
-        title: "Formulário de Compra | Som de Rua",
+        title: "Formulário de Compra",
         description:
             "Preencha o formulário para comprar o pack de músicas para pen drive e paredão — +16GB, 4500+ músicas.",
         url: "https://somderua.com.br/formulario",
