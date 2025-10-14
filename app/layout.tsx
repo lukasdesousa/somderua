@@ -43,8 +43,8 @@ const nacelle = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: "Som de Rua — Pack de músicas para pen drive",
-    template: "%s | Som de Rua",
+    default: "Pack de músicas para pen drive",
+    template: "%s - Músicas para paredão",
   },
   description:
     "Pack de músicas para pen drive e paredão — +16GB, 4500+ faixas. Download imediato após pagamento. Graves otimizados e sem faixas duplicadas.",
@@ -66,14 +66,14 @@ export const metadata: Metadata = {
         url: "https://somderua.com.br/images/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Som de Rua — Pack 16GB, 4500+ músicas",
+        alt: "Pack de músicas para paredão",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Som de Rua — Pack 16GB / 4500+ músicas",
+    title: "Pack de músicas para pen drive",
     description:
       "Pack de músicas para pen drive e paredão — +16GB, 4500+ faixas. Download imediato.",
     images: ["https://somderua.com.br/images/og-image.png"],
