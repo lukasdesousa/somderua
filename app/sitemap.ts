@@ -11,9 +11,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: "https://somderua.com.br/formulario",
       lastModified: new Date(),
     },
-    {
-      url: "https://somderua.com.br/download",
-      lastModified: new Date(),
-    },
   ];
 }

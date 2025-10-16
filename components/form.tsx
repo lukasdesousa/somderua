@@ -86,11 +86,12 @@ export default function Form() {
           </form>
         </div>
         <div className="pb-10 text-center">
-          <h1 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-indigo-200),var(--color-gray-50),var(--color-indigo-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-            Powered by <br />
-            Mercado Pago
-          </h1>
-        </div>
+  <h1 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-indigo-200),var(--color-gray-50),var(--color-indigo-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
+    <span className="line-through text-gray-400">De R$50,00</span> <br />
+    Por <span className="text-indigo-300">R$5,00</span>
+  </h1>
+</div>
+
       </div>
     </section>
   );

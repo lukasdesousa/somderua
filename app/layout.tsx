@@ -5,7 +5,7 @@ import localFont from "next/font/local";
 import Header from "@/components/ui/header";
 import { Analytics } from "@vercel/analytics/next"
 import { Metadata } from "next";
-import SeoJsonLd from "@/components/seoJsonLd";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -40,63 +40,73 @@ const nacelle = localFont({
   display: "swap",
 });
 
+const globalJson = {
+  "@context": "https://schema.org",
+  "@type": ["WebSite", "Organization"],
+  "name": "Som de Rua",
+  "url": "https://somderua.com.br",
+  "logo": "https://somderua.com.br/apple-touch-icon.png",
+  "sameAs": [
+    "https://www.instagram.com/somderua.br"
+  ],
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://somderua.com.br/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+};
 
 export const metadata: Metadata = {
   title: {
-    default: "Pack de músicas para pen drive",
-    template: "%s",
+    default: "Som de Rua — Repértorio de músicas para pen drive",
+    template: "%s | Som de Rua"
   },
-  description:
-    "Pack de músicas para pen drive e paredão — +16GB, 4500+ faixas. Download imediato após pagamento. Graves otimizados e sem faixas duplicadas.",
+  description: "Baixe repértorio de músicas otimizadas para paredão e pen drive — entrega automática e qualidade de som impecável.",
   metadataBase: new URL("https://somderua.com.br"),
+  openGraph: {
+    type: "website",
+    siteName: "Som de Rua",
+    locale: "pt_BR",
+  },
+  keywords: [
+    "músicas para pen drive",
+    "packs de som automotivo",
+    "paredão de som",
+    "músicas mp3",
+    "som de rua",
+    "palco mp3",
+    "baixar músicas online",
+    "pen drive com músicas",
+    "músicas para paredão",
+    "hits 2025",
+    "pen drive atualizado",
+    "repertório atualizado",
+    "baixar músicas",
+    "pack de músicas mp3 para pen drive",
+    "baixar packs de som para paredão",
+    "músicas de funk para pen drive",
+    "músicas atualizadas para som automotivo",
+    "playlist para paredão de som",
+    "repertório completo para pen drive",
+    "packs de músicas 2025",
+    "download de músicas para carro",
+    "músicas para eventos e festas",
+    "músicas organizadas para pen drive",
+    "packs de som digital para paredão",
+    "coleção de músicas mp3 atualizada",
+    "repertório funk, sertanejo e eletrônico",
+    "packs de músicas para som de rua"
+  ],
   alternates: {
     canonical: "https://somderua.com.br",
-    languages: {
-      "pt-BR": "https://somderua.com.br",
-    },
   },
-  openGraph: {
-    title: "Som de Rua — Pack de músicas para pen drive e paredão",
-    description:
-      "Pack de músicas para pen drive e paredão — +16GB, 4500+ músicas. Envio automático após pagamento.",
-    url: "https://somderua.com.br",
-    siteName: "Som de Rua",
-    images: [
-      {
-        url: "https://somderua.com.br/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Pack de músicas para paredão",
-      },
-    ],
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Pack de músicas para pen drive",
-    description:
-      "Pack de músicas para pen drive e paredão — +16GB, 4500+ faixas. Download imediato.",
-    images: ["https://somderua.com.br/images/og-image.png"],
-  },
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
-  ],
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
 };
 
@@ -107,13 +117,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
+      <head>
+        <Script
+          id="jsonld-product"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(globalJson) }}
+        />
+      </head>
       <body
         className={`${inter.variable} ${nacelle.variable} bg-gray-950 font-inter text-base text-gray-200 antialiased`}
       >
         <div className="flex min-h-screen flex-col overflow-hidden supports-[overflow:clip]:overflow-clip">
           <Header />
           {children}
-          <SeoJsonLd />
           <Analytics />
         </div>
       </body>
