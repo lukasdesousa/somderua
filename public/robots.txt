@@ -3,4 +3,5 @@ Allow: /
 Sitemap: https://somderua.com.br/sitemap.xml
 Disallow: /download/ 
 Disallow: /pagamento-pendente/ 
-Disallow: /pagamento-recusado/ 
+Disallow: /pagamento-recusado/
+Disallow: /formulario/
