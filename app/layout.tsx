@@ -58,15 +58,26 @@ const globalJson = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Som de Rua — Repértorio de músicas para pen drive",
+    default: "Som de Rua — Repertório de músicas para pen drive",
     template: "%s | Som de Rua"
   },
-  description: "Baixe repértorio de músicas otimizadas para paredão e pen drive — entrega automática e qualidade de som impecável.",
+  description: "Baixe repertório de músicas otimizadas para paredão e pen drive — entrega automática e qualidade de som impecável.",
   metadataBase: new URL("https://somderua.com.br"),
   openGraph: {
     type: "website",
+    url: "https://somderua.com.br",
+    title: "Repertório de músicas para pen drive",
+    description: "Baixe packs de músicas otimizadas para paredão e pen drive — qualidade de som impecável e entrega automática.",
     siteName: "Som de Rua",
     locale: "pt_BR",
+    images: [
+      {
+        url: "https://somderua.com.br/apple-touch-icon.png",
+        width: 512,
+        height: 512,
+        alt: "Logo Som de Rua",
+      },
+    ],
   },
   keywords: [
     "músicas para pen drive",
@@ -74,7 +85,6 @@ export const metadata: Metadata = {
     "paredão de som",
     "músicas mp3",
     "som de rua",
-    "palco mp3",
     "baixar músicas online",
     "pen drive com músicas",
     "músicas para paredão",
@@ -95,7 +105,14 @@ export const metadata: Metadata = {
     "packs de som digital para paredão",
     "coleção de músicas mp3 atualizada",
     "repertório funk, sertanejo e eletrônico",
-    "packs de músicas para som de rua"
+    "packs de músicas para som de rua",
+    "pendrives com musicas",
+    "forrozin",
+    "baixar repertório para pen drive",
+    "palco mp3",
+    "paredão com músicas",
+    "músicas de paredão baixar",
+    "pen drive musica",
   ],
   alternates: {
     canonical: "https://somderua.com.br",
@@ -103,6 +120,10 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      follow: true,
+      index: true,
+    },
   },
   icons: {
     icon: "/favicon.ico",
