@@ -45,8 +45,8 @@ export default function HeroHome() {
             thumb={VideoThumb}
             thumbWidth={1104}
             thumbHeight={576}
-            thumbAlt="Modal video thumbnail"
-            video="videos//somderua_preview.mp4"
+            thumbAlt="Prévia do pack de músicas Som de Rua"
+            video="videos/somderua_preview.mp4"
             videoWidth={1920}
             videoHeight={1080}
           />

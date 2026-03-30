@@ -1,60 +1,55 @@
-const homeJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Som de Rua — Packs de músicas para pen drive",
-  "url": "https://somderua.com.br/",
-  "description":
-    "Baixe packs de músicas otimizadas para paredão e pen drive — entrega automática e qualidade de som impecável.",
-  "inLanguage": "pt-BR",
-  "isPartOf": {
-    "@type": "WebSite",
-    "@id": "https://somderua.com.br/#website",
-  },
-  "about": {
-    "@type": "Thing",
-    "name": "Packs de som automotivo",
-  },
-  "primaryImageOfPage": {
-    "@type": "ImageObject",
-    "url": "https://somderua.com.br/apple-touch-icon.png",
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Som de Rua",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://somderua.com.br/apple-touch-icon.png",
-    },
-  },
-};
-
-export const metadata = {
-  title: "Músicas para pen-drive",
-  description: "Melhor repertório de músicas para pen-drive atualizado outubro 2025 e 2026",
-};
-
-import PageIllustration from "@/components/page-illustration";
-import Hero from "@/components/hero-home";
-import Workflows from "@/components/workflows";
-import Features from "@/components/features";
-import Testimonials from "@/components/testimonials";
+import Link from "next/link";
+import type { Metadata } from "next";
 import Cta from "@/components/cta";
-import Script from "next/script";
+import Features from "@/components/features";
+import Hero from "@/components/hero-home";
+import PageIllustration from "@/components/page-illustration";
+import Testimonials from "@/components/testimonials";
+import Workflows from "@/components/workflows";
+import Breadcrumbs from "@/components/seo/breadcrumbs";
+import JsonLd from "@/components/seo/json-ld";
+import { buildMetadata } from "@/lib/seo/metadata";
+import { breadcrumbSchema } from "@/lib/seo/schema";
+
+export const revalidate = 3600;
+
+export function generateMetadata(): Metadata {
+  return buildMetadata({
+    title: "Músicas para pen drive e paredão com entrega imediata",
+    description:
+      "Compre repertório com mais de 16GB, músicas selecionadas para paredão e download automático com suporte rápido.",
+    path: "/",
+    keywords: ["download imediato de músicas", "pack 16GB de músicas"],
+  });
+}
 
 export default function Home() {
+  const breadcrumbs = [
+    { name: "Início", path: "/" },
+    { name: "Pack de músicas", path: "/" },
+  ];
+
   return (
     <>
-      <Script
-        id="jsonld-product"
-        type="application/ld+json"
-        strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }}
-      />
+      <JsonLd id="home-breadcrumb-jsonld" data={breadcrumbSchema(breadcrumbs)} />
+      <Breadcrumbs items={[{ name: "Início" }, { name: "Pack de músicas" }]} />
       <PageIllustration />
       <Hero />
       <Workflows />
       <Features />
       <Testimonials />
+      <section className="mx-auto w-full max-w-6xl px-4 pb-8 sm:px-6">
+        <h2 className="mb-3 text-2xl font-semibold text-gray-100">Conteúdos relacionados</h2>
+        <p className="mb-4 text-indigo-200/65">Guias para palavras-chave long tail e dúvidas comuns dos clientes.</p>
+        <div className="flex flex-wrap gap-3">
+          <Link className="btn-sm bg-gray-800 hover:bg-gray-700" href="/blog">
+            Ver blog de repertórios
+          </Link>
+          <Link className="btn-sm bg-gray-800 hover:bg-gray-700" href="/formulario">
+            Comprar agora
+          </Link>
+        </div>
+      </section>
       <Cta />
     </>
   );

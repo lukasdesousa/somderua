@@ -21,6 +21,14 @@ export default function Header() {
                 Instagram
               </Link>
             </li>
+          <li>
+              <Link
+                href="/blog"
+                className="btn-sm bg-gray-800 py-[5px] text-gray-200 hover:bg-gray-700"
+              >
+                Blog
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
