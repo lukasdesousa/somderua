@@ -48,6 +48,14 @@ export default function Footer() {
                   Ver prévia
                 </a>
               </li>
+              <li>
+                <a
+                  className="text-indigo-200/65 transition hover:text-indigo-500"
+                  href="/blog"
+                >
+                  Blog
+                </a>
+              </li>
             </ul>
           </div>
           {/* 2nd block */}
