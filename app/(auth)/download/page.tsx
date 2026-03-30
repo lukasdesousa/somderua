@@ -1,8 +1,17 @@
-import PageIllustration from "@/components/page-illustration";
-import DownloadHome from "@/components/download-home";
 import { Suspense } from "react";
+import type { Metadata } from "next";
+import DownloadHome from "@/components/download-home";
+import PageIllustration from "@/components/page-illustration";
+import { buildMetadata } from "@/lib/seo/metadata";
 
-export default function Home() {
+export const metadata: Metadata = buildMetadata({
+  title: "Download do repertório",
+  description: "Área de download do repertório adquirido.",
+  path: "/download",
+  noIndex: true,
+});
+
+export default function DownloadPage() {
   return (
     <>
       <PageIllustration />

@@ -61,6 +61,7 @@ export default function ModalVideo({
             width={thumbWidth}
             height={thumbHeight}
             priority
+            sizes="(max-width: 768px) 100vw, 1104px"
             alt={thumbAlt}
           />
         </figure>
