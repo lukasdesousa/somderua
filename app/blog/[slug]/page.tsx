@@ -9,18 +9,23 @@ import { articleSchema, breadcrumbSchema } from "@/lib/seo/schema";
 
 export const revalidate = 3600;
 
+type BlogPostPageProps = {
+  params: Promise<{ slug: string }>;
+};
+
 export function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const post = getPostBySlug(params.slug);
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     return buildMetadata({
       title: "Conteúdo não encontrado",
       description: "Este conteúdo não está mais disponível.",
-      path: `/blog/${params.slug}`,
+      path: `/blog/${slug}`,
       noIndex: true,
     });
   }
@@ -36,13 +41,14 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   });
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) notFound();
 
   const related = post.relatedSlugs
-    .map((slug) => getPostBySlug(slug))
+    .map((relatedSlug) => getPostBySlug(relatedSlug))
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
 
   const crumbs = [
@@ -53,16 +59,25 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <article className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6">
-      <JsonLd id="article-jsonld" data={articleSchema({
-        title: post.title,
-        description: post.description,
-        slug: post.slug,
-        datePublished: post.publishedAt,
-        dateModified: post.updatedAt,
-      })} />
+      <JsonLd
+        id="article-jsonld"
+        data={articleSchema({
+          title: post.title,
+          description: post.description,
+          slug: post.slug,
+          datePublished: post.publishedAt,
+          dateModified: post.updatedAt,
+        })}
+      />
       <JsonLd id="article-breadcrumb-jsonld" data={breadcrumbSchema(crumbs)} />
 
-      <Breadcrumbs items={[{ name: "Início", href: "/" }, { name: "Blog", href: "/blog" }, { name: post.title }]} />
+      <Breadcrumbs
+        items={[
+          { name: "Início", href: "/" },
+          { name: "Blog", href: "/blog" },
+          { name: post.title },
+        ]}
+      />
       <h1 className="mb-3 mt-4 text-4xl font-semibold text-gray-100">{post.title}</h1>
       <p className="mb-8 text-indigo-200/70">{post.description}</p>
 
