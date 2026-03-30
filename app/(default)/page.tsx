@@ -30,7 +30,7 @@ const homeJsonLd = {
 
 export const metadata = {
   title: "Músicas para pen-drive",
-  description: "Melhor repertório de músicas para pen-drive atualizado outubro 2025",
+  description: "Melhor repertório de músicas para pen-drive atualizado outubro 2025 e 2026",
 };
 
 import PageIllustration from "@/components/page-illustration";

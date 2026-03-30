@@ -21,7 +21,7 @@ export default function HeroHome() {
                 data-aos="fade-up"
                 data-aos-delay={200}
               >
-               Melhor repertório atualizado para pen-drive e paredão 2025.
+               Melhor repertório atualizado para pen-drive e paredão 2025 e 2026.
               </p>
               <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center">
                 <div data-aos="fade-up" data-aos-delay={400}>
