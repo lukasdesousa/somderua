@@ -8,6 +8,7 @@ import Testimonials from "@/components/testimonials";
 import Workflows from "@/components/workflows";
 import Breadcrumbs from "@/components/seo/breadcrumbs";
 import JsonLd from "@/components/seo/json-ld";
+import ConversionWidgets from "@/components/conversion-widgets";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 
@@ -51,6 +52,7 @@ export default function Home() {
         </div>
       </section>
       <Cta />
+      <ConversionWidgets />
     </>
   );
 }
