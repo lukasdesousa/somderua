@@ -4,7 +4,7 @@ import { privateRoutes } from "@/lib/seo/config";
 import { absoluteUrl } from "@/lib/seo/metadata";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const basePages = ["/", "/blog"]
+  const basePages = ["/", "/blog", "/baixar-musicas", "/musicas-para-pen-drive", "/musicas-para-paredao"]
     .filter((route) => !privateRoutes.includes(route))
     .map((route) => ({
       url: absoluteUrl(route),

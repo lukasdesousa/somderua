@@ -2,6 +2,7 @@ import { absoluteUrl } from "@/lib/seo/metadata";
 import { siteConfig } from "@/lib/seo/config";
 
 type BreadcrumbItem = { name: string; path: string };
+type FaqItem = { question: string; answer: string };
 
 export function organizationSchema() {
   return {
@@ -38,6 +39,21 @@ export function breadcrumbSchema(items: BreadcrumbItem[]) {
       position: index + 1,
       name: item.name,
       item: absoluteUrl(item.path),
+    })),
+  };
+}
+
+export function faqSchema(items: FaqItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
     })),
   };
 }
