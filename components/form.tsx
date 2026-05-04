@@ -3,22 +3,10 @@
 import { useEffect, useState } from "react";
 import useMercadoPago from "@/hooks/useMercadoPago";
 
-type PriceVariant = "A" | "B";
-
-const getVariant = (): PriceVariant => {
-  const storageKey = "somderua_price_variant";
-  const stored = localStorage.getItem(storageKey);
-  if (stored === "A" || stored === "B") return stored;
-  const variant: PriceVariant = Math.random() < 0.5 ? "A" : "B";
-  localStorage.setItem(storageKey, variant);
-  return variant;
-};
-
 export default function Form() {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [variant, setVariant] = useState<PriceVariant>("A");
   const { createMercadoPagoCheckout } = useMercadoPago();
 
   const onFinish = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,10 +29,8 @@ export default function Form() {
       setName(cachedName || '');
     }
 
-    setVariant(getVariant());
   }, [])
-
-  const priceLabel = variant === "A" ? "R$5,00" : "R$9,90";
+  const priceLabel = "R$5,00";
 
   return (
     <section>
@@ -54,7 +40,6 @@ export default function Form() {
             <h1 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-indigo-200),var(--color-gray-50),var(--color-indigo-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
               Finalize seu acesso imediato
             </h1>
-            {variant === "B" && <p className="mt-3 text-sm text-orange-300">De R$49,00 por R$9,90</p>}
             <p className="mt-1 text-2xl font-semibold text-indigo-200">{priceLabel}</p>
           </div>
 
