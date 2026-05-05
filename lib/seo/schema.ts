@@ -58,6 +58,39 @@ export function faqSchema(items: FaqItem[]) {
   };
 }
 
+export function productOfferSchema({
+  name,
+  description,
+  price,
+  currency,
+  path = "/formulario",
+}: {
+  name: string;
+  description: string;
+  price: number;
+  currency: string;
+  path?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name,
+    description,
+    brand: {
+      "@type": "Brand",
+      name: siteConfig.name,
+    },
+    offers: {
+      "@type": "Offer",
+      url: absoluteUrl(path),
+      priceCurrency: currency,
+      price: price.toFixed(2),
+      availability: "https://schema.org/InStock",
+      itemCondition: "https://schema.org/NewCondition",
+    },
+  };
+}
+
 export function articleSchema({
   title,
   description,

@@ -5,6 +5,7 @@ import mpClient from '@/lib/mercado-pago';
 import { v4 as uuidv4 } from 'uuid';
 import { SignJWT } from 'jose';
 import { PrismaClient } from '@prisma/client';
+import { offerPricing } from '@/lib/pricing';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -61,12 +62,12 @@ export async function POST(req: Request) {
         items: [
           {
             id: String(id),
-            description: "Pack com mais de 4500 músicas",
-            title: "Pack Som de Rua",
+            description: offerPricing.productDescription,
+            title: offerPricing.productName,
             quantity: 1,
-            unit_price: 5.00,
-            currency_id: "BRL",
-            category_id: "5805",
+            unit_price: offerPricing.currentPrice,
+            currency_id: offerPricing.currency,
+            category_id: offerPricing.categoryId,
           },
         ],
 

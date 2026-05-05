@@ -10,7 +10,8 @@ import Breadcrumbs from "@/components/seo/breadcrumbs";
 import JsonLd from "@/components/seo/json-ld";
 import ConversionWidgets from "@/components/conversion-widgets";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { offerPricing } from "@/lib/pricing";
+import { breadcrumbSchema, productOfferSchema } from "@/lib/seo/schema";
 
 export const revalidate = 3600;
 
@@ -34,6 +35,15 @@ export default function Home() {
   return (
     <>
       <JsonLd id="home-breadcrumb-jsonld" data={breadcrumbSchema(breadcrumbs)} />
+      <JsonLd
+        id="home-product-jsonld"
+        data={productOfferSchema({
+          name: offerPricing.productName,
+          description: offerPricing.productDescription,
+          price: offerPricing.currentPrice,
+          currency: offerPricing.currency,
+        })}
+      />
       <Breadcrumbs items={[{ name: "Início" }, { name: "Pack de músicas" }]} />
       <PageIllustration />
       <Hero />
