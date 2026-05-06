@@ -19,7 +19,7 @@ export default function PageIllustration({
           src={Illustration}
           width={846}
           height={594}
-          alt="Page illustration"
+          alt=""
         />
       </div>
       {multiple && (
@@ -33,7 +33,7 @@ export default function PageIllustration({
               src={BlurredShapeGray}
               width={760}
               height={668}
-              alt="Blurred shape"
+              alt=""
             />
           </div>
           <div
@@ -45,7 +45,7 @@ export default function PageIllustration({
               src={BlurredShape}
               width={760}
               height={668}
-              alt="Blurred shape"
+              alt=""
             />
           </div>
         </>

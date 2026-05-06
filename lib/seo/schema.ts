@@ -2,7 +2,6 @@ import { absoluteUrl } from "@/lib/seo/metadata";
 import { siteConfig } from "@/lib/seo/config";
 
 type BreadcrumbItem = { name: string; path: string };
-type FaqItem = { question: string; answer: string };
 
 export function organizationSchema() {
   return {
@@ -22,11 +21,6 @@ export function websiteSchema() {
     name: siteConfig.name,
     url: siteConfig.url,
     inLanguage: siteConfig.language,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${siteConfig.url}/search?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
   };
 }
 
@@ -43,50 +37,48 @@ export function breadcrumbSchema(items: BreadcrumbItem[]) {
   };
 }
 
-export function faqSchema(items: FaqItem[]) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: items.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.answer,
-      },
-    })),
-  };
-}
-
 export function productOfferSchema({
   name,
   description,
   price,
   currency,
-  path = "/formulario",
+  productPath = "/",
+  offerPath = productPath,
+  image = absoluteUrl("/images/pack-16gb-4500.png"),
 }: {
   name: string;
   description: string;
   price: number;
   currency: string;
-  path?: string;
+  productPath?: string;
+  offerPath?: string;
+  image?: string;
 }) {
+  const productUrl = absoluteUrl(productPath);
+  const offerUrl = absoluteUrl(offerPath);
+
   return {
     "@context": "https://schema.org",
     "@type": "Product",
     name,
     description,
+    image,
+    url: productUrl,
     brand: {
       "@type": "Brand",
       name: siteConfig.name,
     },
     offers: {
       "@type": "Offer",
-      url: absoluteUrl(path),
+      url: offerUrl,
       priceCurrency: currency,
       price: price.toFixed(2),
       availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
+      seller: {
+        "@type": "Organization",
+        name: siteConfig.name,
+      },
     },
   };
 }

@@ -40,7 +40,7 @@ export default function ModalVideo({
           src={SecondaryIllustration}
           width={1165}
           height={1012}
-          alt="Secondary illustration"
+          alt=""
         />
       </div>
 
@@ -50,7 +50,7 @@ export default function ModalVideo({
         onClick={() => {
           setModalOpen(true);
         }}
-        aria-label="Watch the video"
+        aria-label="Ver prévia em vídeo do pack de músicas"
         data-aos="fade-up"
         data-aos-delay={200}
       >
@@ -127,7 +127,7 @@ export default function ModalVideo({
                 controls
               >
                 <source src={video} type="video/mp4" />
-                Your browser does not support the video tag.
+                Seu navegador não suporta a tag de vídeo.
               </video>
             </DialogPanel>
           </div>
