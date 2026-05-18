@@ -62,7 +62,7 @@ export default function Form() {
               <div className="mt-3 flex items-start justify-between gap-4 text-sm">
                 <div>
                   <p className="font-medium text-indigo-100">Pack Som de Rua</p>
-                  <p className="text-indigo-100/65">+4.500 músicas com acesso vitalício</p>
+                  <p className="text-indigo-100/65">+5.000 faixas com acesso vitalício</p>
                 </div>
                 <div className="text-right">
                   <p className="text-gray-500 line-through">{offerPriceLabels.original}</p>

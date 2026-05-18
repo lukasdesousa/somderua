@@ -44,7 +44,7 @@ export function productOfferSchema({
   currency,
   productPath = "/",
   offerPath = productPath,
-  image = absoluteUrl("/images/pack-16gb-4500.png"),
+  image = absoluteUrl("/images/pack-16gb-5000.png"),
 }: {
   name: string;
   description: string;

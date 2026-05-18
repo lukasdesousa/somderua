@@ -17,7 +17,7 @@ export const revalidate = 3600;
 
 const packHighlights = [
   {
-    title: "Mais de 4.500 músicas",
+    title: "Mais de 5.000 faixas",
     text: "Repertório pronto para carro, pen drive, caixa de som e paredão, com variedade para tocar por horas.",
   },
   {
@@ -52,7 +52,7 @@ const homeFaqs = [
   {
     question: "O que vem no Pack Som de Rua?",
     answer:
-      "Um repertório com mais de 4.500 músicas organizado em pastas para pen drive, carro, caixa de som e paredão.",
+      "Um repertório com mais de 5.000 faixas, organizado em pastas para pen drive, carro, caixa de som e paredão.",
   },
   {
     question: "O download é liberado na hora?",

@@ -7,7 +7,7 @@ import { offerPriceLabels } from "@/lib/pricing";
 const conversionHooks = [
   "Liberação automática após o pagamento",
   `Economia de ${offerPriceLabels.savings} no preço atual`,
-  "Mais de 4.500 músicas para carro, pen drive e paredão",
+  "Mais de 5.000 faixas para carro, pen drive e paredão",
 ];
 
 export default function Cta() {
