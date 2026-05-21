@@ -33,13 +33,20 @@ export async function handleMercadoPagoPayment(paymentData: PaymentResponse) {
       select: {
         id: true,
         abandonedCartEmailId: true,
+        abandonedCartEmailScheduledAt: true,
         abandonedCartEmailCanceledAt: true,
+        abandonedCartEmailSentAt: true,
       },
     });
 
     console.log(`[MP Handler] Payment ${internalId} marked as approved`);
 
-    if (payment.abandonedCartEmailId && !payment.abandonedCartEmailCanceledAt) {
+    if (
+      payment.abandonedCartEmailId &&
+      payment.abandonedCartEmailScheduledAt &&
+      !payment.abandonedCartEmailCanceledAt &&
+      !payment.abandonedCartEmailSentAt
+    ) {
       await cancelScheduledAbandonedCartEmail(payment.id, payment.abandonedCartEmailId);
     }
   } catch (error) {
