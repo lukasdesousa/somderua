@@ -3,6 +3,10 @@ import { Preference } from "mercadopago";
 import { SignJWT } from "jose";
 import { PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
+import { buildAutomatedAbandonedCartPayload, getAbandonedCartScheduleDate } from "@/lib/abandoned-cart/automation";
+import { abandonedCartLogger } from "@/lib/abandoned-cart/logger";
+import { cancelAbandonedCartRecoveryEmail, sendAbandonedCartRecoveryEmail } from "@/lib/abandoned-cart/mailer";
+import { hashForLog } from "@/lib/abandoned-cart/security";
 import mpClient from "@/lib/mercado-pago";
 import { offerPricing } from "@/lib/pricing";
 
@@ -93,13 +97,23 @@ export async function POST(req: Request) {
       throw new Error("Erro: preferencia do Mercado Pago nao retornou checkout valido");
     }
 
-    await createPendingPaymentRecord({
+    const paymentRecordCreated = await createPendingPaymentRecord({
       id,
       name: customerName || "Cliente Som de Rua",
       email: customerEmail,
       mercadoPagoPreferenceId: pref.id,
       checkoutUrl,
     });
+
+    if (paymentRecordCreated && customerEmail) {
+      await scheduleAbandonedCartRecovery({
+        paymentId: id,
+        customerName,
+        customerEmail,
+        checkoutUrl,
+        origin,
+      });
+    }
 
     const response = NextResponse.json({
       preferenceId: pref.id,
@@ -138,7 +152,7 @@ async function createPendingPaymentRecord(input: {
   email: string;
   mercadoPagoPreferenceId: string;
   checkoutUrl: string;
-}): Promise<void> {
+}): Promise<boolean> {
   try {
     await prisma.user_payment.create({
       data: {
@@ -152,8 +166,69 @@ async function createPendingPaymentRecord(input: {
         createdAt: new Date(),
       },
     });
+
+    return true;
   } catch (error) {
     console.log((error as Error).message);
+    return false;
+  }
+}
+
+async function scheduleAbandonedCartRecovery(input: {
+  paymentId: string;
+  customerName: string;
+  customerEmail: string;
+  checkoutUrl: string;
+  origin: string;
+}): Promise<void> {
+  const scheduledAt = getAbandonedCartScheduleDate();
+  let scheduledEmailId: string | null = null;
+
+  try {
+    const abandonedCartPayload = buildAutomatedAbandonedCartPayload({
+      customerName: input.customerName,
+      customerEmail: input.customerEmail,
+      checkoutUrl: input.checkoutUrl,
+      origin: input.origin,
+    });
+
+    const delivery = await sendAbandonedCartRecoveryEmail(abandonedCartPayload, {
+      scheduledAt,
+    });
+    scheduledEmailId = delivery.messageId;
+
+    if (scheduledEmailId) {
+      await prisma.user_payment.update({
+        where: { id: input.paymentId },
+        data: {
+          abandonedCartEmailId: scheduledEmailId,
+          abandonedCartEmailScheduledAt: scheduledAt,
+        },
+      });
+    }
+
+    abandonedCartLogger.info("email.scheduled", {
+      paymentId: input.paymentId,
+      customerHash: hashForLog(input.customerEmail),
+      messageId: scheduledEmailId,
+      scheduledAt: scheduledAt.toISOString(),
+    });
+  } catch (error) {
+    if (scheduledEmailId) {
+      try {
+        await cancelAbandonedCartRecoveryEmail(scheduledEmailId);
+      } catch (cancelError) {
+        abandonedCartLogger.error("email.schedule_cleanup_failed", cancelError, {
+          paymentId: input.paymentId,
+          messageId: scheduledEmailId,
+        });
+      }
+    }
+
+    abandonedCartLogger.error("email.schedule_failed", error, {
+      paymentId: input.paymentId,
+      customerHash: hashForLog(input.customerEmail),
+    });
   }
 }
 
