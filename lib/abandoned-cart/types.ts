@@ -37,4 +37,10 @@ export type ValidatedAbandonedCartPayload = {
 export type EmailDeliveryResult = {
   provider: "resend";
   messageId: string | null;
+  scheduledAt?: Date;
+};
+
+export type EmailCancellationResult = {
+  provider: "resend";
+  messageId: string;
 };

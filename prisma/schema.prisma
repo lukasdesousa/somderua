@@ -20,5 +20,9 @@ model user_payment {
   approved Boolean @default(false)
   mpPaymentId String?
   payment_method String?
+  checkoutUrl String?
+  abandonedCartEmailId String?
+  abandonedCartEmailScheduledAt DateTime?
+  abandonedCartEmailCanceledAt DateTime?
   createdAt DateTime @default(now())
 }

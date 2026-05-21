@@ -1,7 +1,11 @@
 import { Resend } from "resend";
 import { ConfigurationError, EmailDeliveryError } from "./errors";
 import { buildAbandonedCartRecoveryEmail } from "./template";
-import type { EmailDeliveryResult, ValidatedAbandonedCartPayload } from "./types";
+import type {
+  EmailCancellationResult,
+  EmailDeliveryResult,
+  ValidatedAbandonedCartPayload,
+} from "./types";
 import { createEmailIdempotencyKey } from "./security";
 
 const DEFAULT_FROM_EMAIL = "Som de Rua <pack@somderua.com.br>";
@@ -10,6 +14,7 @@ let resendClient: Resend | null = null;
 
 export async function sendAbandonedCartRecoveryEmail(
   payload: ValidatedAbandonedCartPayload,
+  options: { scheduledAt?: Date } = {},
 ): Promise<EmailDeliveryResult> {
   const resend = getResendClient();
   const email = buildAbandonedCartRecoveryEmail(payload);
@@ -27,6 +32,7 @@ export async function sendAbandonedCartRecoveryEmail(
       subject: email.subject,
       html: email.html,
       text: email.text,
+      scheduledAt: options.scheduledAt?.toISOString(),
       replyTo: replyTo || undefined,
       tags: [
         { name: "flow", value: "abandoned-cart" },
@@ -43,10 +49,26 @@ export async function sendAbandonedCartRecoveryEmail(
   return {
     provider: "resend",
     messageId: response.data?.id ?? null,
+    scheduledAt: options.scheduledAt,
   };
 }
 
-function getResendClient(): Resend {
+export async function cancelAbandonedCartRecoveryEmail(
+  messageId: string,
+): Promise<EmailCancellationResult> {
+  const response = await getResendClient().emails.cancel(messageId);
+
+  if (response.error) {
+    throw new EmailDeliveryError(response.error.message, "resend");
+  }
+
+  return {
+    provider: "resend",
+    messageId: response.data.id,
+  };
+}
+
+export function getResendClient(): Resend {
   const apiKey = process.env.RESEND_API_KEY?.trim();
 
   if (!apiKey) {
