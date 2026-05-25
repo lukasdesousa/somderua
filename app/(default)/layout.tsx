@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import "aos/dist/aos.css";
 import Footer from "@/components/ui/footer";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export default function DefaultLayout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -16,7 +17,10 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
 
   return (
     <>
-      <main className="relative flex grow flex-col">{children}</main>
+      <main className="relative flex grow flex-col">
+        {children}
+        <SpeedInsights />
+      </main>
       <Footer />
     </>
   );

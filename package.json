@@ -21,6 +21,7 @@
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
     "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^2.0.0",
     "aos": "3.0.0-beta.6",
     "better-sqlite3": "^12.4.1",
     "jose": "^6.1.0",
