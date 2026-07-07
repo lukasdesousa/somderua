@@ -9,8 +9,8 @@ export const offerPricing = {
 
 export const offerPriceLabels = {
   original: "R$49,90",
-  current: "R$5,90",
-  savings: "R$44,00",
-  discount: "88% OFF",
+  current: "R$19,90",
+  savings: "R$30,00",
+  discount: "60% OFF",
   installment: "pagamento único",
 };
