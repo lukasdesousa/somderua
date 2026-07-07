@@ -2,7 +2,7 @@ export const offerPricing = {
   productName: "Pack Som de Rua",
   productDescription: "Pack com mais de 5.000 faixas atualizadas para carro, pen drive e paredão.",
   originalPrice: 49.9,
-  currentPrice: 5.9,
+  currentPrice: 19.9,
   currency: "BRL",
   categoryId: "5805",
 };
