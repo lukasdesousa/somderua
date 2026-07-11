@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import Cta from "@/components/cta";
 import Features from "@/components/features";
 import Hero from "@/components/hero-home";
-import PageIllustration from "@/components/page-illustration";
 import Testimonials from "@/components/testimonials";
 import Workflows from "@/components/workflows";
 import Breadcrumbs from "@/components/seo/breadcrumbs";
@@ -15,97 +14,155 @@ import { breadcrumbSchema, productOfferSchema } from "@/lib/seo/schema";
 
 export const revalidate = 3600;
 
-const packHighlights = [
+const includedItems = [
   {
-    title: "Mais de 5.000 faixas",
-    text: "Repertório pronto para carro, pen drive, caixa de som e paredão, com variedade para tocar por horas.",
+    title: "Pack principal 16GB",
+    text: "Repertorio pronto para copiar em pen drive, notebook, celular ou central multimidia.",
   },
   {
-    title: "Pastas organizadas",
-    text: "Separação por estilos e momentos de uso para você encontrar funk, remix, grave pesado e músicas de viagem.",
+    title: "Pastas por estilo",
+    text: "Funk, remix, paredao, automotivo, internacional, piseiro, sertanejo e selecoes para viagem.",
   },
   {
-    title: "Download automático",
-    text: "Após a confirmação do pagamento, o acesso é liberado para baixar e copiar os arquivos sem depender de envio manual.",
+    title: "Organizacao para uso real",
+    text: "Arquivos separados por momento, intensidade e tipo de som para reduzir procura manual.",
   },
   {
-    title: "Suporte e garantia",
-    text: "Você tem garantia de 7 dias e suporte por e-mail se precisar de ajuda com pagamento, acesso ou download.",
+    title: "Acesso automatico",
+    text: "Depois da aprovacao do pagamento, o download fica disponivel sem envio manual.",
+  },
+  {
+    title: "Garantia e suporte",
+    text: "Teste por 7 dias e fale com o suporte por e-mail se tiver qualquer dificuldade.",
+  },
+  {
+    title: "Guias de uso",
+    text: "Conteudos para organizar pen drive, baixar musicas e evitar erros comuns em aparelhos.",
   },
 ];
 
-const usageSteps = [
-  "Finalize a compra no checkout seguro.",
-  "Aguarde a confirmação do pagamento.",
-  "Baixe o pack no celular ou computador.",
-  "Copie as pastas para o pen drive e teste no carro.",
+const updateItems = [
+  {
+    title: "Curadoria constante",
+    text: "O repertorio acompanha estilos que giram em carro, festa, viagem e paredao.",
+  },
+  {
+    title: "Pastas revisadas",
+    text: "A organizacao prioriza faixas faceis de encontrar e sequencias praticas para copiar.",
+  },
+  {
+    title: "Custo-beneficio preservado",
+    text: "Voce compra uma biblioteca pronta em vez de perder horas baixando arquivo por arquivo.",
+  },
 ];
 
-const compatibilityItems = [
-  "Pen drive comum com espaço disponível",
-  "Som automotivo com entrada USB",
-  "Celular, notebook ou computador para baixar",
-  "Caixas de som e players que aceitam arquivos de áudio",
+const comparisonRows = [
+  {
+    label: "Organizacao",
+    ours: "Pastas por estilo, momento e uso",
+    others: "Arquivos soltos ou pouco claros",
+  },
+  {
+    label: "Entrega",
+    ours: "Download liberado apos aprovacao",
+    others: "Dependencia de envio manual",
+  },
+  {
+    label: "Compatibilidade",
+    ours: "Pensado para carro, USB, celular e notebook",
+    others: "Foco limitado em um unico aparelho",
+  },
+  {
+    label: "Seguranca",
+    ours: "Checkout externo pelo Mercado Pago",
+    others: "Pagamento sem fluxo reconhecivel",
+  },
+  {
+    label: "Suporte",
+    ours: "Garantia de 7 dias e contato por e-mail",
+    others: "Pouca clareza depois da compra",
+  },
 ];
 
 const homeFaqs = [
   {
     question: "O que vem no Pack Som de Rua?",
     answer:
-      "Um repertório com mais de 5.000 faixas, organizado em pastas para pen drive, carro, caixa de som e paredão.",
+      "Um repertorio com mais de 5.000 musicas organizado em pastas para pen drive, carro, caixa de som, celular e paredao.",
   },
   {
-    question: "O download é liberado na hora?",
+    question: "O download e liberado na hora?",
     answer:
-      "Sim. Depois que o pagamento é confirmado, o acesso ao download é liberado automaticamente.",
+      "Sim. Depois que o pagamento e aprovado, o acesso ao download e liberado automaticamente.",
   },
   {
     question: "Funciona em pen drive comum?",
     answer:
-      "Sim. Você baixa os arquivos, copia para o pen drive e usa em aparelhos compatíveis com reprodução por USB.",
+      "Sim. Voce baixa os arquivos, copia para o pen drive e usa em aparelhos compativeis com reproducao por USB.",
+  },
+  {
+    question: "Posso baixar pelo celular?",
+    answer:
+      "Pode. Para copiar para pen drive, o computador costuma ser mais pratico, mas o acesso tambem funciona pelo celular.",
   },
   {
     question: "Tem garantia?",
     answer:
-      "Sim. O pack tem garantia de 7 dias para você testar com calma.",
+      "Sim. O pack tem garantia de 7 dias para voce testar com calma e pedir suporte se precisar.",
+  },
+  {
+    question: "Qual e o valor atual?",
+    answer: `A oferta exibida hoje e ${offerPriceLabels.current}, de ${offerPriceLabels.original}, em ${offerPriceLabels.installment}.`,
   },
 ];
 
 const relatedLinks = [
   {
     href: "/musicas-para-pen-drive",
-    title: "Músicas para pen drive",
-    text: "Veja como usar o repertório em pen drive comum e som automotivo.",
+    title: "Musicas para pen drive",
+    text: "Veja como usar o repertorio em pen drive comum e som automotivo.",
   },
   {
     href: "/musicas-para-paredao",
-    title: "Músicas para paredão",
-    text: "Entenda a seleção para grave forte, som automotivo e festas.",
+    title: "Musicas para paredao",
+    text: "Entenda a selecao para grave forte, som automotivo e festas.",
   },
   {
     href: "/baixar-musicas",
-    title: "Baixar músicas",
-    text: "Confira como funciona o acesso imediato após o pagamento.",
+    title: "Baixar musicas",
+    text: "Confira como funciona o acesso imediato apos o pagamento.",
   },
   {
     href: "/blog",
-    title: "Guias de repertório",
-    text: "Leia dicas para organizar pastas, resolver erros no pen drive e escolher músicas.",
+    title: "Guias de repertorio",
+    text: "Leia dicas para organizar pastas, resolver erros no pen drive e escolher musicas.",
   },
 ];
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Músicas para pen drive e paredão com entrega imediata",
+    title: "Pack de musicas para pen drive e paredao com entrega imediata",
     description:
-      "Compre repertório com mais de 16GB, músicas selecionadas para paredão e download automático com suporte rápido.",
+      "Compre o Pack Som de Rua com mais de 5.000 musicas organizadas para carro, pen drive e paredao, com checkout seguro e download automatico.",
     path: "/",
-    keywords: ["download imediato de músicas", "pack 16GB de músicas"],
+    keywords: ["download imediato de musicas", "pack 16GB de musicas", "musicas para paredao"],
   });
 }
 
 export default function Home() {
-  const breadcrumbs = [{ name: "Início", path: "/" }];
+  const breadcrumbs = [{ name: "Inicio", path: "/" }];
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: homeFaqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
 
   return (
     <>
@@ -121,111 +178,155 @@ export default function Home() {
           offerPath: "/",
         })}
       />
-      <Breadcrumbs items={[{ name: "Início" }]} />
-      <PageIllustration />
+      <JsonLd id="home-faq-jsonld" data={faqSchema} />
+      <Breadcrumbs items={[{ name: "Inicio" }]} />
       <Hero />
-      <Workflows />
       <Features />
+      <Workflows />
 
-      <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 md:py-16" aria-labelledby="pack-content-title">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-3 inline-flex rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-indigo-200">
-            O que vem no pack
-          </p>
-          <h2 id="pack-content-title" className="text-3xl font-semibold text-gray-100 md:text-4xl">
-            Repertório completo para tocar no carro, no pen drive e no paredão
-          </h2>
-          <p className="mt-4 text-lg text-indigo-200/70">
-            O Som de Rua foi pensado para quem quer baixar uma vez, organizar rápido e ter música pronta para diferentes momentos.
-          </p>
-        </div>
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          {packHighlights.map((item) => (
-            <article key={item.title} className="rounded-2xl border border-gray-800 bg-gray-900/50 p-5">
-              <h3 className="text-lg font-semibold text-gray-100">{item.title}</h3>
-              <p className="mt-2 text-indigo-100/75">{item.text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 md:py-16" aria-labelledby="how-to-download-title">
-        <div className="grid gap-8 md:grid-cols-[1fr_0.9fr] md:items-start">
-          <div>
-            <h2 id="how-to-download-title" className="text-3xl font-semibold text-gray-100">
-              Como baixar e usar no pen drive
+      <section className="bg-slate-950 py-14 md:py-20" aria-labelledby="included-title">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-sm font-semibold uppercase text-emerald-300">O que esta incluso</p>
+            <h2 id="included-title" className="mt-3 font-nacelle text-3xl font-semibold text-white md:text-4xl">
+              Uma biblioteca pronta, com cara de produto profissional.
             </h2>
-            <p className="mt-3 text-indigo-200/70">
-              O fluxo foi feito para ser simples: comprar, baixar, copiar e tocar. Você pode começar pelo celular ou pelo computador.
+            <p className="mt-4 text-lg text-slate-300">
+              O objetivo e voce comprar uma vez, baixar sem friccao e ter um acervo organizado para varios contextos.
             </p>
-            <ol className="mt-6 grid gap-3">
-              {usageSteps.map((step, index) => (
-                <li key={step} className="flex gap-3 rounded-2xl border border-gray-800 bg-gray-900/50 p-4">
-                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-indigo-500 text-sm font-semibold text-white">
-                    {index + 1}
-                  </span>
-                  <span className="text-indigo-100/80">{step}</span>
-                </li>
-              ))}
-            </ol>
           </div>
-          <div className="rounded-2xl border border-emerald-500/25 bg-emerald-500/10 p-5">
-            <h3 className="text-xl font-semibold text-gray-100">Compatibilidade</h3>
-            <ul className="mt-4 grid gap-3 text-sm text-emerald-100/85">
-              {compatibilityItems.map((item) => (
-                <li key={item} className="flex gap-2">
-                  <span aria-hidden="true">-</span>
-                  <span>{item}</span>
-                </li>
+          <div className="mt-9 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {includedItems.map((item) => (
+              <article key={item.title} className="rounded-lg border border-white/10 bg-white/5 p-5">
+                <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                <p className="mt-3 text-sm text-slate-400">{item.text}</p>
+              </article>
+            ))}
+          </div>
+          <SectionCta text="Ver oferta do pack completo" />
+        </div>
+      </section>
+
+      <section className="bg-[#070a13] py-14 md:py-20" aria-labelledby="updates-title">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="grid gap-8 md:grid-cols-[0.85fr_1.15fr] md:items-start">
+            <div>
+              <p className="text-sm font-semibold uppercase text-cyan-300">Atualizacoes</p>
+              <h2 id="updates-title" className="mt-3 font-nacelle text-3xl font-semibold text-white md:text-4xl">
+                Um pack que acompanha o que toca na rua.
+              </h2>
+              <p className="mt-4 text-lg text-slate-300">
+                A proposta e manter uma base moderna, organizada e util para quem precisa de repertorio sem ficar garimpando.
+              </p>
+            </div>
+            <div className="grid gap-4">
+              {updateItems.map((item) => (
+                <article key={item.title} className="rounded-lg border border-white/10 bg-white/5 p-5">
+                  <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm text-slate-400">{item.text}</p>
+                </article>
               ))}
-            </ul>
-            <p className="mt-5 text-sm text-emerald-100/75">
-              Em aparelhos mais antigos, vale testar uma pasta primeiro e conferir o manual do som para formatos aceitos.
-            </p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 md:py-16" aria-labelledby="home-faq-title">
-        <h2 id="home-faq-title" className="text-3xl font-semibold text-gray-100">
-          Dúvidas comuns antes de baixar
-        </h2>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
-          {homeFaqs.map((faq) => (
-            <article key={faq.question} className="rounded-2xl border border-gray-800 bg-gray-900/50 p-5">
-              <h3 className="font-semibold text-gray-100">{faq.question}</h3>
-              <p className="mt-2 text-indigo-100/75">{faq.answer}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto w-full max-w-6xl px-4 pb-8 sm:px-6" aria-labelledby="related-content-title">
-        <h2 id="related-content-title" className="mb-3 text-2xl font-semibold text-gray-100">Conteúdos relacionados</h2>
-        <p className="mb-5 max-w-3xl text-indigo-200/65">
-          Continue por guias específicos de pen drive, paredão, download e organização do repertório.
-        </p>
-        <div className="grid gap-4 md:grid-cols-2">
-          {relatedLinks.map((item) => (
-            <Link key={item.href} className="rounded-2xl border border-gray-800 bg-gray-900/50 p-5 transition hover:border-indigo-500/50" href={item.href}>
-              <span className="text-lg font-semibold text-gray-100">{item.title}</span>
-              <span className="mt-2 block text-sm text-indigo-100/70">{item.text}</span>
-            </Link>
-          ))}
-        </div>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link className="btn-sm bg-gray-800 hover:bg-gray-700" href="/blog">
-            Ver todos os guias
-          </Link>
-          <Link className="btn-sm bg-gray-800 hover:bg-gray-700" href="/formulario">
-            Comprar por {offerPriceLabels.current}
-          </Link>
+      <section className="bg-slate-950 py-14 md:py-20" aria-labelledby="comparison-title">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-sm font-semibold uppercase text-amber-300">Comparativo</p>
+            <h2 id="comparison-title" className="mt-3 font-nacelle text-3xl font-semibold text-white md:text-4xl">
+              O que muda quando o pack e pensado para conversao, entrega e uso real.
+            </h2>
+          </div>
+          <div className="mt-9 overflow-hidden rounded-lg border border-white/10">
+            <table className="w-full border-collapse bg-[#090d17] text-left text-sm">
+              <caption className="sr-only">Comparacao entre o Pack Som de Rua e outros packs</caption>
+              <thead className="bg-white/5 text-slate-200">
+                <tr>
+                  <th className="px-4 py-4 font-semibold" scope="col">Criterio</th>
+                  <th className="px-4 py-4 font-semibold" scope="col">Som de Rua</th>
+                  <th className="px-4 py-4 font-semibold" scope="col">Outros packs</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/10 text-slate-300">
+                {comparisonRows.map((row) => (
+                  <tr key={row.label}>
+                    <th className="px-4 py-4 font-semibold text-white" scope="row">{row.label}</th>
+                    <td className="px-4 py-4">{row.ours}</td>
+                    <td className="px-4 py-4 text-slate-500">{row.others}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <SectionCta text={`Comprar por ${offerPriceLabels.current}`} />
         </div>
       </section>
 
       <Testimonials />
+
+      <section className="bg-slate-950 py-14 md:py-20" aria-labelledby="home-faq-title">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="grid gap-8 md:grid-cols-[0.8fr_1.2fr]">
+            <div>
+              <p className="text-sm font-semibold uppercase text-cyan-300">FAQ</p>
+              <h2 id="home-faq-title" className="mt-3 font-nacelle text-3xl font-semibold text-white md:text-4xl">
+                Duvidas comuns antes de baixar.
+              </h2>
+              <p className="mt-4 text-lg text-slate-300">
+                Respostas diretas para voce entender compra, acesso, compatibilidade e garantia.
+              </p>
+            </div>
+            <div className="grid gap-3">
+              {homeFaqs.map((faq) => (
+                <details key={faq.question} className="group rounded-lg border border-white/10 bg-white/5 p-5">
+                  <summary className="cursor-pointer list-none text-base font-semibold text-white">
+                    {faq.question}
+                  </summary>
+                  <p className="mt-3 text-sm text-slate-400">{faq.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#070a13] py-14 md:py-20" aria-labelledby="related-content-title">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-sm font-semibold uppercase text-emerald-300">Guias complementares</p>
+            <h2 id="related-content-title" className="mt-3 font-nacelle text-3xl font-semibold text-white md:text-4xl">
+              Continue por guias especificos de uso e organizacao.
+            </h2>
+          </div>
+          <div className="mt-9 grid gap-4 md:grid-cols-2">
+            {relatedLinks.map((item) => (
+              <Link
+                key={item.href}
+                className="rounded-lg border border-white/10 bg-white/5 p-5 transition hover:border-cyan-300/40 hover:bg-white/10"
+                href={item.href}
+              >
+                <span className="text-lg font-semibold text-white">{item.title}</span>
+                <span className="mt-2 block text-sm text-slate-400">{item.text}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <Cta />
       <ConversionWidgets />
     </>
+  );
+}
+
+function SectionCta({ text }: { text: string }) {
+  return (
+    <div className="mt-8 text-center">
+      <Link className="btn bg-white text-slate-950 hover:bg-emerald-200" href="/formulario">
+        {text}
+      </Link>
+    </div>
   );
 }

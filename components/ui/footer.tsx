@@ -1,86 +1,68 @@
-import Image from "next/image";
 import Link from "next/link";
-import FooterIllustration from "@/public/images/footer-illustration.svg";
+import Logo from "@/components/ui/logo";
+import { offerPriceLabels } from "@/lib/pricing";
 
 const productLinks = [
-  { href: "/musicas-para-pen-drive", label: "Músicas para pen drive" },
-  { href: "/musicas-para-paredao", label: "Músicas para paredão" },
-  { href: "/baixar-musicas", label: "Baixar músicas para carro" },
+  { href: "/musicas-para-pen-drive", label: "Musicas para pen drive" },
+  { href: "/musicas-para-paredao", label: "Musicas para paredao" },
+  { href: "/baixar-musicas", label: "Baixar musicas para carro" },
   { href: "/blog", label: "Guias e dicas" },
+];
+
+const supportLinks = [
+  { href: "mailto:somderua.suporte@gmail.com", label: "Entrar em contato" },
+  { href: "mailto:somderua.suporte@gmail.com", label: "Tirar duvidas" },
+  { href: "mailto:somderua.suporte@gmail.com", label: "Enviar avaliacao" },
 ];
 
 export default function Footer() {
   return (
-    <footer>
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-        <div
-          className="pointer-events-none absolute bottom-0 left-1/2 -z-10 -translate-x-1/2"
-          aria-hidden="true"
-        >
-          <Image
-            className="max-w-none"
-            src={FooterIllustration}
-            width={1076}
-            height={378}
-            alt=""
-          />
-        </div>
-        <div className="grid grid-cols-2 justify-between gap-12 py-8 sm:grid-rows-[auto_auto] md:grid-cols-4 md:grid-rows-[auto_auto] md:py-12 lg:grid-cols-[repeat(4,minmax(0,160px))_1fr] lg:grid-rows-1 xl:gap-20">
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-gray-200">Repertórios</h3>
-            <ul className="space-y-2 text-sm">
+    <footer className="border-t border-white/10 bg-[#060811]">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 md:py-14">
+        <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_0.9fr]">
+          <div>
+            <div className="flex items-center gap-3">
+              <Logo />
+              <span className="text-sm font-semibold text-white">Som de Rua</span>
+            </div>
+            <p className="mt-4 max-w-sm text-sm text-slate-400">
+              Packs de musicas para pen drive, carro e paredao com entrega automatica, organizacao clara e suporte por e-mail.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-white">Repertorios</h3>
+            <ul className="mt-3 space-y-2 text-sm">
               {productLinks.map((link) => (
                 <li key={link.href}>
-                  <Link className="text-indigo-200/65 transition hover:text-indigo-500" href={link.href}>
+                  <Link className="text-slate-400 transition hover:text-emerald-200" href={link.href}>
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-gray-200">Comprar</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link className="text-indigo-200/65 transition hover:text-indigo-500" href="/formulario">
-                  Comprar pack completo
-                </Link>
-              </li>
-              <li>
-                <a
-                  className="text-indigo-200/65 transition hover:text-indigo-500"
-                  href="mailto:somderua.suporte@gmail.com"
-                >
-                  Tirar dúvidas
-                </a>
-              </li>
-              <li>
-                <Link className="text-indigo-200/65 transition hover:text-indigo-500" href="/">
-                  Ver prévia do pack
-                </Link>
-              </li>
+
+          <div>
+            <h3 className="text-sm font-semibold text-white">Suporte</h3>
+            <ul className="mt-3 space-y-2 text-sm">
+              {supportLinks.map((link) => (
+                <li key={link.label}>
+                  <a className="text-slate-400 transition hover:text-emerald-200" href={link.href}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-gray-200">Suporte</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  className="text-indigo-200/65 transition hover:text-indigo-500"
-                  href="mailto:somderua.suporte@gmail.com"
-                >
-                  Entrar em contato
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-indigo-200/65 transition hover:text-indigo-500"
-                  href="mailto:somderua.suporte@gmail.com"
-                >
-                  Enviar avaliação
-                </a>
-              </li>
-            </ul>
+
+          <div className="rounded-lg border border-white/10 bg-white/5 p-5">
+            <p className="text-sm font-semibold text-emerald-200">Oferta ativa</p>
+            <p className="mt-2 text-sm text-slate-400 line-through">De {offerPriceLabels.original}</p>
+            <p className="font-nacelle text-3xl font-semibold text-white">Por {offerPriceLabels.current}</p>
+            <Link className="btn mt-4 w-full bg-white text-slate-950 hover:bg-emerald-200" href="/formulario">
+              Comprar agora
+            </Link>
           </div>
         </div>
       </div>

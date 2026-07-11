@@ -2,38 +2,44 @@
 
 import Link from "next/link";
 import Logo from "./logo";
+import { offerPriceLabels } from "@/lib/pricing";
 
 const navItems = [
   { href: "/musicas-para-pen-drive", label: "Pen drive" },
-  { href: "/musicas-para-paredao", label: "Paredão" },
-  { href: "/baixar-musicas", label: "Baixar músicas" },
+  { href: "/musicas-para-paredao", label: "Paredao" },
+  { href: "/baixar-musicas", label: "Baixar musicas" },
   { href: "/blog", label: "Blog" },
 ];
 
 export default function Header() {
   return (
-    <header className="z-30 mt-2 w-full md:mt-5">
+    <header className="sticky top-2 z-30 w-full md:top-4">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="relative flex min-h-14 items-center justify-between gap-3 rounded-2xl bg-gray-900/90 px-3 py-2 before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] after:absolute after:inset-0 after:-z-10 after:backdrop-blur-xs">
-          <div className="flex flex-1 items-center">
+        <div className="relative flex min-h-14 items-center justify-between gap-3 rounded-lg border border-white/10 bg-slate-950/90 px-3 py-2 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md">
+          <div className="flex min-w-0 items-center gap-2">
             <Logo />
+            <Link href="/" className="hidden text-sm font-semibold text-white sm:block">
+              Som de Rua
+            </Link>
           </div>
-          <nav aria-label="Navegação principal" className="hidden flex-1 items-center justify-end gap-2 md:flex">
+          <nav aria-label="Navegacao principal" className="hidden flex-1 items-center justify-center gap-1 md:flex">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="btn-sm bg-gray-800 py-[5px] text-gray-200 hover:bg-gray-700"
+                className="rounded-lg px-3 py-2 text-sm text-slate-300 transition hover:bg-white/10 hover:text-white"
               >
                 {item.label}
               </Link>
             ))}
           </nav>
           <Link
-            href="/blog"
-            className="btn-sm bg-gray-800 py-[5px] text-gray-200 hover:bg-gray-700 md:hidden"
+            href="/formulario"
+            className="btn-sm bg-linear-to-t from-emerald-500 to-lime-400 py-[8px] font-bold text-slate-950 hover:from-emerald-400 hover:to-lime-300"
+            aria-label={`Comprar Pack Som de Rua por ${offerPriceLabels.current}`}
           >
-            Blog
+            Comprar
+            <span className="ml-1 hidden sm:inline">{offerPriceLabels.current}</span>
           </Link>
         </div>
       </div>

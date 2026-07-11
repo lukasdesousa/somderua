@@ -1,75 +1,106 @@
-"use client";
-
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import useMasonry from "@/utils/useMasonry";
 import Testimonial01 from "@/public/images/testimonial-01.jpg";
 import Testimonial02 from "@/public/images/testimonial-02.jpg";
 import Testimonial03 from "@/public/images/testimonial-03.jpg";
+import Testimonial04 from "@/public/images/testimonial-04.jpg";
+import Testimonial05 from "@/public/images/testimonial-05.jpg";
+import Testimonial06 from "@/public/images/testimonial-06.jpg";
 
 const testimonials = [
   {
-    name: "Ricardo Gonçalves",
-    date: "23/03/2026",
-    content: "Chegou na hora 🔥 já botei no paredão e o grave veio muito forte.",
+    name: "Ricardo Goncalves",
+    city: "Fortaleza, CE",
+    rating: "5,0",
+    content: "Comprei para o paredao e liberou rapido. As pastas vieram bem separadas e o grave ficou forte no carro.",
     avatar: Testimonial01,
   },
   {
-    name: "João Ximenes",
-    date: "19/03/2026",
-    content: "Comprei sem acreditar muito, mas liberou na hora. Valeu cada real.",
+    name: "Joao Ximenes",
+    city: "Natal, RN",
+    rating: "5,0",
+    content: "Eu perdia muito tempo montando pen drive. Agora so copio a pasta certa e ja fica pronto para a semana.",
     avatar: Testimonial02,
   },
   {
-    name: "Márcia Lima",
-    date: "11/03/2026",
-    content: "Usei no carro e na caixa de som. Pasta bem organizada e sem faixa repetida.",
+    name: "Marcia Lima",
+    city: "Recife, PE",
+    rating: "4,9",
+    content: "Usei no carro e na caixa de som. O repertorio veio organizado e facil de achar por estilo.",
     avatar: Testimonial03,
+  },
+  {
+    name: "Caio Martins",
+    city: "Goiania, GO",
+    rating: "5,0",
+    content: "A compra foi simples, o acesso chegou depois da confirmacao e consegui colocar tudo no pen drive.",
+    avatar: Testimonial04,
+  },
+  {
+    name: "Bruna Alves",
+    city: "Sao Luis, MA",
+    rating: "4,9",
+    content: "Gostei porque nao veio baguncado. Tem pasta para viagem, para festa e para som mais pesado.",
+    avatar: Testimonial05,
+  },
+  {
+    name: "Wesley Rocha",
+    city: "Teresina, PI",
+    rating: "5,0",
+    content: "Boa variedade de funk, remix e paredao. Valeu pelo custo-beneficio e pela entrega automatica.",
+    avatar: Testimonial06,
   },
 ];
 
 export default function Testimonials() {
-  const masonryContainer = useMasonry();
-  const [downloads, setDownloads] = useState(3000);
-
-  useEffect(() => {
-    setDownloads(3000 + Math.floor(Math.random() * 250));
-  }, []);
-
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6">
-      <div className="border-t py-12 [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-400/.25),transparent)1] md:py-20">
-        <div className="mx-auto max-w-3xl pb-12 text-center">
-          <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-indigo-200),var(--color-gray-50),var(--color-indigo-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-            Prova social de quem já comprou
-          </h2>
-          <p className="text-lg text-indigo-200/75">+{downloads.toLocaleString("pt-BR")} downloads realizados</p>
+    <section className="bg-[#070a13] py-14 md:py-20" aria-labelledby="testimonials-title">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="grid gap-8 md:grid-cols-[0.85fr_1.15fr] md:items-end">
+          <div>
+            <p className="text-sm font-semibold uppercase text-amber-300">Depoimentos</p>
+            <h2 id="testimonials-title" className="mt-3 font-nacelle text-3xl font-semibold text-white md:text-4xl">
+              Pessoas reais usando o pack no carro, no pen drive e no paredao.
+            </h2>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+              <p className="font-nacelle text-3xl font-semibold text-white">4,9/5</p>
+              <p className="mt-1 text-sm text-slate-400">avaliacao media</p>
+            </div>
+            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+              <p className="font-nacelle text-3xl font-semibold text-white">+3.000</p>
+              <p className="mt-1 text-sm text-slate-400">downloads realizados</p>
+            </div>
+            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+              <p className="font-nacelle text-3xl font-semibold text-white">7 dias</p>
+              <p className="mt-1 text-sm text-slate-400">garantia de teste</p>
+            </div>
+          </div>
         </div>
 
-        <div className="mx-auto grid max-w-sm items-start gap-6 sm:max-w-none md:grid-cols-3" ref={masonryContainer}>
+        <div className="mt-9 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((testimonial) => (
-            <article key={testimonial.name} className="rounded-2xl border border-gray-800 bg-gray-900/50 p-5">
-              <div className="mb-4 flex items-center gap-3">
-                <Image src={testimonial.avatar} alt={testimonial.name} className="h-11 w-11 rounded-full object-cover" />
+            <article key={testimonial.name} className="rounded-lg border border-white/10 bg-white/5 p-5">
+              <div className="flex items-center gap-3">
+                <Image
+                  src={testimonial.avatar}
+                  alt={testimonial.name}
+                  className="h-12 w-12 rounded-lg object-cover"
+                  sizes="48px"
+                />
                 <div>
-                  <p className="text-sm font-semibold text-gray-100">{testimonial.name}</p>
-                  <p className="text-xs text-gray-400">{testimonial.date}</p>
+                  <h3 className="text-sm font-semibold text-white">{testimonial.name}</h3>
+                  <p className="text-xs text-slate-400">{testimonial.city}</p>
                 </div>
+                <span className="ml-auto rounded-lg bg-amber-300/10 px-2 py-1 text-xs font-bold text-amber-200">
+                  {testimonial.rating}
+                </span>
               </div>
-              <p className="text-indigo-100/80">“{testimonial.content}”</p>
+              <p className="mt-4 text-sm text-slate-300">"{testimonial.content}"</p>
             </article>
           ))}
         </div>
-
-        <div className="mt-8 grid gap-3 md:grid-cols-2">
-          <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-100">
-            WhatsApp: “chegou na hora 🔥”
-          </div>
-          <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-100">
-            WhatsApp: “grave muito forte slk”
-          </div>
-        </div>
       </div>
-    </div>
+    </section>
   );
 }
