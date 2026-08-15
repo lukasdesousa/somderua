@@ -7,6 +7,7 @@ export default function DownloadHome() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const reference = searchParams.get("reference");
+  const mercadoPagoPaymentId = searchParams.get("payment_id") ?? searchParams.get("collection_id");
 
   useEffect(() => {
     if (!reference) return router.replace("/formulario");
@@ -14,7 +15,13 @@ export default function DownloadHome() {
     // Função async interna
     const checkPaymentStatus = async () => {
       try {
-        const res = await fetch(`/api/mercado-pago/payment-status?reference=${reference}`);
+        const params = new URLSearchParams({ reference });
+
+        if (mercadoPagoPaymentId) {
+          params.set("payment_id", mercadoPagoPaymentId);
+        }
+
+        const res = await fetch(`/api/mercado-pago/payment-status?${params.toString()}`);
         const data = await res.json();
 
         console.log(data)
@@ -31,7 +38,7 @@ export default function DownloadHome() {
 
     // Chama a função async
     if (reference) checkPaymentStatus();
-  }, [reference, router]);
+  }, [reference, mercadoPagoPaymentId, router]);
 
 
   async function getDownloadUrl(file: string) {

@@ -2,12 +2,12 @@
 
 import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { sendPurchaseEmail } from "@/lib/sendEmail";
 
 export default function PendingPaymentPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const reference = searchParams.get("external_reference");
+  const mercadoPagoPaymentId = searchParams.get("payment_id") ?? searchParams.get("collection_id");
 
   useEffect(() => {
     if (!reference) {
@@ -24,15 +24,19 @@ export default function PendingPaymentPage() {
           return;
         }
 
-        const res = await fetch(`/api/mercado-pago/payment-status?reference=${reference}`);
+        const params = new URLSearchParams({ reference });
+
+        if (mercadoPagoPaymentId) {
+          params.set("payment_id", mercadoPagoPaymentId);
+        }
+
+        const res = await fetch(`/api/mercado-pago/payment-status?${params.toString()}`);
         const data = await res.json();
 
         console.log("Status do pagamento:", data);
 
         if (data?.status === true) {
-          const email = localStorage.getItem('user_email');
           clearInterval(interval);
-          await sendPurchaseEmail(email!, reference)
           router.replace(`/download?reference=${reference}`);
         }
       } catch (error) {
@@ -41,7 +45,7 @@ export default function PendingPaymentPage() {
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [reference, router]);
+  }, [reference, mercadoPagoPaymentId, router]);
 
   return (
     <section className="flex flex-col items-center justify-center min-h-screen text-center px-4">

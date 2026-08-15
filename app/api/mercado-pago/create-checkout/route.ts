@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 
   const successUrl = `${origin}/download?reference=${id}`;
   const failureUrl = `${origin}/pagamento-recusado?status=failure&token=${jwt}&payment_id=${id}`;
-  const pendingUrl = `${origin}/pagamento-pendente?status=pending&payment_id=${id}`;
+  const pendingUrl = `${origin}/pagamento-pendente?status=pending&external_reference=${id}`;
 
   try {
     const preference = new Preference(mpClient);

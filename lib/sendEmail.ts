@@ -1,17 +1,35 @@
-'use server';
+import "server-only";
 
-// lib/sendEmail.ts
-import { Resend } from "resend";
+import crypto from "crypto";
+import { EmailDeliveryError } from "@/lib/abandoned-cart/errors";
+import { getResendClient } from "@/lib/abandoned-cart/mailer";
+import { siteConfig } from "@/lib/seo/config";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const DEFAULT_FROM_EMAIL = "Som de Rua <pack@somderua.com.br>";
+
+type PurchaseEmailDeliveryResult = {
+  provider: "resend";
+  messageId: string | null;
+};
 
 /**
- * Envia um email de agradecimento pela compra, com link de download
- * @param to - Email do destinatário
- * @param reference - Referência única do download
+ * Envia o e-mail de agradecimento da compra com o link da area de download.
  */
-export async function sendPurchaseEmail(to: string, reference: string) {
-  const downloadUrl = `https://somderua.com.br/download?reference=${reference}`;
+export async function sendPurchaseEmail(to: string, reference: string): Promise<PurchaseEmailDeliveryResult> {
+  const recipient = to.trim().toLowerCase();
+
+  if (!recipient) {
+    throw new EmailDeliveryError("Missing purchase email recipient", "resend");
+  }
+
+  const downloadUrl = getDownloadUrl(reference);
+  const idempotencyKey = createPurchaseEmailIdempotencyKey(recipient, reference);
+  const text = `Obrigado pela sua compra!
+
+Seu pack de musicas ja esta pronto para download.
+Acesse: ${downloadUrl}
+
+Som de Rua`;
 
   const html = `
   <!DOCTYPE html>
@@ -56,12 +74,7 @@ export async function sendPurchaseEmail(to: string, reference: string) {
         border-radius: 10px;
         background: linear-gradient(90deg, #4f46e5, #6366f1, #818cf8);
         color: #ffffff;
-        transition: all 0.25s ease;
         box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
-      }
-      .button:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 24px rgba(99, 102, 241, 0.5);
       }
       .footer {
         font-size: 13px;
@@ -78,10 +91,10 @@ export async function sendPurchaseEmail(to: string, reference: string) {
   </head>
   <body>
     <div class="container">
-      <h1>🎵 Obrigado pela sua compra!</h1>
+      <h1>Obrigado pela sua compra!</h1>
       <p>
-        Seu pack de músicas já está pronto para o download.<br/>
-        Clique no botão abaixo para acessar seu conteúdo exclusivo e curtir o som com qualidade profissional.
+        Seu pack de musicas ja esta pronto para o download.<br/>
+        Clique no botao abaixo para acessar seu conteudo exclusivo e curtir o som com qualidade profissional.
       </p>
 
       <a href="${downloadUrl}" class="button">Baixar Agora</a>
@@ -89,8 +102,8 @@ export async function sendPurchaseEmail(to: string, reference: string) {
       <div class="divider"></div>
 
       <p class="footer">
-        © ${new Date().getFullYear()} Som de rua<br/>
-          Os melhores packs de músicas para pen-drives.
+        &copy; ${new Date().getFullYear()} Som de Rua<br/>
+        Os melhores packs de musicas para pen-drives.
       </p>
     </div>
   </body>
@@ -98,16 +111,48 @@ export async function sendPurchaseEmail(to: string, reference: string) {
   `;
 
   try {
-    const data = await resend.emails.send({
-      from: "Som de rua <pack@somderua.com.br>",
-      to,
-      subject: "🎶 Seu pack de músicas está pronto para download!",
-      html,
-    });
+    const response = await getResendClient().emails.send(
+      {
+        from: getFromEmail(),
+        to: recipient,
+        subject: "Seu pack de musicas esta pronto para download!",
+        html,
+        text,
+        tags: [
+          { name: "flow", value: "purchase" },
+          { name: "product", value: "som-de-rua" },
+        ],
+      },
+      { idempotencyKey },
+    );
 
-    return data;
+    if (response.error) {
+      throw new EmailDeliveryError(response.error.message, "resend");
+    }
+
+    return {
+      provider: "resend",
+      messageId: response.data?.id ?? null,
+    };
   } catch (error) {
     console.error("Erro ao enviar email:", error);
     throw error;
   }
+}
+
+function getDownloadUrl(reference: string): string {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || process.env.SITE_URL?.trim() || siteConfig.url;
+  const url = new URL("/download", baseUrl);
+  url.searchParams.set("reference", reference);
+  return url.toString();
+}
+
+function getFromEmail(): string {
+  return process.env.PURCHASE_EMAIL_FROM?.trim()
+    || process.env.ABANDONED_CART_FROM_EMAIL?.trim()
+    || DEFAULT_FROM_EMAIL;
+}
+
+function createPurchaseEmailIdempotencyKey(email: string, reference: string): string {
+  return crypto.createHash("sha256").update(`purchase|${email}|${reference}`).digest("hex");
 }

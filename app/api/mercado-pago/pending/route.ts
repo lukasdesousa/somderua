@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { Payment } from "mercadopago";
 import mpClient from "@/lib/mercado-pago";
+import { handleMercadoPagoPayment } from "@/app/server/handle-payment";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,8 @@ export async function GET(request: Request) {
 
     // Se o pagamento foi aprovado (por PIX instantâneo, por ex.), redireciona para o download
     if (paymentData.status === "approved" || paymentData.date_approved) {
-      return NextResponse.redirect(new URL(`/download?payment_id=${paymentId}`, request.url));
+      await handleMercadoPagoPayment(paymentData);
+      return NextResponse.redirect(new URL(`/download?reference=${externalRef}&payment_id=${paymentId}`, request.url));
     }
 
     // Caso contrário, envia para a página de pagamento pendente

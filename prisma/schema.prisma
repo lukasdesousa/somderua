@@ -26,5 +26,8 @@ model user_payment {
   abandonedCartEmailCanceledAt DateTime?
   abandonedCartEmailSentAt DateTime?
   abandonedCartEmailProcessingAt DateTime?
+  purchaseEmailId String?
+  purchaseEmailSentAt DateTime?
+  purchaseEmailProcessingAt DateTime?
   createdAt DateTime @default(now())
 }
