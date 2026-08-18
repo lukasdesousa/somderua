@@ -11,7 +11,7 @@ export default mpClient;
 
 // Função auxiliar para verificar a assinatura do Mercado Pago - Protege sua rota de acessos maliciosos
 // Disponível na própria documentação do Mercado Pago
-export function verifyMercadoPagoSignature(request: Request) {
+export function verifyMercadoPagoSignature(request: Request): NextResponse | null {
   const xSignature = request.headers.get("x-signature");
   const xRequestId = request.headers.get("x-request-id");
   if (!xSignature || !xRequestId) {
@@ -52,7 +52,16 @@ export function verifyMercadoPagoSignature(request: Request) {
   }
   manifest += `ts:${ts};`;
 
-  const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET as string;
+  const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET?.trim();
+
+  if (!secret) {
+    console.error("[MP Webhook] Missing MERCADO_PAGO_WEBHOOK_SECRET");
+    return NextResponse.json(
+      { error: "Webhook signature configuration unavailable" },
+      { status: 500 }
+    );
+  }
+
   const hmac = crypto.createHmac("sha256", secret);
   hmac.update(manifest);
   const generatedHash = hmac.digest("hex");
@@ -60,4 +69,6 @@ export function verifyMercadoPagoSignature(request: Request) {
   if (generatedHash !== v1) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
+
+  return null;
 }

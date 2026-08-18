@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import FailurePaymentePage from "@/components/failure";
 import { buildMetadata } from "@/lib/seo/metadata";
 
@@ -10,5 +11,9 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default function RejectedPayment() {
-  return <FailurePaymentePage />;
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-6xl px-4 py-16 text-center text-indigo-100/70 sm:px-6">Carregando status...</div>}>
+      <FailurePaymentePage />
+    </Suspense>
+  );
 }

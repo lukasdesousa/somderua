@@ -26,16 +26,33 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Payment not found" }, { status: 404 });
     }
 
-    // Se o pagamento foi aprovado (por PIX instantâneo, por ex.), redireciona para o download
+    const paymentReference = paymentData.metadata?.id ?? paymentData.external_reference;
+
+    if (paymentReference !== externalRef) {
+      console.warn("[MP Pending] Payment reference mismatch", {
+        expectedReference: externalRef,
+        paymentReference,
+      });
+      return NextResponse.redirect(new URL(`/pagamento-recusado?status=reference_mismatch&external_reference=${externalRef}`, request.url));
+    }
+
     if (paymentData.status === "approved" || paymentData.date_approved) {
-      await handleMercadoPagoPayment(paymentData);
+      await handleMercadoPagoPayment(paymentData, { throwOnPurchaseEmailError: false });
       return NextResponse.redirect(new URL(`/download?reference=${externalRef}&payment_id=${paymentId}`, request.url));
     }
 
-    // Caso contrário, envia para a página de pagamento pendente
+    if (isRejectedPaymentStatus(paymentData.status)) {
+      return NextResponse.redirect(
+        new URL(
+          `/pagamento-recusado?external_reference=${externalRef}&payment_id=${paymentId}&status=${paymentData.status}`,
+          request.url
+        )
+      );
+    }
+
     return NextResponse.redirect(
       new URL(
-        `/pagamento-pendente?external_reference=${externalRef}&status=${paymentData.status}`,
+        `/pagamento-pendente?external_reference=${externalRef}&payment_id=${paymentId}&status=${paymentData.status}`,
         request.url
       )
     );
@@ -46,4 +63,8 @@ export async function GET(request: Request) {
       { status: 500 }
     );
   }
+}
+
+function isRejectedPaymentStatus(status: string): boolean {
+  return ["cancelled", "rejected", "refunded", "charged_back"].includes(status);
 }

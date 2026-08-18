@@ -12,62 +12,85 @@ export const dynamic = "force-dynamic";
 const prisma = new PrismaClient();
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const reference = searchParams.get("reference");
-  const mercadoPagoPaymentId = searchParams.get("payment_id") ?? searchParams.get("collection_id");
+  try {
+    const { searchParams } = new URL(req.url);
+    const reference = searchParams.get("reference");
+    const mercadoPagoPaymentId = searchParams.get("payment_id") ?? searchParams.get("collection_id");
 
-  if (!reference) {
-    return NextResponse.json({ error: "Missing reference" }, { status: 400 });
+    if (!reference) {
+      return NextResponse.json({ status: "missing_reference", error: "Missing reference" }, { status: 400 });
+    }
+
+    let payment = await findPaymentApproval(reference);
+
+    if (!payment) {
+      return NextResponse.json({ status: "not_found" });
+    }
+
+    let gatewayStatus: string | null = null;
+
+    if (!payment.approved && isMercadoPagoPaymentId(mercadoPagoPaymentId)) {
+      gatewayStatus = await reconcileMercadoPagoApproval(mercadoPagoPaymentId, reference);
+      payment = await findPaymentApproval(reference);
+    }
+
+    const selectedOffer = payment?.approved ? await findPaymentOffer(reference) : null;
+
+    return NextResponse.json({
+      status: payment?.approved ?? false,
+      paymentStatus: payment?.approved ? "approved" : gatewayStatus,
+      offer: payment?.approved && selectedOffer
+        ? {
+            id: selectedOffer.id,
+            name: selectedOffer.analyticsName,
+            price: selectedOffer.price,
+            priceCents: selectedOffer.priceCents,
+            productId: selectedOffer.productId,
+          }
+        : null,
+    });
+  } catch (error) {
+    console.error("[MP Status] Unhandled status error:", error);
+    return NextResponse.json(
+      { status: false, error: "STATUS_CHECK_FAILED" },
+      { status: 500 },
+    );
   }
+}
 
-  let payment = await prisma.user_payment.findUnique({
+async function findPaymentApproval(reference: string): Promise<{ approved: boolean } | null> {
+  return prisma.user_payment.findUnique({
     where: { id: reference },
     select: {
       approved: true,
-      offerId: true,
     },
-  });
-
-  if (!payment) {
-    return NextResponse.json({ status: "not_found" });
-  }
-
-  if (!payment.approved && isMercadoPagoPaymentId(mercadoPagoPaymentId)) {
-    await reconcileMercadoPagoApproval(mercadoPagoPaymentId, reference);
-
-    payment = await prisma.user_payment.findUnique({
-      where: { id: reference },
-      select: {
-        approved: true,
-        offerId: true,
-      },
-    });
-  }
-
-  const offerId = payment?.offerId;
-  const selectedOffer = isPackOfferId(offerId) ? packOffers[offerId] : null;
-
-  return NextResponse.json({
-    status: payment?.approved ?? false,
-    offer: payment?.approved && selectedOffer
-      ? {
-          id: selectedOffer.id,
-          name: selectedOffer.analyticsName,
-          price: selectedOffer.price,
-          priceCents: selectedOffer.priceCents,
-          productId: selectedOffer.productId,
-        }
-      : null,
   });
 }
 
-async function reconcileMercadoPagoApproval(paymentId: string, expectedReference: string): Promise<void> {
+async function findPaymentOffer(reference: string) {
+  try {
+    const payment = await prisma.user_payment.findUnique({
+      where: { id: reference },
+      select: {
+        offerId: true,
+      },
+    });
+    const offerId = payment?.offerId;
+
+    return isPackOfferId(offerId) ? packOffers[offerId] : null;
+  } catch (error) {
+    console.warn("[MP Status] Offer fields unavailable; returning approval without offer analytics", error);
+    return null;
+  }
+}
+
+async function reconcileMercadoPagoApproval(paymentId: string, expectedReference: string): Promise<string | null> {
   try {
     const mercadoPagoPayment = new Payment(mpClient);
     const paymentData = await mercadoPagoPayment.get({ id: paymentId });
 
     if (!paymentData || (paymentData.status !== "approved" && !paymentData.date_approved)) {
-      return;
+      return paymentData?.status ?? null;
     }
 
     const paymentReference = paymentData.metadata?.id ?? paymentData.external_reference;
@@ -77,12 +100,14 @@ async function reconcileMercadoPagoApproval(paymentId: string, expectedReference
         expectedReference,
         paymentReference,
       });
-      return;
+      return paymentData.status ?? null;
     }
 
-    await handleMercadoPagoPayment(paymentData);
+    await handleMercadoPagoPayment(paymentData, { throwOnPurchaseEmailError: false });
+    return "approved";
   } catch (error) {
     console.error("[MP Status] Error reconciling Mercado Pago approval:", error);
+    return null;
   }
 }
 

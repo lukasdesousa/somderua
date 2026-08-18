@@ -1,21 +1,40 @@
 'use client';
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { trackOfferEvent } from "@/lib/analytics";
 import { digitalProduct } from "@/lib/pricing";
+
+type PaymentStatusResponse = {
+  status: boolean | "not_found" | "missing_reference";
+  paymentStatus?: string | null;
+  error?: string;
+  offer?: {
+    name: "essencial" | "completo";
+    price: number;
+    priceCents: number;
+    productId: typeof digitalProduct.id;
+  } | null;
+};
+
+type DownloadState = "checking" | "approved" | "error";
 
 export default function DownloadHome() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const reference = searchParams.get("reference");
   const mercadoPagoPaymentId = searchParams.get("payment_id") ?? searchParams.get("collection_id");
+  const [downloadState, setDownloadState] = useState<DownloadState>("checking");
+  const [statusMessage, setStatusMessage] = useState("Verificando pagamento...");
 
   useEffect(() => {
     if (!reference) return router.replace("/baixar-musicas#escolha-seu-pack");
 
     const checkPaymentStatus = async () => {
       try {
+        setDownloadState("checking");
+        setStatusMessage("Verificando pagamento...");
+
         const params = new URLSearchParams({ reference });
 
         if (mercadoPagoPaymentId) {
@@ -23,12 +42,31 @@ export default function DownloadHome() {
         }
 
         const res = await fetch(`/api/mercado-pago/payment-status?${params.toString()}`);
-        const data = await res.json();
+        const data = await readJsonResponse<PaymentStatusResponse>(res);
 
-        if (!data?.status || data?.status === "not_found") {
+        if (data.status === "not_found" || data.status === "missing_reference") {
           router.replace("/baixar-musicas#escolha-seu-pack");
           return;
         }
+
+        if (isRejectedPaymentStatus(data.paymentStatus)) {
+          router.replace(`/pagamento-recusado?external_reference=${reference}&status=${data.paymentStatus}`);
+          return;
+        }
+
+        if (data.status !== true) {
+          const pendingParams = new URLSearchParams({ external_reference: reference });
+
+          if (mercadoPagoPaymentId) {
+            pendingParams.set("payment_id", mercadoPagoPaymentId);
+          }
+
+          router.replace(`/pagamento-pendente?${pendingParams.toString()}`);
+          return;
+        }
+
+        setDownloadState("approved");
+        setStatusMessage("Pagamento aprovado. Seu download está liberado.");
 
         if (data.offer) {
           const purchaseKey = `purchase_tracked_${reference}`;
@@ -45,7 +83,8 @@ export default function DownloadHome() {
         }
       } catch (err) {
         console.error("Erro ao verificar pagamento:", err);
-        router.replace("/baixar-musicas#escolha-seu-pack");
+        setDownloadState("error");
+        setStatusMessage("Não foi possível confirmar o pagamento agora. Atualize a página em alguns instantes.");
       }
     };
 
@@ -54,13 +93,19 @@ export default function DownloadHome() {
 
 
   async function getDownloadUrl(file: string) {
-    const res = await fetch(`/api/download?file=${encodeURIComponent(file)}`);
-    const data = await res.json();
+    if (!reference) {
+      throw new Error("Pedido não informado");
+    }
+
+    const params = new URLSearchParams({ reference, file });
+    const res = await fetch(`/api/download?${params.toString()}`);
+    const data = await readJsonResponse<{ url?: string; error?: string }>(res);
+
     if (data.url) {
       return data.url;
-    } else {
-      throw new Error(data.error || "Não foi possível gerar URL");
     }
+
+    throw new Error(data.error || "Não foi possível gerar URL");
   }
 
   async function handleDownload() {
@@ -86,33 +131,47 @@ export default function DownloadHome() {
               Muito obrigado por sua compra
             </h1>
             <div className="mx-auto max-w-3xl">
-              <p
-                className="mb-8 text-xl text-indigo-200/65"
-                data-aos="fade-up"
-                data-aos-delay={200}
-              >
-                Clique no botão de download logo abaixo para começar a instalar o seu pack de músicas.
+              <p className="mb-8 text-xl text-indigo-200/65" data-aos="fade-up" data-aos-delay={200}>
+                {statusMessage}
               </p>
-              <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center">
-                <div data-aos="fade-up" data-aos-delay={400}>
-                  <button
-                    type="button"
-                    className="btn group mb-4 w-full bg-linear-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] sm:mb-0 sm:w-auto"
-                    onClick={() => handleDownload()}
-                  >
-                    <span className="relative inline-flex items-center">
-                      Download
-                      <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
-                        -&gt;
+
+              {downloadState === "approved" ? (
+                <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center">
+                  <div data-aos="fade-up" data-aos-delay={400}>
+                    <button
+                      type="button"
+                      className="btn group mb-4 w-full bg-linear-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] sm:mb-0 sm:w-auto"
+                      onClick={() => handleDownload()}
+                    >
+                      <span className="relative inline-flex items-center">
+                        Download
+                        <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
+                          -&gt;
+                        </span>
                       </span>
-                    </span>
-                  </button>
+                    </button>
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </div>
           </div>
         </div>
       </div>
     </section>
   );
+}
+
+async function readJsonResponse<T>(response: Response): Promise<T> {
+  const body = await response.text();
+  const data = body ? JSON.parse(body) : null;
+
+  if (!response.ok) {
+    throw new Error(data?.error || `HTTP ${response.status}`);
+  }
+
+  return data as T;
+}
+
+function isRejectedPaymentStatus(status?: string | null): boolean {
+  return Boolean(status && ["cancelled", "rejected", "refunded", "charged_back"].includes(status));
 }

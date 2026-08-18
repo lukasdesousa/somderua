@@ -3,6 +3,12 @@
 import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
+type PaymentStatusResponse = {
+  status: boolean | "not_found" | "missing_reference";
+  paymentStatus?: string | null;
+  error?: string;
+};
+
 export default function PendingPaymentPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -31,13 +37,31 @@ export default function PendingPaymentPage() {
         }
 
         const res = await fetch(`/api/mercado-pago/payment-status?${params.toString()}`);
-        const data = await res.json();
+        const data = await readJsonResponse<PaymentStatusResponse>(res);
 
         console.log("Status do pagamento:", data);
 
         if (data?.status === true) {
           clearInterval(interval);
-          router.replace(`/download?reference=${reference}`);
+          const downloadParams = new URLSearchParams({ reference });
+
+          if (mercadoPagoPaymentId) {
+            downloadParams.set("payment_id", mercadoPagoPaymentId);
+          }
+
+          router.replace(`/download?${downloadParams.toString()}`);
+          return;
+        }
+
+        if (data?.status === "not_found") {
+          clearInterval(interval);
+          router.replace("/baixar-musicas#escolha-seu-pack");
+          return;
+        }
+
+        if (isRejectedPaymentStatus(data.paymentStatus)) {
+          clearInterval(interval);
+          router.replace(`/pagamento-recusado?external_reference=${reference}&status=${data.paymentStatus}`);
         }
       } catch (error) {
         console.error("Erro ao verificar status do pagamento:", error);
@@ -89,4 +113,19 @@ export default function PendingPaymentPage() {
       </div>
     </section>
   );
+}
+
+async function readJsonResponse<T>(response: Response): Promise<T> {
+  const body = await response.text();
+  const data = body ? JSON.parse(body) : null;
+
+  if (!response.ok) {
+    throw new Error(data?.error || `HTTP ${response.status}`);
+  }
+
+  return data as T;
+}
+
+function isRejectedPaymentStatus(status?: string | null): boolean {
+  return Boolean(status && ["cancelled", "rejected", "refunded", "charged_back"].includes(status));
 }

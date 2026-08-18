@@ -8,7 +8,16 @@ import { sendPurchaseEmail } from "@/lib/sendEmail";
 const prisma = new PrismaClient();
 const PURCHASE_EMAIL_PROCESSING_TIMEOUT_MS = 10 * 60 * 1000;
 
-export async function handleMercadoPagoPayment(paymentData: PaymentResponse) {
+type HandleMercadoPagoPaymentOptions = {
+  throwOnPurchaseEmailError?: boolean;
+};
+
+export async function handleMercadoPagoPayment(
+  paymentData: PaymentResponse,
+  options: HandleMercadoPagoPaymentOptions = {},
+) {
+  const { throwOnPurchaseEmailError = true } = options;
+
   try {
     const metadata = paymentData.metadata;
     const paymentStatus = paymentData.status;
@@ -53,7 +62,15 @@ export async function handleMercadoPagoPayment(paymentData: PaymentResponse) {
       await cancelScheduledAbandonedCartEmail(payment.id, payment.abandonedCartEmailId);
     }
 
-    await sendApprovedPurchaseEmailIfNeeded(payment.id, payment.email);
+    try {
+      await sendApprovedPurchaseEmailIfNeeded(payment.id, payment.email);
+    } catch (emailError) {
+      console.error("[MP Handler] Approved payment saved, but purchase email failed:", (emailError as Error).message);
+
+      if (throwOnPurchaseEmailError) {
+        throw emailError;
+      }
+    }
   } catch (error) {
     console.error("[MP Handler] Error handling payment:", (error as Error).message);
     throw error;

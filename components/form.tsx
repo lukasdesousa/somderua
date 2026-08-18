@@ -9,9 +9,9 @@ import { digitalProduct, getPackOffer } from "@/lib/pricing";
 
 const checkoutTrustHooks = [
   "Pagamento seguro via Mercado Pago",
-  "Entrega automática assim que o pagamento for aprovado",
-  "Mesmo pack digital liberado para qualquer oferta escolhida",
-  "Suporte por e-mail para dúvidas de acesso",
+  "Entrega automatica assim que o pagamento for aprovado",
+  "Conteudo digital liberado de acordo com a oferta escolhida",
+  "Suporte por e-mail para duvidas de acesso",
 ];
 
 export default function Form() {
@@ -76,7 +76,7 @@ export default function Form() {
                 <div>
                   <p className="font-medium text-indigo-100">{selectedOffer.name}</p>
                   <p className="text-indigo-100/65">{digitalProduct.checkoutName}</p>
-                  <p className="mt-1 text-indigo-100/65">Mesmo conteúdo digital do pack atual.</p>
+                  <p className="mt-1 text-indigo-100/65">Conteudo digital liberado conforme a oferta escolhida.</p>
                 </div>
                 <p className="shrink-0 text-right font-semibold text-emerald-300">{selectedOffer.priceLabel}</p>
               </div>
@@ -114,7 +114,7 @@ export default function Form() {
               </div>
             </div>
 
-            <ul className="mt-5 space-y-2 rounded-xl border border-gray-800 bg-gray-950/60 p-4 text-sm text-indigo-100/80" aria-label="Segurança e entrega do checkout">
+            <ul className="mt-5 space-y-2 rounded-xl border border-gray-800 bg-gray-950/60 p-4 text-sm text-indigo-100/80" aria-label="Seguranca e entrega do checkout">
               {checkoutTrustHooks.map((hook) => (
                 <li key={hook} className="flex gap-2">
                   <span aria-hidden="true">✓</span>
@@ -127,7 +127,7 @@ export default function Form() {
               <button disabled={loading} className="btn w-full bg-linear-to-t from-indigo-600 to-indigo-500 text-white disabled:opacity-60" aria-label={`Pagar ${selectedOffer.priceLabel} e liberar download`}>
                 {loading ? "Redirecionando..." : `Pagar ${selectedOffer.priceLabel} agora`}
               </button>
-              <p className="mt-3 text-center text-xs text-indigo-100/60">Você será direcionado para o checkout seguro do Mercado Pago.</p>
+              <p className="mt-3 text-center text-xs text-indigo-100/60">Voce sera direcionado para o checkout seguro do Mercado Pago.</p>
             </div>
           </form>
         </div>

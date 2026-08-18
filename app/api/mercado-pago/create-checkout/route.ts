@@ -15,17 +15,15 @@ export const dynamic = "force-dynamic";
 
 const prisma = new PrismaClient();
 
-if (!process.env.MERCADO_PAGO_ACCESS_TOKEN) {
-  throw new Error("Falta variavel de ambiente MERCADO_PAGO_ACCESS_TOKEN");
-}
-
-if (!process.env.JWT_SECRET) {
-  throw new Error("Falta variavel de ambiente JWT_SECRET");
-}
-
-const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-
 export async function POST(req: Request) {
+  const mercadoPagoAccessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN?.trim();
+  const jwtSecret = process.env.JWT_SECRET?.trim();
+
+  if (!mercadoPagoAccessToken || !jwtSecret) {
+    console.error("[MP Checkout] Missing payment environment variables");
+    return NextResponse.json({ error: "Configuracao de pagamento indisponivel" }, { status: 500 });
+  }
+
   let body: unknown;
 
   try {
@@ -51,20 +49,17 @@ export async function POST(req: Request) {
   const id = uuidv4();
 
   const extRef = uuidv4();
+  const secret = new TextEncoder().encode(jwtSecret);
   const jwt = await new SignJWT({ ext: extRef })
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("5m")
     .sign(secret);
 
-  const origin = req.headers.get("origin") ?? "";
-
-  if (!origin) {
-    return NextResponse.json({ error: "Origin nao especificado" }, { status: 400 });
-  }
+  const origin = req.headers.get("origin") ?? new URL(req.url).origin;
 
   const successUrl = `${origin}/download?reference=${id}`;
-  const failureUrl = `${origin}/pagamento-recusado?status=failure&token=${jwt}&payment_id=${id}`;
-  const pendingUrl = `${origin}/pagamento-pendente?status=pending&external_reference=${id}`;
+  const failureUrl = `${origin}/pagamento-recusado?status=failure&token=${jwt}&external_reference=${id}&offer=${selectedOffer.id}`;
+  const pendingUrl = `${origin}/pagamento-pendente?status=pending&external_reference=${id}&offer=${selectedOffer.id}`;
 
   try {
     const preference = new Preference(mpClient);
@@ -121,7 +116,7 @@ export async function POST(req: Request) {
       throw new Error("Erro: preferencia do Mercado Pago nao retornou checkout valido");
     }
 
-    const paymentRecordCreated = await createPendingPaymentRecord({
+    await createPendingPaymentRecord({
       id,
       name: customerName || "Cliente Som de Rua",
       email: customerEmail,
@@ -133,7 +128,7 @@ export async function POST(req: Request) {
       digitalProductId: selectedOffer.productId,
     });
 
-    if (paymentRecordCreated && customerEmail) {
+    if (customerEmail) {
       await scheduleAbandonedCartRecovery({
         paymentId: id,
         customerName,
@@ -191,7 +186,7 @@ async function createPendingPaymentRecord(input: {
   offerName: string;
   offerPriceCents: number;
   digitalProductId: string;
-}): Promise<boolean> {
+}): Promise<void> {
   try {
     await prisma.user_payment.create({
       data: {
@@ -209,11 +204,26 @@ async function createPendingPaymentRecord(input: {
         createdAt: new Date(),
       },
     });
-
-    return true;
   } catch (error) {
-    console.log((error as Error).message);
-    return false;
+    console.error("[MP Checkout] Full payment record create failed; trying legacy fields", error);
+
+    try {
+      await prisma.user_payment.create({
+        data: {
+          id: input.id,
+          user_name: input.name,
+          email: input.email,
+          payment_method: "",
+          approved: false,
+          mpPaymentId: input.mercadoPagoPreferenceId,
+          checkoutUrl: input.checkoutUrl,
+          createdAt: new Date(),
+        },
+      });
+    } catch (legacyError) {
+      console.error("[MP Checkout] Legacy payment record create failed", legacyError);
+      throw legacyError;
+    }
   }
 }
 
