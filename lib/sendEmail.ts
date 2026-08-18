@@ -94,7 +94,7 @@ Som de Rua`;
       <h1>Obrigado pela sua compra!</h1>
       <p>
         Seu pack de musicas ja esta pronto para o download.<br/>
-        Clique no botao abaixo para acessar seu conteudo exclusivo e curtir o som com qualidade profissional.
+        Clique no botao abaixo para acessar seu pack e baixar o conteudo liberado pela compra.
       </p>
 
       <a href="${downloadUrl}" class="button">Baixar Agora</a>

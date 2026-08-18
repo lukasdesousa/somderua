@@ -162,7 +162,7 @@ export default function Features() {
             ))}
           </div>
           <div className="mt-8 text-center">
-            <a className="btn bg-white text-slate-950 hover:bg-emerald-200" href="/formulario">
+            <a className="btn bg-white text-slate-950 hover:bg-emerald-200" href="/baixar-musicas#escolha-seu-pack">
               Quero meu pack organizado
             </a>
           </div>

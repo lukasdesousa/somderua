@@ -34,12 +34,12 @@ export default function Header() {
             ))}
           </nav>
           <Link
-            href="/formulario"
+            href="/baixar-musicas#escolha-seu-pack"
             className="btn-sm bg-linear-to-t from-emerald-500 to-lime-400 py-[8px] font-bold text-slate-950 hover:from-emerald-400 hover:to-lime-300"
-            aria-label={`Comprar Pack Som de Rua por ${offerPriceLabels.current}`}
+            aria-label="Escolher oferta do Pack Som de Rua"
           >
             Comprar
-            <span className="ml-1 hidden sm:inline">{offerPriceLabels.current}</span>
+            <span className="ml-1 hidden sm:inline">{offerPriceLabels.entry}</span>
           </Link>
         </div>
       </div>

@@ -52,7 +52,7 @@ export function validateAbandonedCartPayload(input: unknown): ValidatedAbandoned
   const benefits = readBenefits(input, details);
   const discountLabel = readOptionalText(input, "discountLabel", details, {
     maxLength: 48,
-  }) ?? "Oferta exclusiva do seu carrinho";
+  }) ?? "Oferta escolhida no checkout";
 
   if (Object.keys(details).length > 0) {
     throw new ValidationError("Invalid abandoned-cart payload.", details);

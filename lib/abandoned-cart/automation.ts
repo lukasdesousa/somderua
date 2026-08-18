@@ -1,8 +1,8 @@
-import { offerPriceLabels, offerPricing } from "@/lib/pricing";
+import { digitalProduct, getPackOffer, type PackOfferId } from "@/lib/pricing";
 import type { ValidatedAbandonedCartPayload } from "./types";
 
 export const ABANDONED_CART_DELAY_MINUTES = 20;
-export const ABANDONED_CART_OFFER_EXPIRES_IN = "15 minutos";
+export const ABANDONED_CART_OFFER_NOTE = "O link abre o mesmo checkout que você escolheu.";
 export const ABANDONED_CART_SATISFIED_CUSTOMERS_COUNT = 3247;
 
 const DEFAULT_CUSTOMER_NAME = "Cliente Som de Rua";
@@ -26,10 +26,12 @@ export function buildAutomatedAbandonedCartPayload(input: {
   customerEmail: string;
   checkoutUrl: string;
   origin: string;
+  offerId?: PackOfferId;
 }): ValidatedAbandonedCartPayload {
   const customerName = normalizeCustomerName(input.customerName);
   const firstName = customerName.split(" ")[0] || DEFAULT_CUSTOMER_NAME;
   const satisfiedCustomersLabel = numberFormatter.format(ABANDONED_CART_SATISFIED_CUSTOMERS_COUNT);
+  const selectedOffer = getPackOffer(input.offerId);
 
   return {
     customer: {
@@ -38,14 +40,14 @@ export function buildAutomatedAbandonedCartPayload(input: {
       email: input.customerEmail.trim().toLowerCase(),
     },
     product: {
-      name: offerPricing.productName,
+      name: digitalProduct.name,
       imageUrl: new URL(PRODUCT_IMAGE_PATH, input.origin).toString(),
-      priceLabel: offerPriceLabels.current,
+      priceLabel: selectedOffer.priceLabel,
       checkoutUrl: input.checkoutUrl,
     },
     offer: {
-      expiresIn: ABANDONED_CART_OFFER_EXPIRES_IN,
-      discountLabel: `${offerPriceLabels.discount} reservado para o carrinho`,
+      expiresIn: ABANDONED_CART_OFFER_NOTE,
+      discountLabel: `Oferta escolhida: ${selectedOffer.name}`,
     },
     socialProof: {
       satisfiedCustomersCount: ABANDONED_CART_SATISFIED_CUSTOMERS_COUNT,

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import Form from "@/components/form";
 import { buildMetadata } from "@/lib/seo/metadata";
 
@@ -15,5 +16,9 @@ export const viewport: Viewport = {
 };
 
 export default function UserForm() {
-  return <Form />;
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-6xl px-4 py-16 text-center text-indigo-100/70 sm:px-6">Carregando checkout...</div>}>
+      <Form />
+    </Suspense>
+  );
 }

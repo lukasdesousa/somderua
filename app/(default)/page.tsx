@@ -112,7 +112,7 @@ const homeFaqs = [
   },
   {
     question: "Qual e o valor atual?",
-    answer: `A oferta exibida hoje e ${offerPriceLabels.current}, de ${offerPriceLabels.original}, em ${offerPriceLabels.installment}.`,
+    answer: `Voce pode escolher entre ${offerPriceLabels.entry} e ${offerPriceLabels.recommended}, em ${offerPriceLabels.installment}. As duas opcoes liberam o mesmo pack digital.`,
   },
 ];
 
@@ -260,7 +260,7 @@ export default function Home() {
               </tbody>
             </table>
           </div>
-          <SectionCta text={`Comprar por ${offerPriceLabels.current}`} />
+          <SectionCta text="Escolher entre Essencial e Completo" />
         </div>
       </section>
 
@@ -324,7 +324,7 @@ export default function Home() {
 function SectionCta({ text }: { text: string }) {
   return (
     <div className="mt-8 text-center">
-      <Link className="btn bg-white text-slate-950 hover:bg-emerald-200" href="/formulario">
+      <Link className="btn bg-white text-slate-950 hover:bg-emerald-200" href="/baixar-musicas#escolha-seu-pack">
         {text}
       </Link>
     </div>

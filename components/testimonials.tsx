@@ -96,7 +96,7 @@ export default function Testimonials() {
                   {testimonial.rating}
                 </span>
               </div>
-              <p className="mt-4 text-sm text-slate-300">"{testimonial.content}"</p>
+              <p className="mt-4 text-sm text-slate-300">&quot;{testimonial.content}&quot;</p>
             </article>
           ))}
         </div>

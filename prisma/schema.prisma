@@ -20,6 +20,10 @@ model user_payment {
   approved Boolean @default(false)
   mpPaymentId String?
   payment_method String?
+  offerId String?
+  offerName String?
+  offerPriceCents Int?
+  digitalProductId String?
   checkoutUrl String?
   abandonedCartEmailId String?
   abandonedCartEmailScheduledAt DateTime?

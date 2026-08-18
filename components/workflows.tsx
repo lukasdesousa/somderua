@@ -83,7 +83,7 @@ export default function Workflows() {
               <a
                 key={genre.name}
                 className="group/card relative h-full overflow-hidden rounded-lg border border-white/10 bg-white/5 transition hover:border-cyan-300/40"
-                href="/formulario"
+                href="/baixar-musicas#escolha-seu-pack"
               >
                 <Image
                   className="h-44 w-full object-cover opacity-85 transition duration-300 group-hover/card:scale-[1.03] group-hover/card:opacity-100"
@@ -126,7 +126,7 @@ export default function Workflows() {
             ))}
           </ol>
           <div className="mt-8 text-center">
-            <a className="btn bg-linear-to-t from-emerald-500 to-lime-400 text-slate-950 hover:from-emerald-400 hover:to-lime-300" href="/formulario">
+            <a className="btn bg-linear-to-t from-emerald-500 to-lime-400 text-slate-950 hover:from-emerald-400 hover:to-lime-300" href="/baixar-musicas#escolha-seu-pack">
               Comprar e receber acesso
             </a>
           </div>

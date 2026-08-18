@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { trackOfferEvent } from "@/lib/analytics";
+import { digitalProduct } from "@/lib/pricing";
 
 export default function DownloadHome() {
   const searchParams = useSearchParams();
@@ -10,9 +12,8 @@ export default function DownloadHome() {
   const mercadoPagoPaymentId = searchParams.get("payment_id") ?? searchParams.get("collection_id");
 
   useEffect(() => {
-    if (!reference) return router.replace("/formulario");
+    if (!reference) return router.replace("/baixar-musicas#escolha-seu-pack");
 
-    // Função async interna
     const checkPaymentStatus = async () => {
       try {
         const params = new URLSearchParams({ reference });
@@ -24,19 +25,30 @@ export default function DownloadHome() {
         const res = await fetch(`/api/mercado-pago/payment-status?${params.toString()}`);
         const data = await res.json();
 
-        console.log(data)
-
-        // Se não aprovado, redireciona
         if (!data?.status || data?.status === "not_found") {
-          router.replace("/formulario");
+          router.replace("/baixar-musicas#escolha-seu-pack");
+          return;
+        }
+
+        if (data.offer) {
+          const purchaseKey = `purchase_tracked_${reference}`;
+
+          if (!localStorage.getItem(purchaseKey)) {
+            trackOfferEvent("purchase", {
+              analyticsName: data.offer.name,
+              price: data.offer.price,
+              priceCents: data.offer.priceCents,
+              productId: data.offer.productId,
+            });
+            localStorage.setItem(purchaseKey, "1");
+          }
         }
       } catch (err) {
         console.error("Erro ao verificar pagamento:", err);
-        router.replace("/formulario");
+        router.replace("/baixar-musicas#escolha-seu-pack");
       }
     };
 
-    // Chama a função async
     if (reference) checkPaymentStatus();
   }, [reference, mercadoPagoPaymentId, router]);
 
@@ -53,7 +65,7 @@ export default function DownloadHome() {
 
   async function handleDownload() {
     try {
-      const url = await getDownloadUrl("16gb-musicas-somderua.zip");
+      const url = await getDownloadUrl(digitalProduct.deliveryFile);
       window.location.href = url;
     } catch (err) {
       console.error(err);
@@ -83,8 +95,10 @@ export default function DownloadHome() {
               </p>
               <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center">
                 <div data-aos="fade-up" data-aos-delay={400}>
-                  <a
-                    className="btn group mb-4 w-full bg-linear-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] sm:mb-0 sm:w-auto" style={{ cursor: 'pointer' }} onClick={() => handleDownload()}
+                  <button
+                    type="button"
+                    className="btn group mb-4 w-full bg-linear-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] sm:mb-0 sm:w-auto"
+                    onClick={() => handleDownload()}
                   >
                     <span className="relative inline-flex items-center">
                       Download
@@ -92,7 +106,7 @@ export default function DownloadHome() {
                         -&gt;
                       </span>
                     </span>
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

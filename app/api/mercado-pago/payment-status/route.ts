@@ -4,6 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import { Payment } from "mercadopago";
 import { handleMercadoPagoPayment } from "@/app/server/handle-payment";
 import mpClient from "@/lib/mercado-pago";
+import { isPackOfferId, packOffers } from "@/lib/pricing";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,6 +22,10 @@ export async function GET(req: Request) {
 
   let payment = await prisma.user_payment.findUnique({
     where: { id: reference },
+    select: {
+      approved: true,
+      offerId: true,
+    },
   });
 
   if (!payment) {
@@ -32,10 +37,28 @@ export async function GET(req: Request) {
 
     payment = await prisma.user_payment.findUnique({
       where: { id: reference },
+      select: {
+        approved: true,
+        offerId: true,
+      },
     });
   }
 
-  return NextResponse.json({ status: payment?.approved ?? false });
+  const offerId = payment?.offerId;
+  const selectedOffer = isPackOfferId(offerId) ? packOffers[offerId] : null;
+
+  return NextResponse.json({
+    status: payment?.approved ?? false,
+    offer: payment?.approved && selectedOffer
+      ? {
+          id: selectedOffer.id,
+          name: selectedOffer.analyticsName,
+          price: selectedOffer.price,
+          priceCents: selectedOffer.priceCents,
+          productId: selectedOffer.productId,
+        }
+      : null,
+  });
 }
 
 async function reconcileMercadoPagoApproval(paymentId: string, expectedReference: string): Promise<void> {

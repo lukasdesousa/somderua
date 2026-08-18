@@ -8,7 +8,7 @@ import { abandonedCartLogger } from "@/lib/abandoned-cart/logger";
 import { cancelAbandonedCartRecoveryEmail, sendAbandonedCartRecoveryEmail } from "@/lib/abandoned-cart/mailer";
 import { hashForLog } from "@/lib/abandoned-cart/security";
 import mpClient from "@/lib/mercado-pago";
-import { offerPricing } from "@/lib/pricing";
+import { digitalProduct, isPackOfferId, packOffers, type PackOfferId } from "@/lib/pricing";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,10 +26,28 @@ if (!process.env.JWT_SECRET) {
 const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  let body: unknown;
+
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Body JSON invalido" }, { status: 400 });
+  }
+
+  if (!isRecord(body)) {
+    return NextResponse.json({ error: "Body JSON invalido" }, { status: 400 });
+  }
+
   const { userEmail, name } = body;
   const customerEmail = typeof userEmail === "string" ? userEmail.trim().toLowerCase() : "";
   const customerName = typeof name === "string" ? name.trim() : "";
+  const offerId = body.offerId;
+
+  if (!isPackOfferId(offerId)) {
+    return NextResponse.json({ error: "Oferta invalida" }, { status: 400 });
+  }
+
+  const selectedOffer = packOffers[offerId];
   const id = uuidv4();
 
   const extRef = uuidv4();
@@ -53,7 +71,13 @@ export async function POST(req: Request) {
     const pref = await preference.create({
       body: {
         external_reference: id,
-        metadata: { id },
+        metadata: {
+          id,
+          offer_id: selectedOffer.id,
+          offer_name: selectedOffer.analyticsName,
+          offer_price: selectedOffer.price,
+          product_id: selectedOffer.productId,
+        },
 
         ...(customerEmail && {
           payer: {
@@ -65,13 +89,13 @@ export async function POST(req: Request) {
 
         items: [
           {
-            id: String(id),
-            description: offerPricing.productDescription,
-            title: offerPricing.productName,
+            id: digitalProduct.id,
+            description: selectedOffer.checkoutDescription,
+            title: `${selectedOffer.checkoutTitle} - ${digitalProduct.checkoutName}`,
             quantity: 1,
-            unit_price: offerPricing.currentPrice,
-            currency_id: offerPricing.currency,
-            category_id: offerPricing.categoryId,
+            unit_price: selectedOffer.price,
+            currency_id: digitalProduct.currency,
+            category_id: digitalProduct.categoryId,
           },
         ],
 
@@ -103,6 +127,10 @@ export async function POST(req: Request) {
       email: customerEmail,
       mercadoPagoPreferenceId: pref.id,
       checkoutUrl,
+      offerId: selectedOffer.id,
+      offerName: selectedOffer.name,
+      offerPriceCents: selectedOffer.priceCents,
+      digitalProductId: selectedOffer.productId,
     });
 
     if (paymentRecordCreated && customerEmail) {
@@ -112,12 +140,19 @@ export async function POST(req: Request) {
         customerEmail,
         checkoutUrl,
         origin,
+        offerId: selectedOffer.id,
       });
     }
 
     const response = NextResponse.json({
       preferenceId: pref.id,
       initPoint: checkoutUrl,
+      offer: {
+        id: selectedOffer.id,
+        name: selectedOffer.name,
+        price: selectedOffer.price,
+        productId: selectedOffer.productId,
+      },
     });
 
     response.cookies.set("success_token", jwt, {
@@ -152,6 +187,10 @@ async function createPendingPaymentRecord(input: {
   email: string;
   mercadoPagoPreferenceId: string;
   checkoutUrl: string;
+  offerId: PackOfferId;
+  offerName: string;
+  offerPriceCents: number;
+  digitalProductId: string;
 }): Promise<boolean> {
   try {
     await prisma.user_payment.create({
@@ -162,6 +201,10 @@ async function createPendingPaymentRecord(input: {
         payment_method: "",
         approved: false,
         mpPaymentId: input.mercadoPagoPreferenceId,
+        offerId: input.offerId,
+        offerName: input.offerName,
+        offerPriceCents: input.offerPriceCents,
+        digitalProductId: input.digitalProductId,
         checkoutUrl: input.checkoutUrl,
         createdAt: new Date(),
       },
@@ -180,6 +223,7 @@ async function scheduleAbandonedCartRecovery(input: {
   customerEmail: string;
   checkoutUrl: string;
   origin: string;
+  offerId: PackOfferId;
 }): Promise<void> {
   const scheduledAt = getAbandonedCartScheduleDate();
   let scheduledEmailId: string | null = null;
@@ -190,6 +234,7 @@ async function scheduleAbandonedCartRecovery(input: {
       customerEmail: input.customerEmail,
       checkoutUrl: input.checkoutUrl,
       origin: input.origin,
+      offerId: input.offerId,
     });
 
     const delivery = await sendAbandonedCartRecoveryEmail(abandonedCartPayload, {
@@ -238,4 +283,8 @@ function getCheckoutUrl(preference: Awaited<ReturnType<Preference["create"]>>): 
   };
 
   return preferenceWithSandboxUrl.init_point ?? preferenceWithSandboxUrl.sandbox_init_point ?? null;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }

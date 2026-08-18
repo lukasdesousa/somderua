@@ -55,7 +55,7 @@ export async function sendSomDeRuaAbandonedCartExample(input: {
     checkoutUrl: input.checkoutUrl,
     offerExpiresIn: "15 minutos",
     satisfiedCustomersCount: 3247,
-    discountLabel: "88% OFF reservado para o carrinho",
+    discountLabel: "Oferta escolhida no checkout",
     benefits: [
       "Mais de 5.000 faixas atualizadas para carro, pen drive e paredão.",
       "Download liberado rapidamente após a confirmação do pagamento.",

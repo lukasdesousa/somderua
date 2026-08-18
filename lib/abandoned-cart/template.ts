@@ -12,16 +12,17 @@ export function buildAbandonedCartRecoveryEmail(
   payload: ValidatedAbandonedCartPayload,
 ): AbandonedCartEmailContent {
   const customerFirstName = escapeHtml(payload.customer.firstName);
+  const productName = escapeHtml(payload.product.name);
   const productImageUrl = escapeHtml(payload.product.imageUrl);
   const priceLabel = escapeHtml(payload.product.priceLabel);
   const checkoutUrl = escapeHtml(payload.product.checkoutUrl);
-  const offerExpiresIn = escapeHtml(payload.offer.expiresIn);
+  const offerNote = escapeHtml(payload.offer.expiresIn);
   const discountLabel = escapeHtml(payload.offer.discountLabel);
   const satisfiedCustomersLabel = escapeHtml(payload.socialProof.satisfiedCustomersLabel);
   const currentYear = new Date().getFullYear();
   const qualities = getQualityItems().map((item) => escapeHtml(item));
 
-  const subject = `${payload.customer.firstName}, o seu pack de 16gb ficou reservado`;
+  const subject = `${payload.customer.firstName}, seu checkout Som de Rua ficou salvo`;
   const previewText = `Volte para finalizar seu pack de 16gb com mais de 5.000 faixas, download imediato e garantia de 7 dias.`;
 
   return {
@@ -128,7 +129,7 @@ export function buildAbandonedCartRecoveryEmail(
       line-height: 1;
       margin: 0;
     }
-    .discount {
+    .offer-badge {
       display: inline-block;
       margin-top: 10px;
       padding: 7px 10px;
@@ -149,7 +150,7 @@ export function buildAbandonedCartRecoveryEmail(
       color: #ffffff;
       box-shadow: 0 4px 22px rgba(99, 102, 241, 0.34);
     }
-    .timer {
+    .note {
       display: inline-block;
       margin: 6px 0 22px;
       padding: 10px 14px;
@@ -227,11 +228,11 @@ export function buildAbandonedCartRecoveryEmail(
   <div class="container">
     <div class="brand">Som de Rua</div>
 
-    <h1>${customerFirstName}, deixei ${PACK_NAME} separado para você.</h1>
+    <h1>${customerFirstName}, deixei o checkout do ${PACK_NAME} salvo para você.</h1>
 
     <p class="lead">
       Vi que você chegou até o checkout e talvez tenha deixado para terminar depois.
-      Sem pressão: o seu link ainda está aqui, com o pack completo pronto para baixar.
+      Sem pressão: o seu link ainda está aqui, com o mesmo pack digital pronto para baixar após a aprovação.
     </p>
 
     <div class="highlight">
@@ -241,13 +242,13 @@ export function buildAbandonedCartRecoveryEmail(
             <img class="product-image" src="${productImageUrl}" width="116" alt="Pack Som de Rua 16GB" />
           </td>
           <td class="product-copy">
-            <p class="eyebrow">Pack reservado</p>
-            <p class="product-title">Pack Som de Rua 16GB</p>
+            <p class="eyebrow">Oferta escolhida</p>
+            <p class="product-title">${productName} 16GB</p>
             <p style="margin:0 0 8px;color:#a3a8d4;font-size:14px;line-height:1.5;">
               Mais de 5.000 faixas atualizadas para tocar no carro, celular e pen drive.
             </p>
             <p class="price">${priceLabel}</p>
-            <span class="discount">${discountLabel}</span>
+            <span class="offer-badge">${discountLabel}</span>
           </td>
         </tr>
       </table>
@@ -258,8 +259,8 @@ export function buildAbandonedCartRecoveryEmail(
       sem músicas repetidas, com grave ajustado para paredão e pronto para tocar em minutos.
     </p>
 
-    <div class="timer">
-      Condição do carrinho ativa por mais ${offerExpiresIn}
+    <div class="note">
+      ${offerNote}
     </div>
 
     <a href="${checkoutUrl}" class="button">Voltar e finalizar meu pack</a>
@@ -304,7 +305,7 @@ function renderQualityItems(items: string[]): string {
 function buildPlainTextEmail(payload: ValidatedAbandonedCartPayload): string {
   return `Olá, ${payload.customer.firstName}.
 
-Deixei o seu pack de 16gb separado para você.
+Deixei o checkout do seu pack de 16gb salvo para você.
 
 Você chegou até o checkout, mas talvez tenha deixado para terminar depois. O link ainda está aqui:
 ${payload.product.checkoutUrl}
@@ -317,8 +318,9 @@ O que vem no pack:
 - Grave ajustado para paredão e som automotivo
 - Garantia de 7 dias
 
-Preço do carrinho: ${payload.product.priceLabel}
-Condição ativa por mais: ${payload.offer.expiresIn}
+Oferta escolhida: ${payload.offer.discountLabel}
+Preço escolhido: ${payload.product.priceLabel}
+Detalhe: ${payload.offer.expiresIn}
 
 +${payload.socialProof.satisfiedCustomersLabel} clientes já baixaram o Som de Rua.
 

@@ -56,18 +56,18 @@ export default function MusicasPenDrivePage() {
       <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6" aria-labelledby="pen-drive-title">
         <section className="max-w-3xl">
           <p className="mb-3 inline-flex rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-200">
-            Economize {offerPriceLabels.savings} no preço atual
+            Opções a partir de {offerPriceLabels.entry}
           </p>
           <h1 id="pen-drive-title" className="text-4xl font-semibold text-gray-100">Músicas para pen drive</h1>
           <p className="mt-3 text-lg text-indigo-200/75">
             Conteúdo pronto para baixar, copiar e tocar no carro em poucos minutos, com pastas organizadas para facilitar a navegação.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Link href="/formulario" className="btn bg-linear-to-t from-indigo-600 to-indigo-500 text-white">
-              Comprar por {offerPriceLabels.current}
+            <Link href="/baixar-musicas#escolha-seu-pack" className="btn bg-linear-to-t from-indigo-600 to-indigo-500 text-white">
+              Escolher meu pack
             </Link>
             <Link href="/musicas-para-paredao" className="btn-sm bg-gray-800 hover:bg-gray-700">Ver músicas para paredão</Link>
-            <span className="text-sm text-gray-400 line-through">De {offerPriceLabels.original}</span>
+            <span className="text-sm text-indigo-100/65">Essencial {offerPriceLabels.entry} ou Completo {offerPriceLabels.recommended}</span>
           </div>
         </section>
 

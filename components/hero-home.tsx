@@ -4,7 +4,7 @@ import Image from "next/image";
 import ModalVideo from "@/components/modal-video";
 import PackVisual from "@/public/images/pack-16gb-5000.png";
 import VideoThumb from "@/public/images/videoThumb.png";
-import { offerPriceLabels } from "@/lib/pricing";
+import { entryPackOffer, recommendedPackOffer } from "@/lib/pricing";
 
 const badges = [
   "Compra segura via Mercado Pago",
@@ -69,9 +69,9 @@ export default function HeroHome() {
           >
             <a
               className="btn min-h-12 w-full bg-linear-to-t from-emerald-500 to-lime-400 px-6 text-sm font-bold text-slate-950 shadow-[0_16px_40px_rgba(16,185,129,0.28)] hover:from-emerald-400 hover:to-lime-300 sm:w-auto"
-              href="/formulario"
+              href="/baixar-musicas#escolha-seu-pack"
             >
-              Baixar pack completo
+              Escolher meu pack
             </a>
             <a
               className="btn min-h-12 w-full border border-white/20 bg-white/10 px-6 text-sm font-semibold text-white hover:bg-white/20 sm:w-auto"
@@ -85,12 +85,12 @@ export default function HeroHome() {
             className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-slate-300"
             aria-label="Resumo da oferta"
           >
-            <span className="text-slate-400 line-through">De {offerPriceLabels.original}</span>
-            <strong className="font-nacelle text-3xl text-white">Por {offerPriceLabels.current}</strong>
+            <span>Essencial {entryPackOffer.priceLabel}</span>
+            <strong className="font-nacelle text-3xl text-white">Completo {recommendedPackOffer.priceLabel}</strong>
             <span className="rounded-lg bg-emerald-300 px-3 py-1 text-xs font-bold uppercase text-slate-950">
-              {offerPriceLabels.discount}
+              {recommendedPackOffer.badge}
             </span>
-            <span>{offerPriceLabels.installment}</span>
+            <span>pagamento único</span>
           </div>
 
           <div className="mt-6 flex flex-wrap justify-center gap-2">

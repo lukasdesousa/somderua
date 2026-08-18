@@ -11,7 +11,7 @@ export default function PendingPaymentPage() {
 
   useEffect(() => {
     if (!reference) {
-      router.replace("/formulario");
+      router.replace("/baixar-musicas#escolha-seu-pack");
       return;
     }
 
