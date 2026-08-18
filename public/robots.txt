@@ -1,8 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /download/
-Disallow: /pagamento-pendente/
-Disallow: /pagamento-recusado/
-Disallow: /formulario/
+Disallow: /api/
 
 Sitemap: https://somderua.com.br/sitemap.xml

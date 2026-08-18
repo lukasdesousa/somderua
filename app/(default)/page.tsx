@@ -9,8 +9,8 @@ import Breadcrumbs from "@/components/seo/breadcrumbs";
 import JsonLd from "@/components/seo/json-ld";
 import ConversionWidgets from "@/components/conversion-widgets";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { offerPriceLabels, offerPricing } from "@/lib/pricing";
-import { breadcrumbSchema, productOfferSchema } from "@/lib/seo/schema";
+import { digitalProduct, offerPriceLabels, packOfferList } from "@/lib/pricing";
+import { breadcrumbSchema, faqPageSchema, productOffersSchema } from "@/lib/seo/schema";
 
 export const revalidate = 3600;
 
@@ -128,6 +128,11 @@ const relatedLinks = [
     text: "Entenda a selecao para grave forte, som automotivo e festas.",
   },
   {
+    href: "/musicas-para-som-automotivo",
+    title: "Musicas para som automotivo",
+    text: "Veja como escolher repertorio para carro, grave e uso em USB.",
+  },
+  {
     href: "/baixar-musicas",
     title: "Baixar musicas",
     text: "Confira como funciona o acesso imediato apos o pagamento.",
@@ -141,44 +146,36 @@ const relatedLinks = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Pack de musicas para pen drive e paredao com entrega imediata",
+    title: "Pack de musicas 2026 para pen drive e paredao",
     description:
-      "Compre o Pack Som de Rua com mais de 5.000 musicas organizadas para carro, pen drive e paredao, com checkout seguro e download automatico.",
+      "Compre o Pack Som de Rua com mais de 5.000 musicas organizadas para carro, pen drive, som automotivo e paredao, com download automatico.",
     path: "/",
-    keywords: ["download imediato de musicas", "pack 16GB de musicas", "musicas para paredao"],
+    keywords: ["pack de musicas", "pack de musicas 2026", "pack de musicas para pen drive", "download imediato de musicas"],
   });
 }
 
 export default function Home() {
   const breadcrumbs = [{ name: "Inicio", path: "/" }];
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: homeFaqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  };
 
   return (
     <>
       <JsonLd id="home-breadcrumb-jsonld" data={breadcrumbSchema(breadcrumbs)} />
       <JsonLd
         id="home-product-jsonld"
-        data={productOfferSchema({
-          name: offerPricing.productName,
-          description: offerPricing.productDescription,
-          price: offerPricing.currentPrice,
-          currency: offerPricing.currency,
+        data={productOffersSchema({
+          name: digitalProduct.checkoutName,
+          description: digitalProduct.description,
           productPath: "/",
-          offerPath: "/",
+          offers: packOfferList.map((offer) => ({
+            name: offer.name,
+            description: offer.description,
+            price: offer.price,
+            currency: digitalProduct.currency,
+            offerPath: "/baixar-musicas#escolha-seu-pack",
+          })),
         })}
       />
-      <JsonLd id="home-faq-jsonld" data={faqSchema} />
+      <JsonLd id="home-faq-jsonld" data={faqPageSchema(homeFaqs)} />
       <Breadcrumbs items={[{ name: "Inicio" }]} />
       <Hero />
       <Features />

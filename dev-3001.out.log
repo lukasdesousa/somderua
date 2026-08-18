@@ -1,0 +1,16 @@
+
+> open-pro-next@0.1.0 dev
+> next dev --turbopack --port 3001
+
+   ▲ Next.js 15.1.11 (Turbopack)
+   - Local:        http://localhost:3001
+   - Network:      http://54.232.189.113:3001
+   - Environments: .env
+
+ ✓ Starting...
+Creating turbopack project {
+  dir: 'C:\\Users\\lukas\\OneDrive\\Área de Trabalho\\PROJETOS\\SomDeRua\\somderua',
+  testMode: true
+}
+ ✓ Compiled in 297ms
+ ✓ Ready in 2.2s

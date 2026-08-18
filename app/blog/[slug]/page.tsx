@@ -5,7 +5,7 @@ import Breadcrumbs from "@/components/seo/breadcrumbs";
 import JsonLd from "@/components/seo/json-ld";
 import { getAllPosts, getPostBySlug } from "@/lib/content/blog";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { articleSchema, breadcrumbSchema } from "@/lib/seo/schema";
+import { articleSchema, breadcrumbSchema, faqPageSchema } from "@/lib/seo/schema";
 
 export const revalidate = 3600;
 
@@ -70,6 +70,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         })}
       />
       <JsonLd id="article-breadcrumb-jsonld" data={breadcrumbSchema(crumbs)} />
+      {post.faqs?.length ? <JsonLd id="article-faq-jsonld" data={faqPageSchema(post.faqs)} /> : null}
 
       <Breadcrumbs
         items={[
@@ -129,6 +130,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </Link>
           <Link className="btn-sm bg-gray-800 hover:bg-gray-700" href="/musicas-para-paredao">
             Músicas para paredão
+          </Link>
+          <Link className="btn-sm bg-gray-800 hover:bg-gray-700" href="/musicas-para-som-automotivo">
+            Som automotivo
           </Link>
           <Link className="btn-sm bg-gray-800 hover:bg-gray-700" href="/baixar-musicas">
             Baixar músicas

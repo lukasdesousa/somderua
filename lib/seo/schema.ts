@@ -2,6 +2,14 @@ import { absoluteUrl } from "@/lib/seo/metadata";
 import { siteConfig } from "@/lib/seo/config";
 
 type BreadcrumbItem = { name: string; path: string };
+type FaqItem = { question: string; answer: string };
+type ProductSchemaOffer = {
+  name: string;
+  description: string;
+  price: number;
+  currency: string;
+  offerPath?: string;
+};
 
 export function organizationSchema() {
   return {
@@ -24,6 +32,21 @@ export function websiteSchema() {
   };
 }
 
+export function faqPageSchema(items: FaqItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+}
+
 export function breadcrumbSchema(items: BreadcrumbItem[]) {
   return {
     "@context": "https://schema.org",
@@ -33,6 +56,49 @@ export function breadcrumbSchema(items: BreadcrumbItem[]) {
       position: index + 1,
       name: item.name,
       item: absoluteUrl(item.path),
+    })),
+  };
+}
+
+export function productOffersSchema({
+  name,
+  description,
+  productPath = "/",
+  image = absoluteUrl("/images/pack-16gb-5000.png"),
+  offers,
+}: {
+  name: string;
+  description: string;
+  productPath?: string;
+  image?: string;
+  offers: ProductSchemaOffer[];
+}) {
+  const productUrl = absoluteUrl(productPath);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name,
+    description,
+    image,
+    url: productUrl,
+    brand: {
+      "@type": "Brand",
+      name: siteConfig.name,
+    },
+    offers: offers.map((offer) => ({
+      "@type": "Offer",
+      name: offer.name,
+      description: offer.description,
+      url: absoluteUrl(offer.offerPath ?? productPath),
+      priceCurrency: offer.currency,
+      price: offer.price.toFixed(2),
+      availability: "https://schema.org/InStock",
+      itemCondition: "https://schema.org/NewCondition",
+      seller: {
+        "@type": "Organization",
+        name: siteConfig.name,
+      },
     })),
   };
 }
@@ -100,10 +166,11 @@ export function articleSchema({
 }) {
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: title,
     description,
     image,
+    inLanguage: siteConfig.language,
     datePublished,
     dateModified,
     author: {

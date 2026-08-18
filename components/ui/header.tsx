@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import Logo from "./logo";
 import { offerPriceLabels } from "@/lib/pricing";
@@ -7,6 +5,7 @@ import { offerPriceLabels } from "@/lib/pricing";
 const navItems = [
   { href: "/musicas-para-pen-drive", label: "Pen drive" },
   { href: "/musicas-para-paredao", label: "Paredao" },
+  { href: "/musicas-para-som-automotivo", label: "Som automotivo" },
   { href: "/baixar-musicas", label: "Baixar musicas" },
   { href: "/blog", label: "Blog" },
 ];

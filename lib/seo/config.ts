@@ -14,8 +14,11 @@ export const siteConfig = {
   gscVerification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ?? "",
   gaId: process.env.NEXT_PUBLIC_GA_ID ?? "",
   keywords: [
+    "pack de músicas",
+    "pack de músicas 2026",
     "músicas para pen drive",
     "pack de músicas para paredão",
+    "músicas para som automotivo",
     "repertório atualizado",
     "som automotivo",
     "músicas graves",
@@ -27,4 +30,8 @@ export const privateRoutes = [
   "/pagamento-pendente",
   "/pagamento-recusado",
   "/formulario",
+];
+
+export const robotsDisallowRoutes = [
+  "/api/",
 ];

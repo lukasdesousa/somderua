@@ -31,5 +31,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/failure', '/pagamento-pendente'],
+  matcher: ["/download", "/pagamento-pendente", "/pagamento-recusado"],
 };

@@ -4,7 +4,7 @@ import Breadcrumbs from "@/components/seo/breadcrumbs";
 import JsonLd from "@/components/seo/json-ld";
 import { offerPriceLabels } from "@/lib/pricing";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqPageSchema } from "@/lib/seo/schema";
 
 export const revalidate = 3600;
 
@@ -47,10 +47,10 @@ const faqs = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Músicas para paredão com grave forte e repertório atualizado",
-    description: "Seleção de músicas para paredão e som automotivo com atualização frequente e download imediato.",
+    title: "Musicas para paredao 2026 com grave forte e funk",
+    description: "Selecao para paredao, grave forte, funk e som automotivo com repertorio organizado, download automatico e suporte do Som de Rua.",
     path: "/musicas-para-paredao",
-    keywords: ["músicas para paredão", "som automotivo", "grave forte"],
+    keywords: ["musicas para paredao", "pack para paredao", "funk para paredao", "grave forte", "som automotivo"],
   });
 }
 
@@ -60,6 +60,7 @@ export default function MusicasParedaoPage() {
   return (
     <>
       <JsonLd id="paredao-breadcrumb" data={breadcrumbSchema(crumbs)} />
+      <JsonLd id="paredao-faq" data={faqPageSchema(faqs)} />
       <Breadcrumbs items={[{ name: "Início", href: "/" }, { name: "Músicas para paredão" }]} />
       <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6" aria-labelledby="paredao-title">
         <section className="max-w-3xl">
@@ -75,6 +76,7 @@ export default function MusicasParedaoPage() {
               Escolher meu pack
             </Link>
             <Link href="/musicas-para-pen-drive" className="btn-sm bg-gray-800 hover:bg-gray-700">Ver músicas para pen drive</Link>
+            <Link href="/musicas-para-som-automotivo" className="btn-sm bg-gray-800 hover:bg-gray-700">Ver som automotivo</Link>
             <span className="text-sm text-indigo-100/65">Mesmo conteúdo nas duas ofertas</span>
           </div>
         </section>
@@ -123,6 +125,7 @@ export default function MusicasParedaoPage() {
           <h2 id="paredao-related-title" className="text-2xl font-semibold text-gray-100">Continue pesquisando</h2>
           <div className="mt-4 flex flex-wrap gap-3">
             <Link href="/baixar-musicas" className="btn-sm bg-gray-800 hover:bg-gray-700">Baixar músicas com acesso imediato</Link>
+            <Link href="/musicas-para-som-automotivo" className="btn-sm bg-gray-800 hover:bg-gray-700">Músicas para som automotivo</Link>
             <Link href="/blog/musicas-com-grave-forte-para-paredao" className="btn-sm bg-gray-800 hover:bg-gray-700">Guia de grave forte</Link>
             <Link href="/blog/repertorio-atualizado-para-som-automotivo" className="btn-sm bg-gray-800 hover:bg-gray-700">Som automotivo</Link>
           </div>

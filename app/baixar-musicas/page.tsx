@@ -3,9 +3,9 @@ import Link from "next/link";
 import OfferCheckoutLink from "@/components/offer-checkout-link";
 import Breadcrumbs from "@/components/seo/breadcrumbs";
 import JsonLd from "@/components/seo/json-ld";
-import { packOfferList, type PackOfferId } from "@/lib/pricing";
+import { digitalProduct, packOfferList, type PackOfferId } from "@/lib/pricing";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqPageSchema, productOffersSchema } from "@/lib/seo/schema";
 
 export const revalidate = 3600;
 
@@ -80,10 +80,10 @@ const faqs = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Baixar músicas atualizadas para carro e paredão",
-    description: "Página oficial para baixar músicas com acesso imediato, repertório atualizado e entrega automática após o pagamento.",
+    title: "Baixar pack de musicas para carro, pen drive e paredao",
+    description: "Escolha o Pack Som de Rua para baixar musicas organizadas para carro, pen drive e paredao com checkout seguro e entrega automatica.",
     path: "/baixar-musicas",
-    keywords: ["baixar músicas", "download de músicas", "músicas atualizadas"],
+    keywords: ["baixar pack de musicas", "baixar musicas", "download de musicas", "pack de musicas para carro"],
   });
 }
 
@@ -93,6 +93,22 @@ export default function BaixarMusicasPage() {
   return (
     <>
       <JsonLd id="baixar-musicas-breadcrumb" data={breadcrumbSchema(crumbs)} />
+      <JsonLd
+        id="baixar-musicas-product"
+        data={productOffersSchema({
+          name: digitalProduct.checkoutName,
+          description: digitalProduct.description,
+          productPath: "/baixar-musicas",
+          offers: packOfferList.map((offer) => ({
+            name: offer.name,
+            description: offer.description,
+            price: offer.price,
+            currency: digitalProduct.currency,
+            offerPath: "/baixar-musicas#escolha-seu-pack",
+          })),
+        })}
+      />
+      <JsonLd id="baixar-musicas-faq" data={faqPageSchema(faqs)} />
       <Breadcrumbs items={[{ name: "Início", href: "/" }, { name: "Baixar músicas" }]} />
       <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6" aria-labelledby="baixar-musicas-title">
         <section className="max-w-4xl">
@@ -100,7 +116,7 @@ export default function BaixarMusicasPage() {
             Duas opções para baixar seu repertório
           </p>
           <h1 id="baixar-musicas-title" className="text-4xl font-semibold text-gray-100 md:text-5xl">
-            Seu repertório pronto para tocar — sem perder horas procurando música por música.
+            Baixar pack de músicas para carro, pen drive e paredão.
           </h1>
           <p className="mt-4 max-w-3xl text-lg text-indigo-200/75">
             Tenha seu pack organizado e pronto para baixar, transferir e utilizar em dispositivos compatíveis.
@@ -247,6 +263,7 @@ export default function BaixarMusicasPage() {
           <div className="mt-4 flex flex-wrap gap-3">
             <Link href="/musicas-para-pen-drive" className="btn-sm bg-gray-800 hover:bg-gray-700">Músicas para pen drive</Link>
             <Link href="/musicas-para-paredao" className="btn-sm bg-gray-800 hover:bg-gray-700">Músicas para paredão</Link>
+            <Link href="/musicas-para-som-automotivo" className="btn-sm bg-gray-800 hover:bg-gray-700">Som automotivo</Link>
             <Link href="/blog/como-baixar-pack-de-musicas-com-seguranca" className="btn-sm bg-gray-800 hover:bg-gray-700">Compra segura</Link>
           </div>
         </section>

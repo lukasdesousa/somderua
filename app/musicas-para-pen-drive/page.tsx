@@ -4,7 +4,7 @@ import Breadcrumbs from "@/components/seo/breadcrumbs";
 import JsonLd from "@/components/seo/json-ld";
 import { offerPriceLabels } from "@/lib/pricing";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqPageSchema } from "@/lib/seo/schema";
 
 export const revalidate = 3600;
 
@@ -20,6 +20,12 @@ const benefits = [
   "Variedade para viagem, resenha, rotina e som automotivo.",
   "Organização simples para navegar no painel do carro.",
   "Acesso vitalício ao arquivo comprado e garantia de 7 dias.",
+];
+
+const compatibilityTips = [
+  "MP3 costuma ser o formato mais aceito em aparelhos automotivos com entrada USB.",
+  "FAT32 tende a ser uma escolha mais compativel para pen drives usados em sons mais antigos.",
+  "Pastas rasas e nomes simples ajudam o aparelho a listar o repertorio mais rapido.",
 ];
 
 const faqs = [
@@ -39,10 +45,10 @@ const faqs = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Músicas para pen drive atualizadas toda semana",
-    description: "Packs de músicas para pen drive com seleção atualizada, download rápido e organização simples.",
+    title: "Musicas para pen drive 2026: pack organizado para carro",
+    description: "Guia e pack de musicas para pen drive com organizacao em pastas, uso no carro, download rapido e suporte do Som de Rua.",
     path: "/musicas-para-pen-drive",
-    keywords: ["músicas para pen drive", "pendrive com músicas", "repertório para pen drive"],
+    keywords: ["musicas para pen drive", "pack para pen drive", "musicas para pen drive de carro", "repertorio para pen drive"],
   });
 }
 
@@ -52,6 +58,7 @@ export default function MusicasPenDrivePage() {
   return (
     <>
       <JsonLd id="pen-drive-breadcrumb" data={breadcrumbSchema(crumbs)} />
+      <JsonLd id="pen-drive-faq" data={faqPageSchema(faqs)} />
       <Breadcrumbs items={[{ name: "Início", href: "/" }, { name: "Músicas para pen drive" }]} />
       <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6" aria-labelledby="pen-drive-title">
         <section className="max-w-3xl">
@@ -67,6 +74,7 @@ export default function MusicasPenDrivePage() {
               Escolher meu pack
             </Link>
             <Link href="/musicas-para-paredao" className="btn-sm bg-gray-800 hover:bg-gray-700">Ver músicas para paredão</Link>
+            <Link href="/musicas-para-som-automotivo" className="btn-sm bg-gray-800 hover:bg-gray-700">Ver som automotivo</Link>
             <span className="text-sm text-indigo-100/65">Essencial {offerPriceLabels.entry} ou Completo {offerPriceLabels.recommended}</span>
           </div>
         </section>
@@ -86,6 +94,20 @@ export default function MusicasPenDrivePage() {
               </li>
             ))}
           </ol>
+        </section>
+
+        <section className="mt-12" aria-labelledby="pen-drive-compatibility-title">
+          <h2 id="pen-drive-compatibility-title" className="text-3xl font-semibold text-gray-100">Formato e compatibilidade</h2>
+          <p className="mt-3 max-w-3xl text-indigo-200/70">
+            Nem todo som de carro le arquivos do mesmo jeito. Por isso, um repertorio simples e bem organizado tende a dar menos trabalho no uso diario.
+          </p>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {compatibilityTips.map((tip) => (
+              <article key={tip} className="rounded-lg border border-gray-800 bg-gray-900/50 p-5 text-indigo-100/80">
+                {tip}
+              </article>
+            ))}
+          </div>
         </section>
 
         <section className="mt-12" aria-labelledby="pen-drive-benefits-title">
@@ -115,6 +137,7 @@ export default function MusicasPenDrivePage() {
           <h2 id="pen-drive-related-title" className="text-2xl font-semibold text-gray-100">Também pode ajudar</h2>
           <div className="mt-4 flex flex-wrap gap-3">
             <Link href="/baixar-musicas" className="btn-sm bg-gray-800 hover:bg-gray-700">Como baixar músicas</Link>
+            <Link href="/musicas-para-som-automotivo" className="btn-sm bg-gray-800 hover:bg-gray-700">Músicas para som automotivo</Link>
             <Link href="/blog/como-organizar-pastas-de-musicas-no-pen-drive" className="btn-sm bg-gray-800 hover:bg-gray-700">Organizar pastas no pen drive</Link>
             <Link href="/blog/pen-drive-nao-toca-no-som-do-carro-formatos-e-solucoes" className="btn-sm bg-gray-800 hover:bg-gray-700">Pen drive não toca?</Link>
           </div>

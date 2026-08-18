@@ -1,12 +1,12 @@
 import type { MetadataRoute } from "next";
-import { privateRoutes } from "@/lib/seo/config";
+import { robotsDisallowRoutes } from "@/lib/seo/config";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: privateRoutes,
+      disallow: robotsDisallowRoutes,
     },
     sitemap: "https://somderua.com.br/sitemap.xml",
     host: "https://somderua.com.br",

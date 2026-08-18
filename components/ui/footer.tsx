@@ -5,6 +5,7 @@ import { offerPriceLabels } from "@/lib/pricing";
 const productLinks = [
   { href: "/musicas-para-pen-drive", label: "Musicas para pen drive" },
   { href: "/musicas-para-paredao", label: "Musicas para paredao" },
+  { href: "/musicas-para-som-automotivo", label: "Musicas para som automotivo" },
   { href: "/baixar-musicas", label: "Baixar musicas para carro" },
   { href: "/blog", label: "Guias e dicas" },
 ];

@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import ModalVideo from "@/components/modal-video";
 import PackVisual from "@/public/images/pack-16gb-5000.png";
@@ -50,7 +48,7 @@ export default function HeroHome() {
             className="mt-6 font-nacelle text-4xl font-semibold text-white md:text-6xl"
             data-aos="fade-up"
           >
-            Sua coleção musical nunca mais fica desatualizada.
+            Pack de músicas 2026 para pen drive, carro e paredão.
           </h1>
           <p
             className="mx-auto mt-5 max-w-3xl text-lg text-slate-200 md:text-xl"

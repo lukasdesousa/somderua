@@ -88,7 +88,7 @@ export default function Features() {
               <span className="inline-flex min-h-9 min-w-9 items-center justify-center rounded-lg bg-cyan-300/10 px-2 text-xs font-bold uppercase text-cyan-100">
                 {item.label}
               </span>
-              <h2 className="mt-3 text-sm font-semibold text-white">{item.title}</h2>
+              <h3 className="mt-3 text-sm font-semibold text-white">{item.title}</h3>
               <p className="mt-1 text-sm text-slate-400">{item.text}</p>
             </article>
           ))}
