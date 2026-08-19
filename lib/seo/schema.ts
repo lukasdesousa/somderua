@@ -11,13 +11,40 @@ type ProductSchemaOffer = {
   offerPath?: string;
 };
 
+function organizationId() {
+  return absoluteUrl("/#organization");
+}
+
+function websiteId() {
+  return absoluteUrl("/#website");
+}
+
+function organizationLogo() {
+  return {
+    "@type": "ImageObject",
+    url: absoluteUrl(siteConfig.logo),
+    width: siteConfig.logoDimensions.width,
+    height: siteConfig.logoDimensions.height,
+  };
+}
+
+function organizationReference() {
+  return {
+    "@type": "Organization",
+    "@id": organizationId(),
+    name: siteConfig.name,
+    url: absoluteUrl("/"),
+  };
+}
+
 export function organizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": organizationId(),
     name: siteConfig.name,
-    url: siteConfig.url,
-    logo: absoluteUrl("/apple-touch-icon.png"),
+    url: absoluteUrl("/"),
+    logo: organizationLogo(),
     sameAs: [siteConfig.social.instagram],
   };
 }
@@ -26,9 +53,14 @@ export function websiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": websiteId(),
+    url: absoluteUrl("/"),
     name: siteConfig.name,
-    url: siteConfig.url,
+    alternateName: siteConfig.alternateNames,
     inLanguage: siteConfig.language,
+    publisher: {
+      "@id": organizationId(),
+    },
   };
 }
 
@@ -95,10 +127,7 @@ export function productOffersSchema({
       price: offer.price.toFixed(2),
       availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
-      seller: {
-        "@type": "Organization",
-        name: siteConfig.name,
-      },
+      seller: organizationReference(),
     })),
   };
 }
@@ -141,10 +170,7 @@ export function productOfferSchema({
       price: price.toFixed(2),
       availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
-      seller: {
-        "@type": "Organization",
-        name: siteConfig.name,
-      },
+      seller: organizationReference(),
     },
   };
 }
@@ -173,17 +199,10 @@ export function articleSchema({
     inLanguage: siteConfig.language,
     datePublished,
     dateModified,
-    author: {
-      "@type": "Organization",
-      name: siteConfig.name,
-    },
+    author: organizationReference(),
     publisher: {
-      "@type": "Organization",
-      name: siteConfig.name,
-      logo: {
-        "@type": "ImageObject",
-        url: absoluteUrl("/apple-touch-icon.png"),
-      },
+      ...organizationReference(),
+      logo: organizationLogo(),
     },
     mainEntityOfPage: absoluteUrl(`/blog/${slug}`),
   };

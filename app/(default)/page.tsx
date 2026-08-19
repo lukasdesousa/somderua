@@ -10,7 +10,7 @@ import JsonLd from "@/components/seo/json-ld";
 import ConversionWidgets from "@/components/conversion-widgets";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { digitalProduct, offerPriceLabels, packOfferList } from "@/lib/pricing";
-import { breadcrumbSchema, faqPageSchema, productOffersSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqPageSchema, productOffersSchema, websiteSchema } from "@/lib/seo/schema";
 
 export const revalidate = 3600;
 
@@ -159,6 +159,7 @@ export default function Home() {
 
   return (
     <>
+      <JsonLd id="website-jsonld" data={websiteSchema()} />
       <JsonLd id="home-breadcrumb-jsonld" data={breadcrumbSchema(breadcrumbs)} />
       <JsonLd
         id="home-product-jsonld"

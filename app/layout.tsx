@@ -10,7 +10,7 @@ import Header from "@/components/ui/header";
 import JsonLd from "@/components/seo/json-ld";
 import { siteConfig } from "@/lib/seo/config";
 import { absoluteUrl } from "@/lib/seo/metadata";
-import { organizationSchema, websiteSchema } from "@/lib/seo/schema";
+import { organizationSchema } from "@/lib/seo/schema";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,7 +32,7 @@ const nacelle = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Som de Rua | Repertório de músicas para pen drive",
+    default: siteConfig.name,
     template: "%s | Som de Rua",
   },
   description: siteConfig.description,
@@ -86,8 +86,13 @@ export const metadata: Metadata = {
       }
     : undefined,
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: [
+      { url: siteConfig.icons.favicon, type: "image/x-icon" },
+      { url: siteConfig.icons.icon48, sizes: "48x48", type: "image/png" },
+      { url: siteConfig.icons.icon96, sizes: "96x96", type: "image/png" },
+    ],
+    shortcut: siteConfig.icons.favicon,
+    apple: [{ url: siteConfig.icons.apple, sizes: "180x180", type: "image/png" }],
   },
 };
 
@@ -98,7 +103,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${inter.variable} ${nacelle.variable} bg-gray-950 font-inter text-base text-gray-200 antialiased`}
       >
         <JsonLd id="organization-jsonld" data={organizationSchema()} />
-        <JsonLd id="website-jsonld" data={websiteSchema()} />
         {siteConfig.gaId ? (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.gaId}`} strategy="afterInteractive" />
