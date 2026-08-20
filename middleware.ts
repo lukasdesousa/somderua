@@ -6,13 +6,6 @@ export function middleware(request: NextRequest) {
 
   const response = NextResponse.next();
 
-  if (pathname === '/download') {
-    const token = cookies.get('success_token');
-    if (!token?.value) {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-  }
-
   if (pathname === '/pagamento-pendente') {
     const token = cookies.get('pending_token');
     if (!token?.value) {
@@ -31,5 +24,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/download", "/pagamento-pendente", "/pagamento-recusado"],
+  matcher: ["/pagamento-pendente", "/pagamento-recusado"],
 };
