@@ -1,13 +1,86 @@
-import { MercadoPagoConfig } from "mercadopago";
+import type { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 
 // Instância do cliente Mercado Pago
-const mpClient = new MercadoPagoConfig({
-  accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN?.trim() ?? "",
-});
+const MERCADO_PAGO_API_URL = "https://api.mercadopago.com";
 
-export default mpClient;
+export type MercadoPagoPreferenceResponse = {
+  id?: string | null;
+  init_point?: string | null;
+  sandbox_init_point?: string | null;
+};
+
+export async function createMercadoPagoPreference(
+  body: Record<string, unknown>,
+  idempotencyKey: string,
+): Promise<MercadoPagoPreferenceResponse> {
+  return mercadoPagoRequest<MercadoPagoPreferenceResponse>("/checkout/preferences", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Idempotency-Key": idempotencyKey,
+    },
+    body: JSON.stringify(body),
+  });
+}
+
+export async function getMercadoPagoPayment(paymentId: string | number): Promise<PaymentResponse> {
+  return mercadoPagoRequest<PaymentResponse>(`/v1/payments/${encodeURIComponent(String(paymentId))}`, {
+    method: "GET",
+  });
+}
+
+async function mercadoPagoRequest<T>(path: string, init: RequestInit): Promise<T> {
+  const accessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN?.trim();
+
+  if (!accessToken) {
+    throw new Error("MERCADO_PAGO_ACCESS_TOKEN nao configurado");
+  }
+
+  if (/[\u0000-\u001F\u007F]/.test(accessToken)) {
+    throw new Error("MERCADO_PAGO_ACCESS_TOKEN contem caracteres invalidos");
+  }
+
+  const response = await fetch(`${MERCADO_PAGO_API_URL}${path}`, {
+    ...init,
+    cache: "no-store",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${accessToken}`,
+      ...init.headers,
+    },
+  });
+
+  const responseText = await response.text();
+  const responseBody = parseJsonResponse(responseText);
+
+  if (!response.ok) {
+    const message = getMercadoPagoErrorMessage(responseBody);
+    throw new Error(`Mercado Pago respondeu HTTP ${response.status}${message ? `: ${message}` : ""}`);
+  }
+
+  return responseBody as T;
+}
+
+function parseJsonResponse(body: string): unknown {
+  if (!body) return {};
+
+  try {
+    return JSON.parse(body);
+  } catch {
+    return {};
+  }
+}
+
+function getMercadoPagoErrorMessage(body: unknown): string {
+  if (typeof body !== "object" || body === null) return "";
+
+  const errorBody = body as { message?: unknown; error?: unknown };
+  if (typeof errorBody.message === "string") return errorBody.message;
+  if (typeof errorBody.error === "string") return errorBody.error;
+  return "";
+}
 
 // Função auxiliar para verificar a assinatura do Mercado Pago - Protege sua rota de acessos maliciosos
 // Disponível na própria documentação do Mercado Pago

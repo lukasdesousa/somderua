@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
-import { Preference } from "mercadopago";
 import { SignJWT } from "jose";
 import { v4 as uuidv4 } from "uuid";
 import { buildAutomatedAbandonedCartPayload, getAbandonedCartScheduleDate } from "@/lib/abandoned-cart/automation";
 import { abandonedCartLogger } from "@/lib/abandoned-cart/logger";
 import { cancelAbandonedCartRecoveryEmail, sendAbandonedCartRecoveryEmail } from "@/lib/abandoned-cart/mailer";
 import { hashForLog } from "@/lib/abandoned-cart/security";
-import mpClient from "@/lib/mercado-pago";
+import { createMercadoPagoPreference, type MercadoPagoPreferenceResponse } from "@/lib/mercado-pago";
 import { createPrismaClient } from "@/lib/prisma";
 import { digitalProduct, isPackOfferId, packOffers, type PackOfferId } from "@/lib/pricing";
 
@@ -62,9 +61,8 @@ export async function POST(req: Request) {
   const pendingUrl = `${origin}/pagamento-pendente?status=pending&external_reference=${id}&offer=${selectedOffer.id}`;
 
   try {
-    const preference = new Preference(mpClient);
-    const pref = await preference.create({
-      body: {
+    const pref = await createMercadoPagoPreference(
+      {
         external_reference: id,
         metadata: {
           id,
@@ -108,7 +106,8 @@ export async function POST(req: Request) {
         },
         notification_url: `${origin}/api/mercado-pago/webhook`,
       },
-    });
+      id,
+    );
 
     const checkoutUrl = getCheckoutUrl(pref);
 
@@ -287,12 +286,8 @@ async function scheduleAbandonedCartRecovery(input: {
   }
 }
 
-function getCheckoutUrl(preference: Awaited<ReturnType<Preference["create"]>>): string | null {
-  const preferenceWithSandboxUrl = preference as typeof preference & {
-    sandbox_init_point?: string | null;
-  };
-
-  return preferenceWithSandboxUrl.init_point ?? preferenceWithSandboxUrl.sandbox_init_point ?? null;
+function getCheckoutUrl(preference: MercadoPagoPreferenceResponse): string | null {
+  return preference.init_point ?? preference.sandbox_init_point ?? null;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

@@ -1,7 +1,6 @@
 // app/api/mercadopago-webhook/route.ts
 import { NextResponse } from "next/server";
-import { Payment } from "mercadopago";
-import mpClient, { verifyMercadoPagoSignature } from "@/lib/mercado-pago";
+import { getMercadoPagoPayment, verifyMercadoPagoSignature } from "@/lib/mercado-pago";
 import { handleMercadoPagoPayment } from "@/app/server/handle-payment";
 
 export const runtime = "nodejs";
@@ -25,8 +24,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ received: false, error: "Missing payment id" }, { status: 400 });
       }
 
-      const payment = new Payment(mpClient);
-      const paymentData = await payment.get({ id: paymentId });
+      const paymentData = await getMercadoPagoPayment(paymentId);
 
       if (!paymentData) {
         console.warn(`[MP Webhook] Payment ${paymentId} not found`);

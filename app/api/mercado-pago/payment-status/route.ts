@@ -1,8 +1,7 @@
 // app/api/payment-status/route.ts
 import { NextResponse } from "next/server";
-import { Payment } from "mercadopago";
 import { handleMercadoPagoPayment } from "@/app/server/handle-payment";
-import mpClient from "@/lib/mercado-pago";
+import { getMercadoPagoPayment } from "@/lib/mercado-pago";
 import { createPrismaClient } from "@/lib/prisma";
 import { isPackOfferId, packOffers } from "@/lib/pricing";
 
@@ -86,8 +85,7 @@ async function findPaymentOffer(reference: string) {
 
 async function reconcileMercadoPagoApproval(paymentId: string, expectedReference: string): Promise<string | null> {
   try {
-    const mercadoPagoPayment = new Payment(mpClient);
-    const paymentData = await mercadoPagoPayment.get({ id: paymentId });
+    const paymentData = await getMercadoPagoPayment(paymentId);
 
     if (!paymentData || (paymentData.status !== "approved" && !paymentData.date_approved)) {
       return paymentData?.status ?? null;

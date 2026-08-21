@@ -1,7 +1,6 @@
 // app/api/mercado-pago/pending/route.ts
 import { NextResponse } from "next/server";
-import { Payment } from "mercadopago";
-import mpClient from "@/lib/mercado-pago";
+import { getMercadoPagoPayment } from "@/lib/mercado-pago";
 import { handleMercadoPagoPayment } from "@/app/server/handle-payment";
 
 export const dynamic = "force-dynamic";
@@ -19,8 +18,7 @@ export async function GET(request: Request) {
     }
 
     // Obtém o status real do pagamento via SDK
-    const payment = new Payment(mpClient);
-    const paymentData = await payment.get({ id: paymentId });
+    const paymentData = await getMercadoPagoPayment(paymentId);
 
     if (!paymentData || !paymentData.status) {
       return NextResponse.json({ error: "Payment not found" }, { status: 404 });
