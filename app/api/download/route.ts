@@ -4,8 +4,17 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { PrismaClient } from "@prisma/client";
 import { digitalProduct } from "@/lib/pricing";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 const prisma = new PrismaClient();
 const allowedDownloadFiles = new Set<string>([digitalProduct.deliveryFile]);
+const ESSENTIAL_PACK_DOWNLOAD_URL = new URL(
+  "https://drive.google.com/drive/folders/1NoE9C7L7VwGNDFTDmF4iDuS4y9uG8Sg8?usp=drive_link",
+).toString();
+const privateResponseHeaders = {
+  "Cache-Control": "private, no-store, max-age=0",
+};
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -21,6 +30,30 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    const payment = await prisma.user_payment.findUnique({
+      where: { id: reference },
+      select: {
+        approved: true,
+        offerId: true,
+      },
+    });
+
+    if (!payment?.approved) {
+      return NextResponse.json(
+        { error: "Pagamento não aprovado" },
+        { status: 403, headers: privateResponseHeaders },
+      );
+    }
+
+    // The delivery is chosen only from the offer stored with the approved payment.
+    // Complete and legacy payments keep the existing R2 delivery below.
+    if (payment.offerId === "essencial") {
+      return NextResponse.json(
+        { url: ESSENTIAL_PACK_DOWNLOAD_URL },
+        { headers: privateResponseHeaders },
+      );
+    }
+
     if (
       !process.env.R2_ENDPOINT?.trim() ||
       !process.env.R2_ACCESS_KEY_ID?.trim() ||
@@ -28,16 +61,10 @@ export async function GET(req: NextRequest) {
       !process.env.R2_BUCKET?.trim()
     ) {
       console.error("[Download] Missing R2 environment variables");
-      return NextResponse.json({ error: "Configuração de download indisponível" }, { status: 500 });
-    }
-
-    const payment = await prisma.user_payment.findUnique({
-      where: { id: reference },
-      select: { approved: true },
-    });
-
-    if (!payment?.approved) {
-      return NextResponse.json({ error: "Pagamento não aprovado" }, { status: 403 });
+      return NextResponse.json(
+        { error: "Configuração de download indisponível" },
+        { status: 500, headers: privateResponseHeaders },
+      );
     }
 
     const command = new GetObjectCommand({
@@ -56,9 +83,12 @@ export async function GET(req: NextRequest) {
 
     const url = await getSignedUrl(r2, command, { expiresIn: 3600 });
 
-    return NextResponse.json({ url });
+    return NextResponse.json({ url }, { headers: privateResponseHeaders });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Erro ao gerar URL assinada" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erro ao gerar URL de download" },
+      { status: 500, headers: privateResponseHeaders },
+    );
   }
 }

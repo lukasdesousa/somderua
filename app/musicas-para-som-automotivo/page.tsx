@@ -56,7 +56,7 @@ const faqs = [
   {
     question: "Qual oferta escolher para som automotivo?",
     answer:
-      `O Pack Essencial parte de ${offerPriceLabels.entry}. O Pack Completo por ${offerPriceLabels.recommended} e a opcao recomendada para quem quer uma selecao maior e mais organizada.`,
+      `O Pack Basico de 16 GB parte de ${offerPriceLabels.entry}. O Pack Premium com mais de 28 GB custa ${offerPriceLabels.recommended} e inclui hits atuais, virais e repertorio atualizado para paredao.`,
   },
 ];
 
@@ -99,7 +99,7 @@ export default function MusicasParaSomAutomotivoPage() {
             <Link href="/musicas-para-paredao" className="btn-sm bg-gray-800 hover:bg-gray-700">
               Ver musicas para paredao
             </Link>
-            <span className="text-sm text-indigo-100/65">Essencial {offerPriceLabels.entry} ou Completo {offerPriceLabels.recommended}</span>
+            <span className="text-sm text-indigo-100/65">Básico 16 GB por {offerPriceLabels.entry} ou Premium +28 GB por {offerPriceLabels.recommended}</span>
           </div>
         </section>
 

@@ -8,6 +8,7 @@ const navItems = [
   { href: "/musicas-para-som-automotivo", label: "Som automotivo" },
   { href: "/baixar-musicas", label: "Baixar musicas" },
   { href: "/blog", label: "Blog" },
+  { href: "/suporte", label: "Suporte" },
 ];
 
 export default function Header() {

@@ -1,10 +1,10 @@
 import OfferCheckoutLink from "@/components/offer-checkout-link";
-import { digitalProduct, recommendedPackOffer } from "@/lib/pricing";
+import { recommendedPackOffer } from "@/lib/pricing";
 
 const offerBullets = [
   "Download liberado automaticamente após a aprovação",
   "Pagamento único com acesso vitalício ao pack",
-  "Garantia de 7 dias para testar com calma",
+  "Reembolso integral se uma falha técnica não puder ser resolvida",
   "Suporte por e-mail se precisar de ajuda no acesso",
 ];
 
@@ -39,7 +39,7 @@ export default function Cta() {
             <p className="mt-4 text-sm font-semibold uppercase text-emerald-200">{recommendedPackOffer.name}</p>
             <p className="mt-1 font-nacelle text-5xl font-semibold text-white">{recommendedPackOffer.priceLabel}</p>
             <p className="mt-2 text-sm text-slate-300">
-              Mesmo conteúdo digital do {digitalProduct.checkoutName}. A diferença está na oferta escolhida.
+              Mais de 28 GB com repertório 2026, hits do momento, virais e músicas atualizadas para paredão.
             </p>
             <ul className="mt-5 grid gap-2 text-sm text-slate-300" aria-label="Vantagens da oferta">
               {offerBullets.map((hook) => (
@@ -55,7 +55,7 @@ export default function Cta() {
               className="btn mt-6 min-h-12 w-full bg-linear-to-t from-emerald-500 to-lime-400 text-sm font-bold text-slate-950 hover:from-emerald-400 hover:to-lime-300"
               ariaLabel={`Comprar ${recommendedPackOffer.name} por ${recommendedPackOffer.priceLabel}`}
             >
-              Quero o completo
+              Quero o Premium
             </OfferCheckoutLink>
             <p className="mt-3 text-center text-xs text-slate-400">
               Você será direcionado ao checkout seguro.

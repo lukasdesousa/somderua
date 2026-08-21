@@ -7,12 +7,12 @@ import { entryPackOffer, recommendedPackOffer } from "@/lib/pricing";
 const badges = [
   "Compra segura via Mercado Pago",
   "PIX com entrega automática",
-  "Garantia de 7 dias",
+  "Reembolso em caso de falha técnica",
   "Compatível com carro, USB e celular",
 ];
 
 const heroStats = [
-  { value: "+5.000", label: "músicas organizadas" },
+  { value: "10 mil", label: "músicas organizadas" },
   { value: "+40", label: "gêneros e pastas" },
   { value: "320kbps", label: "qualidade de áudio" },
   { value: "Imediato", label: "acesso após aprovação" },
@@ -55,7 +55,7 @@ export default function HeroHome() {
             data-aos="fade-up"
             data-aos-delay={150}
           >
-            Mais de 5.000 músicas separadas por estilo, prontas para carro,
+            Mais de 10 mil músicas separadas por estilo, prontas para carro,
             paredão, pen drive, celular e festas sem perder tempo procurando
             faixa por faixa.
           </p>
@@ -83,8 +83,8 @@ export default function HeroHome() {
             className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-slate-300"
             aria-label="Resumo da oferta"
           >
-            <span>Essencial {entryPackOffer.priceLabel}</span>
-            <strong className="font-nacelle text-3xl text-white">Completo {recommendedPackOffer.priceLabel}</strong>
+            <span>Básico 16 GB · {entryPackOffer.priceLabel}</span>
+            <strong className="font-nacelle text-3xl text-white">Premium +28 GB · {recommendedPackOffer.priceLabel}</strong>
             <span className="rounded-lg bg-emerald-300 px-3 py-1 text-xs font-bold uppercase text-slate-950">
               {recommendedPackOffer.badge}
             </span>

@@ -7,37 +7,37 @@ import Spotlight from "@/components/spotlight";
 const genres = [
   {
     name: "Funk automotivo",
-    quantity: "+1.200 faixas",
+    quantity: "+1.500 faixas",
     update: "Atualizado em julho/2026",
     image: WorkflowImg01,
   },
   {
     name: "Grave pesado",
-    quantity: "+800 faixas",
+    quantity: "+1.500 faixas",
     update: "Atualizacao semanal",
     image: WorkflowImg02,
   },
   {
     name: "Remix viral",
-    quantity: "+950 faixas",
+    quantity: "+1.500 faixas",
     update: "Atualizacao frequente",
     image: WorkflowImg03,
   },
   {
     name: "Paredao",
-    quantity: "+700 faixas",
+    quantity: "+1.500 faixas",
     update: "Curadoria revisada",
     image: WorkflowImg02,
   },
   {
     name: "Sertanejo e piseiro",
-    quantity: "+650 faixas",
+    quantity: "+1.500 faixas",
     update: "Pastas organizadas",
     image: WorkflowImg01,
   },
   {
     name: "Internacional",
-    quantity: "+500 faixas",
+    quantity: "+1.500 faixas",
     update: "Selecao para viagem",
     image: WorkflowImg03,
   },

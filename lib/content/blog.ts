@@ -202,7 +202,7 @@ export const blogPosts: BlogPost[] = [
           "Descrição clara do produto.",
           "Checkout reconhecível e protegido.",
           "Canal de suporte visível.",
-          "Informação sobre garantia ou reembolso.",
+          "Informação clara sobre a política de reembolso.",
         ],
       },
       {

@@ -19,7 +19,7 @@ const benefits = [
   "Repertório pronto para usar sem montar pasta por pasta.",
   "Variedade para viagem, resenha, rotina e som automotivo.",
   "Organização simples para navegar no painel do carro.",
-  "Acesso vitalício ao arquivo comprado e garantia de 7 dias.",
+  "Acesso vitalício e reembolso integral em caso de falha técnica não solucionada.",
 ];
 
 const compatibilityTips = [
@@ -75,7 +75,7 @@ export default function MusicasPenDrivePage() {
             </Link>
             <Link href="/musicas-para-paredao" className="btn-sm bg-gray-800 hover:bg-gray-700">Ver músicas para paredão</Link>
             <Link href="/musicas-para-som-automotivo" className="btn-sm bg-gray-800 hover:bg-gray-700">Ver som automotivo</Link>
-            <span className="text-sm text-indigo-100/65">Essencial {offerPriceLabels.entry} ou Completo {offerPriceLabels.recommended}</span>
+            <span className="text-sm text-indigo-100/65">Básico 16 GB por {offerPriceLabels.entry} ou Premium +28 GB por {offerPriceLabels.recommended}</span>
           </div>
         </section>
 

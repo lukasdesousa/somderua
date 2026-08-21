@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { route: "/musicas-para-pen-drive", lastModified: "2026-08-18", changeFrequency: "monthly" as const, priority: 0.82 },
     { route: "/musicas-para-paredao", lastModified: "2026-08-18", changeFrequency: "monthly" as const, priority: 0.82 },
     { route: "/musicas-para-som-automotivo", lastModified: "2026-08-18", changeFrequency: "monthly" as const, priority: 0.82 },
+    { route: "/suporte", lastModified: "2026-08-20", changeFrequency: "monthly" as const, priority: 0.65 },
   ];
 
   const basePages = staticPages

@@ -2,10 +2,10 @@ import { ValidationError } from "./errors";
 import type { ValidatedAbandonedCartPayload } from "./types";
 
 const DEFAULT_BENEFITS = [
-  "Mais de 5.000 faixas selecionadas para carro, pen drive e paredão.",
+  "Mais de 10 mil faixas selecionadas para carro, pen drive e paredão.",
   "Download liberado rapidamente após a confirmação do pagamento.",
   "Repertório organizado para tocar sem perder tempo procurando música.",
-  "Compra segura e garantia de 7 dias para você testar com tranquilidade.",
+  "Reembolso integral se uma falha técnica impedir o acesso e não puder ser solucionada.",
 ] as const;
 
 const CONTROL_CHARACTER_PATTERN = /[\u0000-\u001F\u007F]/;

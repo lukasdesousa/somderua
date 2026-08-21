@@ -12,7 +12,7 @@ export const revalidate = 3600;
 const downloadFlow = [
   {
     title: "Escolha",
-    text: "Selecione o pack que faz mais sentido para o seu uso: entrada ou completo.",
+    text: "Compare o Básico de 16 GB com o Premium de mais de 28 GB e escolha o ideal para você.",
   },
   {
     title: "Pagamento",
@@ -28,45 +28,64 @@ const safetyChecks = [
   "Página com valor e produto explicados antes da compra.",
   "Checkout seguro para processar o pagamento.",
   "Suporte por e-mail para dúvidas de acesso.",
-  "Garantia de 7 dias para testar o pack.",
+  "Reembolso integral em caso de falha técnica não solucionada.",
 ];
 
 const comparisonRows = [
-  { label: "Acesso digital", essencial: "✓", completo: "✓" },
-  { label: "Pastas organizadas por estilos musicais", essencial: "✓", completo: "✓" },
-  { label: "Pastas por bandas e seleções específicas", essencial: "—", completo: "✓" },
-  { label: "Faixas para paredões e som automotivo", essencial: "Seleção base", completo: "Seleção ampliada" },
-  { label: "Quantidade de músicas", essencial: "Pack de entrada", completo: "Mais músicas" },
-  { label: "Qualidade de áudio", essencial: "Boa qualidade", completo: "Melhor qualidade de áudio" },
-  { label: "⭐ Oferta recomendada", essencial: "—", completo: "✓" },
+  { label: "Volume do pack", essencial: "16 GB", completo: "Mais de 28 GB" },
+  { label: "Quantidade de faixas", essencial: "Mais de 4.950", completo: "10 mil" },
+  { label: "Repertórios atualizados em 2026", essencial: "✓", completo: "✓" },
+  { label: "Hits de maio a agosto de 2026", essencial: "Não inclusos", completo: "Inclusos" },
+  { label: "Hits do momento e músicas virais", essencial: "—", completo: "✓" },
+  { label: "Atualizações para paredão", essencial: "Seleção base", completo: "Seleção atualizada" },
+  { label: "Pastas organizadas por estilos", essencial: "✓", completo: "✓" },
+  { label: "Download após a aprovação", essencial: "Imediato", completo: "Imediato" },
   { label: "Preço", essencial: "R$9,90", completo: "R$19,90" },
 ];
 
-const offerBenefits: Record<PackOfferId, string[]> = {
-  essencial: [
-    "Acesso digital ao pack de entrada",
-    "Pastas organizadas por estilos musicais",
-    "Seleção base para carro, pen drive e uso diário",
-    "Checkout seguro via Mercado Pago",
-    "Garantia de 7 dias e suporte por e-mail",
-  ],
-  completo: [
-    "Mais músicas no pack completo",
-    "Melhor qualidade de áudio",
-    "Faixas para paredões e som automotivo",
-    "Pastas por estilos musicais, bandas e seleções específicas",
-    "Garantia de 7 dias e suporte por e-mail",
-  ],
+const offerDetails: Record<PackOfferId, {
+  volume: string;
+  volumeLabel: string;
+  updateLabel: string;
+  availabilityNote: string;
+  benefits: string[];
+}> = {
+  essencial: {
+    volume: "16 GB",
+    volumeLabel: "de músicas",
+    updateLabel: "Repertórios 2026",
+    availabilityNote: "Não inclui os hits lançados entre maio e agosto de 2026.",
+    benefits: [
+      "Bons repertórios, variados e atualizados",
+      "Pastas organizadas por estilos musicais",
+      "Seleção para carro, pen drive e uso diário",
+      "Download liberado após a aprovação",
+      "Reembolso integral para falha técnica não solucionada",
+    ],
+  },
+  completo: {
+    volume: "+28 GB",
+    volumeLabel: "de músicas",
+    updateLabel: "Atualizado em 2026",
+    availabilityNote: "Inclui os hits atuais de maio a agosto de 2026.",
+    benefits: [
+      "Hits do momento e músicas virais",
+      "Repertório atualizado para paredão",
+      "Seleções para som automotivo, festas e resenhas",
+      "Download rápido e imediato após a aprovação",
+      "Reembolso integral para falha técnica não solucionada",
+    ],
+  },
 };
 
 const faqs = [
   {
     question: "Os dois packs têm conteúdos diferentes?",
-    answer: "Sim. O Pack Essencial é a opção de entrada, enquanto o Pack Completo reúne uma seleção maior, com mais organização e foco em som automotivo e paredões.",
+    answer: "Sim. O Pack Básico tem 16 GB de repertórios atualizados, mas não inclui os hits de maio a agosto de 2026. O Pack Premium tem mais de 28 GB e inclui hits do momento, virais e músicas atualizadas para paredão.",
   },
   {
     question: "Qual o valor?",
-    answer: "Você pode escolher entre Pack Essencial por R$9,90 ou Pack Completo por R$19,90.",
+    answer: "Você pode escolher entre o Pack Básico de 16 GB por R$9,90 ou o Pack Premium de mais de 28 GB por R$19,90.",
   },
   {
     question: "Como baixar músicas agora?",
@@ -81,7 +100,7 @@ const faqs = [
 export function generateMetadata(): Metadata {
   return buildMetadata({
     title: "Baixar pack de musicas para carro, pen drive e paredao",
-    description: "Escolha o Pack Som de Rua para baixar musicas organizadas para carro, pen drive e paredao com checkout seguro e entrega automatica.",
+    description: "Escolha entre 16 GB no Pack Basico ou mais de 28 GB no Premium, com musicas atualizadas em 2026 e download imediato.",
     path: "/baixar-musicas",
     keywords: ["baixar pack de musicas", "baixar musicas", "download de musicas", "pack de musicas para carro"],
   });
@@ -113,13 +132,13 @@ export default function BaixarMusicasPage() {
       <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6" aria-labelledby="baixar-musicas-title">
         <section className="max-w-4xl">
           <p className="mb-3 inline-flex rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-200">
-            Duas opções para baixar seu repertório
+            Packs atualizados em 2026
           </p>
           <h1 id="baixar-musicas-title" className="text-4xl font-semibold text-gray-100 md:text-5xl">
-            Baixar pack de músicas para carro, pen drive e paredão.
+            Do repertório essencial aos hits que estão tocando agora.
           </h1>
           <p className="mt-4 max-w-3xl text-lg text-indigo-200/75">
-            Tenha seu pack organizado e pronto para baixar, transferir e utilizar em dispositivos compatíveis.
+            Escolha entre 16 GB de bons repertórios no Básico ou mais de 28 GB no Premium, com hits do momento, virais e músicas atualizadas para paredão.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <a href="#escolha-seu-pack" className="btn bg-linear-to-t from-indigo-600 to-indigo-500 text-white">
@@ -131,65 +150,125 @@ export default function BaixarMusicasPage() {
 
         <section id="escolha-seu-pack" className="mt-12 scroll-mt-24" aria-labelledby="offers-title">
           <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase text-emerald-300">Escolha seu pack</p>
-            <h2 id="offers-title" className="mt-2 text-3xl font-semibold text-gray-100">Escolha seu pack</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-emerald-300">Escolha seu pack</p>
+            <h2 id="offers-title" className="mt-2 text-3xl font-semibold text-gray-100">Compare e escolha sem dúvida</h2>
             <p className="mt-3 text-indigo-200/70">
-              O Essencial é a opção de entrada. O Completo é a oferta recomendada para quem quer mais músicas, melhor qualidade de áudio e uma organização mais ampla.
+              Os dois packs têm pagamento único, conteúdo organizado e acesso após a aprovação. A diferença está no tamanho e na atualização do repertório.
             </p>
           </div>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-2 md:items-stretch">
-            {packOfferList.map((offer) => (
-              <article
-                key={offer.id}
-                className={[
-                  "relative flex h-full min-h-[520px] flex-col rounded-lg border p-6 shadow-[0_18px_42px_rgba(0,0,0,0.18)] sm:p-7",
-                  offer.recommended
-                    ? "border-emerald-300/70 bg-[linear-gradient(180deg,rgba(16,185,129,0.14),rgba(17,24,39,0.72))]"
-                    : "border-gray-800 bg-[linear-gradient(180deg,rgba(31,41,55,0.72),rgba(17,24,39,0.58))]",
-                ].join(" ")}
-              >
-                <div className="flex min-h-8 items-start">
-                  {offer.badge ? (
-                    <span className="inline-flex w-fit rounded-lg bg-emerald-300 px-3 py-1 text-xs font-bold uppercase text-slate-950">
-                      {offer.badge}
-                    </span>
-                  ) : (
-                    <span className="inline-flex w-fit rounded-lg border border-gray-700 px-3 py-1 text-xs font-bold uppercase text-gray-400">
-                      Entrada
-                    </span>
-                  )}
-                </div>
+          <div className="mt-8 grid gap-5 md:grid-cols-2 md:items-stretch">
+            {packOfferList.map((offer) => {
+              const details = offerDetails[offer.id];
 
-                <div className="mt-5">
-                  <h3 className="text-2xl font-semibold text-gray-100">{offer.name}</h3>
-                  <p className="mt-3 font-nacelle text-4xl font-semibold text-white">{offer.priceLabel}</p>
-                  <p className="mt-3 min-h-[72px] text-indigo-100/75">{offer.description}</p>
-                </div>
-
-                <ul className="mt-6 grid gap-3 rounded-lg border border-white/10 bg-black/15 p-4 text-sm text-indigo-100/80" aria-label={`Benefícios do ${offer.name}`}>
-                  {offerBenefits[offer.id].map((benefit) => (
-                    <li key={benefit} className="flex gap-2">
-                      <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-300/15 text-xs text-emerald-200" aria-hidden="true">✓</span>
-                      <span>{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <OfferCheckoutLink
-                  offer={offer}
-                  source="baixar_musicas_offer_card"
+              return (
+                <article
+                  key={offer.id}
                   className={[
-                    "btn mt-auto min-h-12 w-full text-center text-sm font-bold",
+                    "relative isolate flex h-full min-h-[610px] overflow-hidden rounded-2xl border p-6 shadow-[0_22px_55px_rgba(0,0,0,0.25)] transition duration-300 hover:-translate-y-1 sm:p-7",
                     offer.recommended
-                      ? "bg-linear-to-t from-emerald-500 to-lime-400 text-slate-950 hover:from-emerald-400 hover:to-lime-300"
-                      : "bg-gray-800 text-white hover:bg-gray-700",
+                      ? "border-emerald-300/70 bg-[linear-gradient(155deg,rgba(16,185,129,0.2),rgba(17,24,39,0.96)_48%,rgba(6,78,59,0.28))] shadow-emerald-950/30"
+                      : "border-slate-700/80 bg-[linear-gradient(155deg,rgba(51,65,85,0.72),rgba(15,23,42,0.96)_48%,rgba(30,41,59,0.72))]",
                   ].join(" ")}
                 >
-                  {offer.cta}
-                </OfferCheckoutLink>
-              </article>
-            ))}
+                  <div
+                    className={[
+                      "absolute -right-20 -top-20 -z-10 h-56 w-56 rounded-full blur-3xl",
+                      offer.recommended ? "bg-emerald-400/20" : "bg-indigo-400/10",
+                    ].join(" ")}
+                    aria-hidden="true"
+                  />
+
+                  <div className="flex w-full flex-1 flex-col">
+                    <div className="flex min-h-8 items-start justify-between gap-3">
+                      {offer.badge ? (
+                        <span className="inline-flex w-fit rounded-full bg-emerald-300 px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-slate-950 shadow-lg shadow-emerald-950/30">
+                          {offer.badge}
+                        </span>
+                      ) : (
+                        <span className="inline-flex w-fit rounded-full border border-slate-600 bg-slate-900/60 px-3 py-1 text-xs font-bold uppercase tracking-wide text-slate-300">
+                          Mais econômico
+                        </span>
+                      )}
+                      <span className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs font-semibold text-indigo-100/80">
+                        {details.updateLabel}
+                      </span>
+                    </div>
+
+                    <div className="mt-6">
+                      <p className="text-sm font-semibold uppercase tracking-[0.14em] text-indigo-200/65">{offer.name}</p>
+                      <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-1">
+                        <strong className="font-nacelle text-5xl font-semibold leading-none text-white sm:text-6xl">{details.volume}</strong>
+                        <span className="pb-1 text-sm text-indigo-100/60">{details.volumeLabel}</span>
+                      </div>
+                      <p className="mt-5 text-indigo-100/75">{offer.description}</p>
+                    </div>
+
+                    <div
+                      className={[
+                        "mt-5 rounded-xl border px-4 py-3 text-sm font-medium",
+                        offer.recommended
+                          ? "border-emerald-300/25 bg-emerald-300/10 text-emerald-100"
+                          : "border-amber-300/20 bg-amber-300/5 text-amber-100/80",
+                      ].join(" ")}
+                    >
+                      {details.availabilityNote}
+                    </div>
+
+                    <ul className="mt-5 grid gap-3 text-sm text-indigo-100/85" aria-label={`Benefícios do ${offer.name}`}>
+                      {details.benefits.map((benefit) => (
+                        <li key={benefit} className="flex gap-3">
+                          <span
+                            className={[
+                              "mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-xs",
+                              offer.recommended ? "bg-emerald-300/15 text-emerald-200" : "bg-indigo-300/10 text-indigo-200",
+                            ].join(" ")}
+                            aria-hidden="true"
+                          >
+                            ✓
+                          </span>
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-auto pt-7">
+                      <div className="mb-4 flex items-end justify-between gap-3 border-t border-white/10 pt-5">
+                        <span className="text-sm text-indigo-100/60">Pagamento único</span>
+                        <strong className="font-nacelle text-3xl font-semibold text-white">{offer.priceLabel}</strong>
+                      </div>
+                      <OfferCheckoutLink
+                        offer={offer}
+                        source="baixar_musicas_offer_card"
+                        className={[
+                          "btn min-h-12 w-full text-center text-sm font-bold",
+                          offer.recommended
+                            ? "bg-linear-to-t from-emerald-500 to-lime-400 text-slate-950 shadow-lg shadow-emerald-950/40 hover:from-emerald-400 hover:to-lime-300"
+                            : "border border-slate-600 bg-slate-800 text-white hover:bg-slate-700",
+                        ].join(" ")}
+                      >
+                        {offer.cta}
+                      </OfferCheckoutLink>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <div className="mt-5 flex flex-col gap-4 rounded-xl border border-indigo-300/15 bg-indigo-400/[0.06] p-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+            <div>
+              <p className="font-semibold text-white">Ficou com alguma dúvida antes de escolher?</p>
+              <p className="mt-1 text-sm text-indigo-100/65">
+                Acione nosso suporte. Responderemos rapidamente para ajudar você a escolher o pack ideal.
+              </p>
+            </div>
+            <Link
+              href="/suporte"
+              className="btn-sm shrink-0 border border-white/10 bg-white/10 text-center text-white hover:bg-white/15"
+            >
+              Falar com o suporte
+            </Link>
           </div>
         </section>
 
@@ -197,12 +276,12 @@ export default function BaixarMusicasPage() {
           <h2 id="comparison-title" className="text-3xl font-semibold text-gray-100">Compare com transparência</h2>
           <div className="mt-6 overflow-x-auto rounded-lg border border-gray-800">
             <table className="w-full min-w-[520px] border-collapse bg-gray-900/50 text-left text-sm">
-              <caption className="sr-only">Comparação entre Pack Essencial e Pack Completo</caption>
+              <caption className="sr-only">Comparação entre Pack Básico e Pack Premium</caption>
               <thead className="bg-gray-950/70 text-indigo-100">
                 <tr>
                   <th className="px-4 py-4 font-semibold" scope="col">Item</th>
-                  <th className="px-4 py-4 font-semibold" scope="col">Essencial</th>
-                  <th className="px-4 py-4 font-semibold" scope="col">Completo</th>
+                  <th className="px-4 py-4 font-semibold" scope="col">Básico</th>
+                  <th className="px-4 py-4 font-semibold text-emerald-200" scope="col">Premium</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800 text-indigo-100/80">

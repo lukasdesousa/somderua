@@ -16,8 +16,8 @@ export const revalidate = 3600;
 
 const includedItems = [
   {
-    title: "Pack principal 16GB",
-    text: "Repertorio pronto para copiar em pen drive, notebook, celular ou central multimidia.",
+    title: "De 16 GB a mais de 28 GB",
+    text: "Escolha o tamanho ideal e copie o repertorio para pen drive, notebook, celular ou central multimidia.",
   },
   {
     title: "Pastas por estilo",
@@ -32,8 +32,8 @@ const includedItems = [
     text: "Depois da aprovacao do pagamento, o download fica disponivel sem envio manual.",
   },
   {
-    title: "Garantia e suporte",
-    text: "Teste por 7 dias e fale com o suporte por e-mail se tiver qualquer dificuldade.",
+    title: "Reembolso e suporte",
+    text: "Se uma falha técnica impedir o acesso e não puder ser solucionada, o reembolso é integral.",
   },
   {
     title: "Guias de uso",
@@ -79,7 +79,7 @@ const comparisonRows = [
   },
   {
     label: "Suporte",
-    ours: "Garantia de 7 dias e contato por e-mail",
+    ours: "Suporte e reembolso por falha técnica",
     others: "Pouca clareza depois da compra",
   },
 ];
@@ -88,7 +88,7 @@ const homeFaqs = [
   {
     question: "O que vem no Pack Som de Rua?",
     answer:
-      "Um repertorio com mais de 5.000 musicas organizado em pastas para pen drive, carro, caixa de som, celular e paredao.",
+      "Um repertorio com mais de 10 mil musicas organizado em pastas para pen drive, carro, caixa de som, celular e paredao.",
   },
   {
     question: "O download e liberado na hora?",
@@ -106,13 +106,13 @@ const homeFaqs = [
       "Pode. Para copiar para pen drive, o computador costuma ser mais pratico, mas o acesso tambem funciona pelo celular.",
   },
   {
-    question: "Tem garantia?",
+    question: "Quando há reembolso?",
     answer:
-      "Sim. O pack tem garantia de 7 dias para voce testar com calma e pedir suporte se precisar.",
+      "O reembolso e integral quando uma falha do sistema, do download ou outro problema tecnico impedir o acesso e nao puder ser solucionado, sem prejuizo dos direitos previstos na legislacao aplicavel.",
   },
   {
     question: "Qual e o valor atual?",
-    answer: `Voce pode escolher entre ${offerPriceLabels.entry} e ${offerPriceLabels.recommended}, em ${offerPriceLabels.installment}. As duas opcoes liberam o mesmo pack digital.`,
+    answer: `O Pack Basico de 16 GB custa ${offerPriceLabels.entry}. O Pack Premium com mais de 28 GB custa ${offerPriceLabels.recommended} e inclui os hits atuais. Ambos sao vendidos em ${offerPriceLabels.installment}.`,
   },
 ];
 
@@ -148,7 +148,7 @@ export function generateMetadata(): Metadata {
   return buildMetadata({
     title: "Pack de musicas 2026 para pen drive e paredao",
     description:
-      "Compre o Pack Som de Rua com mais de 5.000 musicas organizadas para carro, pen drive, som automotivo e paredao, com download automatico.",
+      "Compre o Pack Som de Rua com mais de 10 mil musicas organizadas para carro, pen drive, som automotivo e paredao, com download automatico.",
     path: "/",
     keywords: ["pack de musicas", "pack de musicas 2026", "pack de musicas para pen drive", "download imediato de musicas"],
   });
@@ -201,7 +201,7 @@ export default function Home() {
               </article>
             ))}
           </div>
-          <SectionCta text="Ver oferta do pack completo" />
+          <SectionCta text="Ver oferta do Pack Premium" />
         </div>
       </section>
 
@@ -258,7 +258,7 @@ export default function Home() {
               </tbody>
             </table>
           </div>
-          <SectionCta text="Escolher entre Essencial e Completo" />
+          <SectionCta text="Escolher entre Básico e Premium" />
         </div>
       </section>
 
@@ -273,7 +273,7 @@ export default function Home() {
                 Duvidas comuns antes de baixar.
               </h2>
               <p className="mt-4 text-lg text-slate-300">
-                Respostas diretas para voce entender compra, acesso, compatibilidade e garantia.
+                Respostas diretas para voce entender compra, acesso, compatibilidade e reembolso.
               </p>
             </div>
             <div className="grid gap-3">

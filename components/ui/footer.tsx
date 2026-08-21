@@ -11,9 +11,8 @@ const productLinks = [
 ];
 
 const supportLinks = [
-  { href: "mailto:somderua.suporte@gmail.com", label: "Entrar em contato" },
-  { href: "mailto:somderua.suporte@gmail.com", label: "Tirar duvidas" },
-  { href: "mailto:somderua.suporte@gmail.com", label: "Enviar avaliacao" },
+  { href: "/suporte", label: "Central de suporte" },
+  { href: "mailto:somderua.suporte@gmail.com", label: "somderua.suporte@gmail.com" },
 ];
 
 export default function Footer() {
@@ -49,9 +48,9 @@ export default function Footer() {
             <ul className="mt-3 space-y-2 text-sm">
               {supportLinks.map((link) => (
                 <li key={link.label}>
-                  <a className="text-slate-400 transition hover:text-emerald-200" href={link.href}>
+                  <Link className="break-all text-slate-400 transition hover:text-emerald-200" href={link.href}>
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -59,8 +58,8 @@ export default function Footer() {
 
           <div className="rounded-lg border border-white/10 bg-white/5 p-5">
             <p className="text-sm font-semibold text-emerald-200">Escolha seu pack</p>
-            <p className="mt-2 text-sm text-slate-400">Essencial {offerPriceLabels.entry}</p>
-            <p className="font-nacelle text-3xl font-semibold text-white">Completo {offerPriceLabels.recommended}</p>
+            <p className="mt-2 text-sm text-slate-400">Básico 16 GB · {offerPriceLabels.entry}</p>
+            <p className="font-nacelle text-3xl font-semibold text-white">Premium +28 GB · {offerPriceLabels.recommended}</p>
             <Link className="btn mt-4 w-full bg-white text-slate-950 hover:bg-emerald-200" href="/baixar-musicas#escolha-seu-pack">
               Ver opções
             </Link>

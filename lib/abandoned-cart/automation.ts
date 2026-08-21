@@ -1,4 +1,4 @@
-import { digitalProduct, getPackOffer, type PackOfferId } from "@/lib/pricing";
+import { getPackOffer, type PackOfferId } from "@/lib/pricing";
 import type { ValidatedAbandonedCartPayload } from "./types";
 
 export const ABANDONED_CART_DELAY_MINUTES = 20;
@@ -9,10 +9,10 @@ const DEFAULT_CUSTOMER_NAME = "Cliente Som de Rua";
 const PRODUCT_IMAGE_PATH = "/images/pack-16gb-5000.png";
 
 const AUTOMATED_BENEFITS = [
-  "Mais de 5.000 faixas atualizadas para carro, pen drive e paredão.",
+  "Mais de 10 mil faixas atualizadas para carro, pen drive e paredão.",
   "Download liberado rapidamente após a confirmação do pagamento.",
   "Repertório organizado para tocar hoje sem perder tempo procurando música.",
-  "Compra segura e garantia de 7 dias para testar com tranquilidade.",
+  "Reembolso integral se uma falha técnica impedir o acesso e não puder ser solucionada.",
 ] as const;
 
 const numberFormatter = new Intl.NumberFormat("pt-BR");
@@ -40,7 +40,7 @@ export function buildAutomatedAbandonedCartPayload(input: {
       email: input.customerEmail.trim().toLowerCase(),
     },
     product: {
-      name: digitalProduct.name,
+      name: selectedOffer.name,
       imageUrl: new URL(PRODUCT_IMAGE_PATH, input.origin).toString(),
       priceLabel: selectedOffer.priceLabel,
       checkoutUrl: input.checkoutUrl,

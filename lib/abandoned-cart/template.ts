@@ -6,8 +6,6 @@ export type AbandonedCartEmailContent = {
   text: string;
 };
 
-const PACK_NAME = "o seu pack de 16gb";
-
 export function buildAbandonedCartRecoveryEmail(
   payload: ValidatedAbandonedCartPayload,
 ): AbandonedCartEmailContent {
@@ -23,7 +21,7 @@ export function buildAbandonedCartRecoveryEmail(
   const qualities = getQualityItems().map((item) => escapeHtml(item));
 
   const subject = `${payload.customer.firstName}, seu checkout Som de Rua ficou salvo`;
-  const previewText = `Volte para finalizar seu pack de 16gb com mais de 5.000 faixas, download imediato e garantia de 7 dias.`;
+  const previewText = `Volte para finalizar o pack que você escolheu, com download após a aprovação e suporte para falhas técnicas.`;
 
   return {
     subject,
@@ -228,24 +226,24 @@ export function buildAbandonedCartRecoveryEmail(
   <div class="container">
     <div class="brand">Som de Rua</div>
 
-    <h1>${customerFirstName}, deixei o checkout do ${PACK_NAME} salvo para você.</h1>
+    <h1>${customerFirstName}, deixei o checkout do ${productName} salvo para você.</h1>
 
     <p class="lead">
       Vi que você chegou até o checkout e talvez tenha deixado para terminar depois.
-      Sem pressão: o seu link ainda está aqui, com o mesmo pack digital pronto para baixar após a aprovação.
+      Sem pressão: o seu link ainda está aqui, com o pack escolhido pronto para baixar após a aprovação.
     </p>
 
     <div class="highlight">
       <table class="product-row" role="presentation" cellspacing="0" cellpadding="0">
         <tr>
           <td width="116">
-            <img class="product-image" src="${productImageUrl}" width="116" alt="Pack Som de Rua 16GB" />
+            <img class="product-image" src="${productImageUrl}" width="116" alt="${productName}" />
           </td>
           <td class="product-copy">
             <p class="eyebrow">Oferta escolhida</p>
-            <p class="product-title">${productName} 16GB</p>
+            <p class="product-title">${productName}</p>
             <p style="margin:0 0 8px;color:#a3a8d4;font-size:14px;line-height:1.5;">
-              Mais de 5.000 faixas atualizadas para tocar no carro, celular e pen drive.
+              Mais de 10 mil faixas atualizadas para tocar no carro, celular e pen drive.
             </p>
             <p class="price">${priceLabel}</p>
             <span class="offer-badge">${discountLabel}</span>
@@ -292,9 +290,9 @@ function getQualityItems(): string[] {
   return [
     "Download imediato após a confirmação do pagamento.",
     "Funciona no celular, no carro e no pen drive.",
-    "Mais de 5.000 faixas atualizadas para som automotivo e paredão.",
+    "Mais de 10 mil faixas atualizadas para som automotivo e paredão.",
     "Repertório organizado para tocar por horas sem repetir as mesmas músicas.",
-    "Garantia de 7 dias: se não gostar, devolvemos 100% do seu dinheiro.",
+    "Reembolso integral se uma falha técnica impedir o acesso e não puder ser solucionada.",
   ];
 }
 
@@ -305,18 +303,18 @@ function renderQualityItems(items: string[]): string {
 function buildPlainTextEmail(payload: ValidatedAbandonedCartPayload): string {
   return `Olá, ${payload.customer.firstName}.
 
-Deixei o checkout do seu pack de 16gb salvo para você.
+Deixei o checkout do ${payload.product.name} salvo para você.
 
 Você chegou até o checkout, mas talvez tenha deixado para terminar depois. O link ainda está aqui:
 ${payload.product.checkoutUrl}
 
 O que vem no pack:
-- Mais de 5.000 faixas atualizadas
+- Mais de 10 mil faixas atualizadas
 - Download imediato após a confirmação do pagamento
 - Funciona no celular, carro e pen drive
 - Sem músicas repetidas, com repertório organizado
 - Grave ajustado para paredão e som automotivo
-- Garantia de 7 dias
+- Reembolso integral em caso de falha técnica não solucionada
 
 Oferta escolhida: ${payload.offer.discountLabel}
 Preço escolhido: ${payload.product.priceLabel}

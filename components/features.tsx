@@ -15,9 +15,9 @@ const trustItems = [
     text: "Baixe no celular ou computador e copie para pen drive, carro, notebook ou TV.",
   },
   {
-    label: "7 dias",
-    title: "Garantia simples",
-    text: "Teste com calma e acione o suporte se precisar de ajuda para usar o pack.",
+    label: "100%",
+    title: "Reembolso por falha técnica",
+    text: "Se uma falha técnica impedir o acesso e não puder ser solucionada, o reembolso é integral.",
   },
   {
     label: "Atual",

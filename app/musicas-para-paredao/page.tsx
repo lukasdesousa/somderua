@@ -11,7 +11,7 @@ export const revalidate = 3600;
 const qualitySignals = [
   {
     title: "Grave forte sem embolar",
-    text: "A seleção busca músicas que mantêm pressão no grave sem deixar a voz sumir ou o som estourar fácil.",
+    text: "A  busca músicas que mantêm pressão no grave sem deixar a voz sumir ou o som estourar fácil.",
   },
   {
     title: "Variedade para manter energia",
@@ -65,7 +65,7 @@ export default function MusicasParedaoPage() {
       <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6" aria-labelledby="paredao-title">
         <section className="max-w-3xl">
           <p className="mb-3 inline-flex rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-200">
-            Completo recomendado por {offerPriceLabels.recommended}
+            Premium +28 GB por {offerPriceLabels.recommended}
           </p>
           <h1 id="paredao-title" className="text-4xl font-semibold text-gray-100">Músicas para paredão</h1>
           <p className="mt-3 text-lg text-indigo-200/75">
@@ -77,7 +77,7 @@ export default function MusicasParedaoPage() {
             </Link>
             <Link href="/musicas-para-pen-drive" className="btn-sm bg-gray-800 hover:bg-gray-700">Ver músicas para pen drive</Link>
             <Link href="/musicas-para-som-automotivo" className="btn-sm bg-gray-800 hover:bg-gray-700">Ver som automotivo</Link>
-            <span className="text-sm text-indigo-100/65">Mesmo conteúdo nas duas ofertas</span>
+            <span className="text-sm text-indigo-100/65">Inclui hits atuais, virais e repertório 2026 para paredão</span>
           </div>
         </section>
 
