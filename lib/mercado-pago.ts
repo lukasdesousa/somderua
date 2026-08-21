@@ -4,7 +4,7 @@ import crypto from "crypto";
 
 // Instância do cliente Mercado Pago
 const mpClient = new MercadoPagoConfig({
-  accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN as string,
+  accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN?.trim() ?? "",
 });
 
 export default mpClient;
