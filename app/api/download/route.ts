@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { PrismaClient } from "@prisma/client";
+import { createPrismaClient } from "@/lib/prisma";
 import { digitalProduct } from "@/lib/pricing";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 const allowedDownloadFiles = new Set<string>([digitalProduct.deliveryFile]);
 const ESSENTIAL_PACK_DOWNLOAD_URL = new URL(
   "https://drive.google.com/drive/folders/1NoE9C7L7VwGNDFTDmF4iDuS4y9uG8Sg8?usp=drive_link",

@@ -1,19 +1,19 @@
 import { NextResponse } from "next/server";
 import { Preference } from "mercadopago";
 import { SignJWT } from "jose";
-import { PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import { buildAutomatedAbandonedCartPayload, getAbandonedCartScheduleDate } from "@/lib/abandoned-cart/automation";
 import { abandonedCartLogger } from "@/lib/abandoned-cart/logger";
 import { cancelAbandonedCartRecoveryEmail, sendAbandonedCartRecoveryEmail } from "@/lib/abandoned-cart/mailer";
 import { hashForLog } from "@/lib/abandoned-cart/security";
 import mpClient from "@/lib/mercado-pago";
+import { createPrismaClient } from "@/lib/prisma";
 import { digitalProduct, isPackOfferId, packOffers, type PackOfferId } from "@/lib/pricing";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 export async function POST(req: Request) {
   const mercadoPagoAccessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN?.trim();

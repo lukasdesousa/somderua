@@ -1,11 +1,11 @@
 import "server-only";
-import { PrismaClient } from "@prisma/client";
 import { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
 import { abandonedCartLogger } from "@/lib/abandoned-cart/logger";
 import { cancelAbandonedCartRecoveryEmail } from "@/lib/abandoned-cart/mailer";
+import { createPrismaClient } from "@/lib/prisma";
 import { sendPurchaseEmail } from "@/lib/sendEmail";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 const PURCHASE_EMAIL_PROCESSING_TIMEOUT_MS = 10 * 60 * 1000;
 
 type HandleMercadoPagoPaymentOptions = {

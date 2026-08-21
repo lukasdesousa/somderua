@@ -1,15 +1,15 @@
 // app/api/payment-status/route.ts
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { Payment } from "mercadopago";
 import { handleMercadoPagoPayment } from "@/app/server/handle-payment";
 import mpClient from "@/lib/mercado-pago";
+import { createPrismaClient } from "@/lib/prisma";
 import { isPackOfferId, packOffers } from "@/lib/pricing";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 export async function GET(req: Request) {
   try {
