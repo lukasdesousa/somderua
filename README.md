@@ -1,14 +1,20 @@
-# Som de Rua
+# Som de Rua no Cloudflare Workers
 
-O mesmo projeto Next.js pode ser publicado na Vercel ou no Cloudflare Workers. A Vercel usa o build padrão do Next.js; o Cloudflare usa o adaptador OpenNext e o Wrangler.
+Este projeto Next.js usa o adaptador OpenNext e o Wrangler para executar exclusivamente no Cloudflare Workers.
 
-## Vercel
+## Configuração do Workers Builds
 
-- Build command: `pnpm build`
-- Framework preset: Next.js
-- Configure no projeto da Vercel as mesmas variáveis presentes no `.env` local.
+No painel do Cloudflare, use exatamente:
 
-## Cloudflare Workers
+- Build command: `pnpm run build`
+- Deploy command: `pnpm run deploy:cloudflare`
+- Root directory: `/`
+
+O comando `pnpm run build` gera o build Next.js e o arquivo `.open-next/worker.js`. O comando interno `pnpm run build:next` existe somente para ser chamado pelo adaptador OpenNext.
+
+O deploy command anterior, `npx wrangler deploy`, também funciona depois desta correção. O comando `pnpm run deploy:cloudflare` é recomendado porque usa o fluxo próprio do OpenNext.
+
+## Desenvolvimento e deploy
 
 Para testar no runtime do Cloudflare:
 
@@ -16,7 +22,7 @@ Para testar no runtime do Cloudflare:
 pnpm preview
 ```
 
-Para publicar com o Wrangler:
+Para fazer o build e publicar localmente:
 
 ```bash
 pnpm deploy
@@ -28,7 +34,9 @@ Para somente gerar e enviar uma versão, sem ativá-la:
 pnpm upload
 ```
 
-Em Windows, o OpenNext recomenda executar esses comandos pelo WSL ou por um build conectado ao Git, pois a geração do diretório `standalone` usa links simbólicos. O build padrão da Vercel pode continuar sendo executado diretamente no Windows.
+Em Windows, o OpenNext recomenda executar esses comandos pelo WSL ou por um build conectado ao Git, pois a geração do diretório `standalone` usa links simbólicos.
+
+## Variáveis de ambiente
 
 No Cloudflare, copie as variáveis do ambiente de produção para **Build Variables and secrets**. As variáveis usadas em runtime também precisam estar disponíveis para o Worker, incluindo:
 
@@ -44,4 +52,4 @@ Para cadastrar um segredo pela CLI:
 pnpm wrangler secret put NOME_DA_VARIAVEL
 ```
 
-O `DEPLOY_TARGET=cloudflare` já está definido em `wrangler.jsonc` e não deve ser configurado na Vercel.
+O `DEPLOY_TARGET=cloudflare` já está definido em `wrangler.jsonc`.

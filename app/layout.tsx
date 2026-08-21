@@ -3,8 +3,6 @@ import "./css/style.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import Header from "@/components/ui/header";
 import JsonLd from "@/components/seo/json-ld";
@@ -115,8 +113,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="flex min-h-screen flex-col overflow-hidden supports-[overflow:clip]:overflow-clip">
           <Header />
           {children}
-          <Analytics />
-          <SpeedInsights />
         </div>
       </body>
     </html>
