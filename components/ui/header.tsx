@@ -6,7 +6,7 @@ const navItems = [
   { href: "/musicas-para-pen-drive", label: "Pen drive" },
   { href: "/musicas-para-paredao", label: "Paredao" },
   { href: "/musicas-para-som-automotivo", label: "Som automotivo" },
-  { href: "/baixar-musicas", label: "Baixar musicas" },
+  { href: "/tutorial", label: "Tutorial" },
   { href: "/blog", label: "Blog" },
   { href: "/suporte", label: "Suporte" },
 ];
@@ -33,6 +33,12 @@ export default function Header() {
               </Link>
             ))}
           </nav>
+          <Link
+            href="/tutorial"
+            className="ml-auto rounded-lg px-2 py-2 text-sm font-semibold text-slate-200 transition hover:bg-white/10 hover:text-white md:hidden"
+          >
+            Tutorial
+          </Link>
           <Link
             href="/baixar-musicas#escolha-seu-pack"
             className="btn-sm bg-linear-to-t from-emerald-500 to-lime-400 py-[8px] font-bold text-slate-950 hover:from-emerald-400 hover:to-lime-300"

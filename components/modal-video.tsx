@@ -13,6 +13,10 @@ interface ModalVideoProps {
   video: string;
   videoWidth: number;
   videoHeight: number;
+  ariaLabel?: string;
+  buttonLabel?: string;
+  buttonMeta?: string;
+  loop?: boolean;
 }
 
 export default function ModalVideo({
@@ -23,6 +27,10 @@ export default function ModalVideo({
   video,
   videoWidth,
   videoHeight,
+  ariaLabel = "Ver prévia em vídeo do pack de músicas",
+  buttonLabel = "Ver prévia do pack",
+  buttonMeta = "Vídeo de 3 minutos",
+  loop = true,
 }: ModalVideoProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -30,11 +38,12 @@ export default function ModalVideo({
   return (
     <div className="relative">
       <button
+        type="button"
         className="group relative flex w-full items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-slate-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200"
         onClick={() => {
           setModalOpen(true);
         }}
-        aria-label="Ver prévia em vídeo do pack de músicas"
+        aria-label={ariaLabel}
         data-aos="fade-up"
         data-aos-delay={200}
       >
@@ -55,8 +64,8 @@ export default function ModalVideo({
             </svg>
           </span>
           <span>
-            <span className="block text-sm font-semibold text-white">Ver prévia do pack</span>
-            <span className="block text-xs text-slate-300">Video de 3 minutos</span>
+            <span className="block text-sm font-semibold text-white">{buttonLabel}</span>
+            <span className="block text-xs text-slate-300">{buttonMeta}</span>
           </span>
         </span>
       </button>
@@ -72,7 +81,16 @@ export default function ModalVideo({
               transition
               className="aspect-video max-h-full w-full overflow-hidden rounded-lg bg-black shadow-2xl duration-300 ease-out data-closed:scale-95 data-closed:opacity-0"
             >
-              <video ref={videoRef} width={videoWidth} height={videoHeight} loop controls>
+              <video
+                ref={videoRef}
+                className="h-full w-full bg-black object-contain"
+                width={videoWidth}
+                height={videoHeight}
+                loop={loop}
+                controls
+                playsInline
+                preload="metadata"
+              >
                 <source src={video} type="video/mp4" />
                 Seu navegador não suporta a tag de vídeo.
               </video>

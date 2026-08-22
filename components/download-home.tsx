@@ -19,6 +19,9 @@ type PaymentStatusResponse = {
 
 type DownloadState = "checking" | "approved" | "error";
 
+const MAX_STATUS_RETRIES = 4;
+const STATUS_RETRY_DELAYS_MS = [1500, 3000, 5000, 5000] as const;
+
 export default function DownloadHome() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -26,14 +29,22 @@ export default function DownloadHome() {
   const mercadoPagoPaymentId = searchParams.get("payment_id") ?? searchParams.get("collection_id");
   const [downloadState, setDownloadState] = useState<DownloadState>("checking");
   const [statusMessage, setStatusMessage] = useState("Verificando pagamento...");
+  const [verificationAttempt, setVerificationAttempt] = useState(0);
 
   useEffect(() => {
     if (!reference) return router.replace("/baixar-musicas#escolha-seu-pack");
 
-    const checkPaymentStatus = async () => {
+    let cancelled = false;
+    let retryTimeout: ReturnType<typeof setTimeout> | undefined;
+
+    const checkPaymentStatus = async (retryCount = 0) => {
       try {
         setDownloadState("checking");
-        setStatusMessage("Verificando pagamento...");
+        setStatusMessage(
+          retryCount === 0
+            ? "Verificando pagamento..."
+            : "A confirmação está levando alguns segundos. Tentando novamente automaticamente...",
+        );
 
         const params = new URLSearchParams({ reference });
 
@@ -41,8 +52,12 @@ export default function DownloadHome() {
           params.set("payment_id", mercadoPagoPaymentId);
         }
 
-        const res = await fetch(`/api/mercado-pago/payment-status?${params.toString()}`);
+        const res = await fetch(`/api/mercado-pago/payment-status?${params.toString()}`, {
+          cache: "no-store",
+        });
         const data = await readJsonResponse<PaymentStatusResponse>(res);
+
+        if (cancelled) return;
 
         if (data.status === "not_found" || data.status === "missing_reference") {
           router.replace("/baixar-musicas#escolha-seu-pack");
@@ -82,14 +97,32 @@ export default function DownloadHome() {
           }
         }
       } catch (err) {
+        if (cancelled) return;
+
         console.error("Erro ao verificar pagamento:", err);
+
+        if (retryCount < MAX_STATUS_RETRIES) {
+          const retryDelay = STATUS_RETRY_DELAYS_MS[retryCount] ?? 5000;
+          setDownloadState("checking");
+          setStatusMessage("Ainda estamos confirmando seu pagamento. A verificação será repetida automaticamente...");
+          retryTimeout = setTimeout(() => {
+            void checkPaymentStatus(retryCount + 1);
+          }, retryDelay);
+          return;
+        }
+
         setDownloadState("error");
-        setStatusMessage("Não foi possível confirmar o pagamento agora. Atualize a página em alguns instantes.");
+        setStatusMessage("Não foi possível confirmar o pagamento agora. Tente verificar novamente abaixo.");
       }
     };
 
-    if (reference) checkPaymentStatus();
-  }, [reference, mercadoPagoPaymentId, router]);
+    if (reference) void checkPaymentStatus();
+
+    return () => {
+      cancelled = true;
+      if (retryTimeout) clearTimeout(retryTimeout);
+    };
+  }, [reference, mercadoPagoPaymentId, router, verificationAttempt]);
 
 
   async function getDownloadUrl(file: string) {
@@ -152,6 +185,16 @@ export default function DownloadHome() {
                     </button>
                   </div>
                 </div>
+              ) : null}
+
+              {downloadState === "error" ? (
+                <button
+                  type="button"
+                  className="btn border border-indigo-400/30 bg-indigo-500/10 text-indigo-100 hover:bg-indigo-500/20"
+                  onClick={() => setVerificationAttempt((attempt) => attempt + 1)}
+                >
+                  Verificar pagamento novamente
+                </button>
               ) : null}
             </div>
           </div>
