@@ -3,7 +3,13 @@ import Link from "next/link";
 import OfferCheckoutLink from "@/components/offer-checkout-link";
 import Breadcrumbs from "@/components/seo/breadcrumbs";
 import JsonLd from "@/components/seo/json-ld";
-import { digitalProduct, packOfferList, type PackOfferId } from "@/lib/pricing";
+import {
+  digitalProduct,
+  entryPackOffer,
+  packOfferList,
+  recommendedPackOffer,
+  type PackOfferId,
+} from "@/lib/pricing";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, faqPageSchema, productOffersSchema } from "@/lib/seo/schema";
 
@@ -40,7 +46,7 @@ const comparisonRows = [
   { label: "Atualizações para paredão", essencial: "Seleção base", completo: "Seleção atualizada" },
   { label: "Pastas organizadas por estilos", essencial: "✓", completo: "✓" },
   { label: "Download após a aprovação", essencial: "Imediato", completo: "Imediato" },
-  { label: "Preço", essencial: "R$9,90", completo: "R$19,90" },
+  { label: "Preço", essencial: entryPackOffer.priceLabel, completo: recommendedPackOffer.priceLabel },
 ];
 
 const offerDetails: Record<PackOfferId, {
@@ -85,7 +91,7 @@ const faqs = [
   },
   {
     question: "Qual o valor?",
-    answer: "Você pode escolher entre o Pack Básico de 16 GB por R$9,90 ou o Pack Premium de mais de 28 GB por R$19,90.",
+    answer: `Na promoção O Patrão Endoidou, o Pack Básico de 16 GB baixou de ${entryPackOffer.originalPriceLabel} para ${entryPackOffer.priceLabel}. O Pack Premium de mais de 28 GB custa ${recommendedPackOffer.priceLabel}.`,
   },
   {
     question: "Como baixar músicas agora?",
@@ -144,7 +150,10 @@ export default function BaixarMusicasPage() {
             <a href="#escolha-seu-pack" className="btn bg-linear-to-t from-indigo-600 to-indigo-500 text-white">
               Escolher meu pack
             </a>
-            <span className="text-sm text-indigo-100/65">A partir de R$9,90 em pagamento único.</span>
+            <span className="text-sm text-indigo-100/65">
+              A partir de <span className="line-through">{entryPackOffer.originalPriceLabel}</span>{" "}
+              <strong className="text-emerald-300">{entryPackOffer.priceLabel}</strong> em pagamento único.
+            </span>
           </div>
         </section>
 
@@ -181,7 +190,11 @@ export default function BaixarMusicasPage() {
 
                   <div className="flex w-full flex-1 flex-col">
                     <div className="flex min-h-8 items-start justify-between gap-3">
-                      {offer.badge ? (
+                      {offer.promotionLabel ? (
+                        <span className="inline-flex w-fit rounded-full bg-gradient-to-r from-amber-300 to-orange-400 px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-slate-950 shadow-lg shadow-orange-950/30">
+                          🔥 {offer.promotionLabel}
+                        </span>
+                      ) : offer.badge ? (
                         <span className="inline-flex w-fit rounded-full bg-emerald-300 px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-slate-950 shadow-lg shadow-emerald-950/30">
                           {offer.badge}
                         </span>
@@ -235,7 +248,17 @@ export default function BaixarMusicasPage() {
                     <div className="mt-auto pt-7">
                       <div className="mb-4 flex items-end justify-between gap-3 border-t border-white/10 pt-5">
                         <span className="text-sm text-indigo-100/60">Pagamento único</span>
-                        <strong className="font-nacelle text-3xl font-semibold text-white">{offer.priceLabel}</strong>
+                        <div className="text-right">
+                          {offer.originalPriceLabel ? (
+                            <div className="mb-1 flex items-center justify-end gap-2 text-xs">
+                              <span className="text-indigo-100/50 line-through">{offer.originalPriceLabel}</span>
+                              <span className="rounded-full bg-amber-300 px-2 py-0.5 font-extrabold text-slate-950">
+                                {offer.discountLabel}
+                              </span>
+                            </div>
+                          ) : null}
+                          <strong className="font-nacelle text-3xl font-semibold text-white">{offer.priceLabel}</strong>
+                        </div>
                       </div>
                       <OfferCheckoutLink
                         offer={offer}

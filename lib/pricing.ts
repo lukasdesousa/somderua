@@ -26,6 +26,11 @@ export type PackOffer = {
   price: number;
   priceCents: number;
   priceLabel: string;
+  originalPrice?: number;
+  originalPriceCents?: number;
+  originalPriceLabel?: string;
+  promotionLabel?: string;
+  discountLabel?: string;
   description: string;
   cta: string;
   recommended: boolean;
@@ -40,11 +45,16 @@ export const packOffers = {
     id: "essencial",
     analyticsName: "essencial",
     name: "Pack Básico",
-    price: 9.9,
-    priceCents: 990,
-    priceLabel: "R$9,90",
+    price: 3.5,
+    priceCents: 350,
+    priceLabel: "R$3,50",
+    originalPrice: 9.9,
+    originalPriceCents: 990,
+    originalPriceLabel: "R$9,90",
+    promotionLabel: "POR TEMPO LIMITADO",
+    discountLabel: "65% OFF",
     description: "16 GB de bons repertórios atualizados para quem busca variedade e economia.",
-    cta: "QUERO O BÁSICO",
+    cta: "QUERO POR R$3,50",
     recommended: false,
     productId: digitalProduct.id,
     checkoutTitle: "Pack Básico 16 GB",

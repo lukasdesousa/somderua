@@ -62,7 +62,17 @@ export default function Form() {
               Finalize seu acesso imediato
             </h1>
             <div className="mt-4" aria-label="Resumo da oferta escolhida">
+              {selectedOffer.originalPriceLabel ? (
+                <p className="text-sm text-indigo-100/55">
+                  De <span className="line-through">{selectedOffer.originalPriceLabel}</span> por
+                </p>
+              ) : null}
               <p className="text-3xl font-semibold text-indigo-100">{selectedOffer.priceLabel}</p>
+              {selectedOffer.promotionLabel ? (
+                <p className="mt-2 text-xs font-extrabold uppercase tracking-[0.14em] text-amber-300">
+                  🔥 {selectedOffer.promotionLabel} · {selectedOffer.discountLabel}
+                </p>
+              ) : null}
               <p className="mt-1 text-sm text-indigo-100/70">
                 {selectedOffer.description}
               </p>
@@ -78,7 +88,12 @@ export default function Form() {
                   <p className="text-indigo-100/65">{digitalProduct.checkoutName}</p>
                   <p className="mt-1 text-indigo-100/65">Conteudo digital liberado conforme a oferta escolhida.</p>
                 </div>
-                <p className="shrink-0 text-right font-semibold text-emerald-300">{selectedOffer.priceLabel}</p>
+                <div className="shrink-0 text-right">
+                  {selectedOffer.originalPriceLabel ? (
+                    <p className="text-xs text-indigo-100/45 line-through">{selectedOffer.originalPriceLabel}</p>
+                  ) : null}
+                  <p className="font-semibold text-emerald-300">{selectedOffer.priceLabel}</p>
+                </div>
               </div>
             </div>
 

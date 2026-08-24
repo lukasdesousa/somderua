@@ -47,7 +47,9 @@ export function buildAutomatedAbandonedCartPayload(input: {
     },
     offer: {
       expiresIn: ABANDONED_CART_OFFER_NOTE,
-      discountLabel: `Oferta escolhida: ${selectedOffer.name}`,
+      discountLabel: selectedOffer.originalPriceLabel
+        ? `${selectedOffer.promotionLabel ?? "Oferta promocional"}: de ${selectedOffer.originalPriceLabel} por ${selectedOffer.priceLabel}`
+        : `Oferta escolhida: ${selectedOffer.name}`,
     },
     socialProof: {
       satisfiedCustomersCount: ABANDONED_CART_SATISFIED_CUSTOMERS_COUNT,

@@ -8,6 +8,7 @@ import Workflows from "@/components/workflows";
 import Breadcrumbs from "@/components/seo/breadcrumbs";
 import JsonLd from "@/components/seo/json-ld";
 import ConversionWidgets from "@/components/conversion-widgets";
+import HomePromotionBanner from "@/components/home-promotion-banner";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { digitalProduct, offerPriceLabels, packOfferList } from "@/lib/pricing";
 import { breadcrumbSchema, faqPageSchema, productOffersSchema, websiteSchema } from "@/lib/seo/schema";
@@ -177,6 +178,7 @@ export default function Home() {
         })}
       />
       <JsonLd id="home-faq-jsonld" data={faqPageSchema(homeFaqs)} />
+      <HomePromotionBanner />
       <Breadcrumbs items={[{ name: "Inicio" }]} />
       <Hero />
       <Features />
