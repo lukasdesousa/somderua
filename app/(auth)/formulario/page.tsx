@@ -6,7 +6,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 export const metadata: Metadata = buildMetadata({
   title: "Comprar repertório de músicas para pen drive",
   description:
-    "Checkout seguro para adquirir pack de músicas para paredão e pen drive com liberação imediata.",
+    "Checkout seguro para adquirir seu pack de músicas para pen drive com liberação imediata após a aprovação.",
   path: "/formulario",
   noIndex: true,
 });

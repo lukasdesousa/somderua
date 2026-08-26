@@ -21,7 +21,7 @@ export default function Cta() {
               Leve o repertório pronto para hoje e pare de montar playlist do zero.
             </h2>
             <p className="mt-4 max-w-2xl text-lg text-slate-300">
-              Um único download com músicas organizadas para carro, pen drive, festas, paredão e uso diário.
+              Um único download com um pack de músicas para pen drive, carro, festas e uso diário.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {paymentSignals.map((signal) => (
@@ -39,7 +39,7 @@ export default function Cta() {
             <p className="mt-4 text-sm font-semibold uppercase text-emerald-200">{recommendedPackOffer.name}</p>
             <p className="mt-1 font-nacelle text-5xl font-semibold text-white">{recommendedPackOffer.priceLabel}</p>
             <p className="mt-2 text-sm text-slate-300">
-              Mais de 28 GB com repertório 2026, hits do momento, virais e músicas atualizadas para paredão.
+              Mais de 28 GB com repertório 2026, hits do momento, virais e músicas organizadas para pen drive.
             </p>
             <ul className="mt-5 grid gap-2 text-sm text-slate-300" aria-label="Vantagens da oferta">
               {offerBullets.map((hook) => (

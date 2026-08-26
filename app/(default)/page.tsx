@@ -21,7 +21,7 @@ const includedItems = [
   },
   {
     title: "Pastas por estilo",
-    text: "Funk, remix, paredao, automotivo, internacional, piseiro, sertanejo e selecoes para viagem.",
+    text: "Funk, remix, automotivo, internacional, piseiro, sertanejo e selecoes para viagem no pen drive.",
   },
   {
     title: "Organizacao para uso real",
@@ -44,7 +44,7 @@ const includedItems = [
 const updateItems = [
   {
     title: "Curadoria constante",
-    text: "O repertorio acompanha estilos que giram em carro, festa, viagem e paredao.",
+    text: "O repertorio acompanha estilos que giram no pen drive, no carro, em festas e viagens.",
   },
   {
     title: "Pastas revisadas",
@@ -88,7 +88,7 @@ const homeFaqs = [
   {
     question: "O que vem no Pack Som de Rua?",
     answer:
-      "Um repertorio com mais de 10 mil musicas organizado em pastas para pen drive, carro, caixa de som, celular e paredao.",
+      "Um pack de musicas para pen drive com mais de 10 mil faixas organizadas em pastas, pronto para usar no carro, na caixa de som e em aparelhos USB.",
   },
   {
     question: "O download e liberado na hora?",
@@ -123,9 +123,9 @@ const relatedLinks = [
     text: "Veja como usar o repertorio em pen drive comum e som automotivo.",
   },
   {
-    href: "/musicas-para-paredao",
-    title: "Musicas para paredao",
-    text: "Entenda a selecao para grave forte, som automotivo e festas.",
+    href: "/blog/como-organizar-pastas-de-musicas-no-pen-drive",
+    title: "Organizar musicas no pen drive",
+    text: "Aprenda a estruturar as pastas para encontrar cada estilo com facilidade.",
   },
   {
     href: "/musicas-para-som-automotivo",
@@ -146,11 +146,11 @@ const relatedLinks = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Pack de musicas 2026 para pen drive e paredao",
+    title: "Pack de musicas para pen drive 2026",
     description:
-      "Compre o Pack Som de Rua com mais de 10 mil musicas organizadas para carro, pen drive, som automotivo e paredao, com download automatico.",
+      "Pack de musicas para pen drive com mais de 10 mil faixas organizadas por estilo, pronto para carro e aparelhos USB, com download automatico.",
     path: "/",
-    keywords: ["pack de musicas", "pack de musicas 2026", "pack de musicas para pen drive", "download imediato de musicas"],
+    keywords: ["pack de musicas para pen drive", "pack de musicas 2026", "musicas para pen drive", "download de musicas para pen drive"],
   });
 }
 

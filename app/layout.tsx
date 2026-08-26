@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "Som de Rua | Repertório atualizado para pen drive e paredão",
+    title: "Som de Rua | Pack de músicas para pen drive",
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,

@@ -15,7 +15,7 @@ const automotiveSignals = [
   },
   {
     title: "Pastas para rotina real",
-    text: "Viagem, resenha, festa, funk, piseiro, sertanejo e paredao ficam separados para reduzir procura no painel.",
+    text: "Viagem, resenha, festa, funk, piseiro e sertanejo ficam separados no pen drive para reduzir procura no painel.",
   },
   {
     title: "Uso sem internet",
@@ -46,7 +46,7 @@ const faqs = [
   {
     question: "Musicas para som automotivo precisam ser diferentes?",
     answer:
-      "O ideal e usar um repertorio organizado, com volume consistente, grave limpo e variedade para alternar entre rotina, festa e paredao.",
+      "O ideal e usar um repertorio organizado, com volume consistente, grave limpo e variedade para alternar entre rotina, viagem e festa.",
   },
   {
     question: "Tambem posso usar no celular?",
@@ -56,7 +56,7 @@ const faqs = [
   {
     question: "Qual oferta escolher para som automotivo?",
     answer:
-      `O Pack Basico de 16 GB parte de ${offerPriceLabels.entry}. O Pack Premium com mais de 28 GB custa ${offerPriceLabels.recommended} e inclui hits atuais, virais e repertorio atualizado para paredao.`,
+      `O Pack Basico de 16 GB parte de ${offerPriceLabels.entry}. O Pack Premium com mais de 28 GB custa ${offerPriceLabels.recommended} e inclui hits atuais, virais e repertorio organizado para pen drive.`,
   },
 ];
 
@@ -64,7 +64,7 @@ export function generateMetadata(): Metadata {
   return buildMetadata({
     title: "Musicas para som automotivo 2026: pack para carro",
     description:
-      "Repertorio para som automotivo com musicas para carro, grave forte, pen drive e paredao, organizado em pastas e com download automatico.",
+      "Repertorio para som automotivo e pack de musicas para pen drive, organizado em pastas para tocar no carro, com download automatico.",
     path: "/musicas-para-som-automotivo",
     keywords: ["musicas para som automotivo", "musicas para carro", "pack som automotivo", "repertorio automotivo"],
   });
@@ -96,8 +96,8 @@ export default function MusicasParaSomAutomotivoPage() {
             <Link href="/baixar-musicas#escolha-seu-pack" className="btn bg-linear-to-t from-indigo-600 to-indigo-500 text-white">
               Escolher meu pack
             </Link>
-            <Link href="/musicas-para-paredao" className="btn-sm bg-gray-800 hover:bg-gray-700">
-              Ver musicas para paredao
+            <Link href="/musicas-para-pen-drive" className="btn-sm bg-gray-800 hover:bg-gray-700">
+              Ver pack para pen drive
             </Link>
             <span className="text-sm text-indigo-100/65">Básico 16 GB por {offerPriceLabels.entry} ou Premium +28 GB por {offerPriceLabels.recommended}</span>
           </div>

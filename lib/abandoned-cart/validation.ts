@@ -2,7 +2,7 @@ import { ValidationError } from "./errors";
 import type { ValidatedAbandonedCartPayload } from "./types";
 
 const DEFAULT_BENEFITS = [
-  "Mais de 10 mil faixas selecionadas para carro, pen drive e paredão.",
+  "Pack com mais de 10 mil músicas selecionadas para pen drive e carro.",
   "Download liberado rapidamente após a confirmação do pagamento.",
   "Repertório organizado para tocar sem perder tempo procurando música.",
   "Reembolso integral se uma falha técnica impedir o acesso e não puder ser solucionada.",

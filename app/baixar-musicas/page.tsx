@@ -43,7 +43,7 @@ const comparisonRows = [
   { label: "Repertórios atualizados em 2026", essencial: "✓", completo: "✓" },
   { label: "Hits de maio a agosto de 2026", essencial: "Não inclusos", completo: "Inclusos" },
   { label: "Hits do momento e músicas virais", essencial: "—", completo: "✓" },
-  { label: "Atualizações para paredão", essencial: "Seleção base", completo: "Seleção atualizada" },
+  { label: "Seleção para pen drive", essencial: "Seleção base", completo: "Seleção atualizada" },
   { label: "Pastas organizadas por estilos", essencial: "✓", completo: "✓" },
   { label: "Download após a aprovação", essencial: "Imediato", completo: "Imediato" },
   { label: "Preço", essencial: entryPackOffer.priceLabel, completo: recommendedPackOffer.priceLabel },
@@ -76,7 +76,7 @@ const offerDetails: Record<PackOfferId, {
     availabilityNote: "Inclui os hits atuais de maio a agosto de 2026.",
     benefits: [
       "Hits do momento e músicas virais",
-      "Repertório atualizado para paredão",
+      "Repertório atualizado e organizado para pen drive",
       "Seleções para som automotivo, festas e resenhas",
       "Download rápido e imediato após a aprovação",
       "Reembolso integral para falha técnica não solucionada",
@@ -87,7 +87,7 @@ const offerDetails: Record<PackOfferId, {
 const faqs = [
   {
     question: "Os dois packs têm conteúdos diferentes?",
-    answer: "Sim. O Pack Básico tem 16 GB de repertórios atualizados, mas não inclui os hits de maio a agosto de 2026. O Pack Premium tem mais de 28 GB e inclui hits do momento, virais e músicas atualizadas para paredão.",
+    answer: "Sim. O Pack Básico tem 16 GB de repertórios atualizados, mas não inclui os hits de maio a agosto de 2026. O Pack Premium tem mais de 28 GB e inclui hits do momento, virais e músicas organizadas para pen drive.",
   },
   {
     question: "Qual o valor?",
@@ -105,10 +105,10 @@ const faqs = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Baixar pack de musicas para carro, pen drive e paredao",
-    description: "Escolha entre 16 GB no Pack Basico ou mais de 28 GB no Premium, com musicas atualizadas em 2026 e download imediato.",
+    title: "Baixar pack de musicas para pen drive em 2026",
+    description: "Baixe um pack de musicas para pen drive organizado por estilos. Escolha entre 16 GB no Basico ou mais de 28 GB no Premium, com acesso automatico.",
     path: "/baixar-musicas",
-    keywords: ["baixar pack de musicas", "baixar musicas", "download de musicas", "pack de musicas para carro"],
+    keywords: ["pack de musicas para pen drive", "baixar pack de musicas", "musicas para pen drive", "download de musicas para pen drive"],
   });
 }
 
@@ -144,7 +144,7 @@ export default function BaixarMusicasPage() {
             Do repertório essencial aos hits que estão tocando agora.
           </h1>
           <p className="mt-4 max-w-3xl text-lg text-indigo-200/75">
-            Escolha entre 16 GB de bons repertórios no Básico ou mais de 28 GB no Premium, com hits do momento, virais e músicas atualizadas para paredão.
+            Escolha seu pack de músicas para pen drive: 16 GB de bons repertórios no Básico ou mais de 28 GB no Premium, com hits do momento e músicas organizadas por estilo.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <a href="#escolha-seu-pack" className="btn bg-linear-to-t from-indigo-600 to-indigo-500 text-white">
@@ -364,7 +364,7 @@ export default function BaixarMusicasPage() {
           <h2 id="baixar-related-title" className="text-2xl font-semibold text-gray-100">Guias relacionados</h2>
           <div className="mt-4 flex flex-wrap gap-3">
             <Link href="/musicas-para-pen-drive" className="btn-sm bg-gray-800 hover:bg-gray-700">Músicas para pen drive</Link>
-            <Link href="/musicas-para-paredao" className="btn-sm bg-gray-800 hover:bg-gray-700">Músicas para paredão</Link>
+            <Link href="/blog/como-organizar-pastas-de-musicas-no-pen-drive" className="btn-sm bg-gray-800 hover:bg-gray-700">Organizar o pen drive</Link>
             <Link href="/musicas-para-som-automotivo" className="btn-sm bg-gray-800 hover:bg-gray-700">Som automotivo</Link>
             <Link href="/blog/como-baixar-pack-de-musicas-com-seguranca" className="btn-sm bg-gray-800 hover:bg-gray-700">Compra segura</Link>
           </div>

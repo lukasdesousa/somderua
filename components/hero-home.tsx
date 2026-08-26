@@ -48,16 +48,16 @@ export default function HeroHome() {
             className="mt-6 font-nacelle text-4xl font-semibold text-white md:text-6xl"
             data-aos="fade-up"
           >
-            Pack de músicas 2026 para pen drive, carro e paredão.
+            Pack de músicas para pen drive atualizado em 2026.
           </h1>
           <p
             className="mx-auto mt-5 max-w-3xl text-lg text-slate-200 md:text-xl"
             data-aos="fade-up"
             data-aos-delay={150}
           >
-            Mais de 10 mil músicas separadas por estilo, prontas para carro,
-            paredão, pen drive, celular e festas sem perder tempo procurando
-            faixa por faixa.
+            Mais de 10 mil músicas separadas por estilo, prontas para copiar
+            para o pen drive e tocar no carro, na caixa de som ou em aparelhos
+            USB sem procurar faixa por faixa.
           </p>
 
           <div

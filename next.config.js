@@ -23,6 +23,16 @@ const nextConfig = {
         destination: "/musicas-para-som-automotivo",
         permanent: true,
       },
+      {
+        source: "/musicas-para-paredao",
+        destination: "/musicas-para-pen-drive",
+        permanent: true,
+      },
+      {
+        source: "/blog/musicas-com-grave-forte-para-paredao",
+        destination: "/blog/musicas-com-grave-forte-para-pen-drive",
+        permanent: true,
+      },
     ];
   },
 };

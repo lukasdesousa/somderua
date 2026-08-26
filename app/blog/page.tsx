@@ -12,7 +12,7 @@ export function generateMetadata(): Metadata {
   return buildMetadata({
     title: "Blog de repertórios e dicas para pen drive",
     description:
-      "Guias práticos sobre músicas para pen drive, paredão, som automotivo, organização de pastas e compra segura de packs.",
+      "Guias práticos sobre pack de músicas para pen drive, som automotivo, organização de pastas e compra segura.",
     path: "/blog",
     keywords: ["blog de músicas", "dicas de repertório", "músicas para som automotivo"],
   });
@@ -31,7 +31,7 @@ export default function BlogPage() {
       <Breadcrumbs items={[{ name: "Início", href: "/" }, { name: "Blog" }]} />
       <h1 className="mb-3 text-4xl font-semibold text-gray-100">Blog de repertórios</h1>
       <p className="mb-8 max-w-3xl text-indigo-200/65">
-        Guias para escolher, baixar, organizar e usar músicas em pen drive, carro, caixa de som e paredão.
+        Guias para escolher, baixar, organizar e usar músicas no pen drive, no carro e na caixa de som.
       </p>
 
       <div className="grid gap-4 md:grid-cols-2">

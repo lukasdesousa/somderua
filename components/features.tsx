@@ -74,7 +74,7 @@ const benefits = [
   {
     label: "Custo-beneficio",
     title: "Um pack, varias ocasioes",
-    text: "Um unico acesso cobre carro, paredao, churrasco, viagem e uso diario.",
+    text: "Um unico acesso cobre pen drive, carro, churrasco, viagem e uso diario.",
   },
 ];
 

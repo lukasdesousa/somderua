@@ -67,13 +67,13 @@ export const packOffers = {
     price: 19.9,
     priceCents: 1990,
     priceLabel: "R$19,90",
-    description: "Mais de 28 GB com hits do momento, virais e repertório atualizado para paredão.",
+    description: "Mais de 28 GB com hits do momento, virais e repertório organizado para pen drive.",
     cta: "QUERO O PREMIUM",
     recommended: true,
     badge: "⭐ MAIS ESCOLHIDO",
     productId: digitalProduct.id,
     checkoutTitle: "Pack Premium +28 GB",
-    checkoutDescription: "Mais de 28 GB de músicas atualizadas em 2026, com hits do momento, virais e repertório para paredão.",
+    checkoutDescription: "Mais de 28 GB de músicas atualizadas em 2026, com hits do momento, virais e repertório para pen drive.",
   },
 } satisfies Record<PackOfferId, PackOffer>;
 

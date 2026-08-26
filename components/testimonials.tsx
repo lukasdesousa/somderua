@@ -3,7 +3,7 @@ const testimonials = [
     name: "Ricardo Goncalves",
     city: "Fortaleza, CE",
     rating: "5,0",
-    content: "Comprei para o paredao e liberou rapido. As pastas vieram bem separadas e o grave ficou forte no carro.",
+    content: "Comprei para montar meu pen drive e liberou rapido. As pastas vieram bem separadas e o grave ficou forte no carro.",
   },
   {
     name: "Joao Ximenes",
@@ -33,7 +33,7 @@ const testimonials = [
     name: "Wesley Rocha",
     city: "Teresina, PI",
     rating: "5,0",
-    content: "Boa variedade de funk, remix e paredao. Valeu pelo custo-beneficio e pela entrega automatica.",
+    content: "Boa variedade de funk, remix e som automotivo. Valeu pelo custo-beneficio e pela entrega automatica.",
   },
 ];
 
@@ -45,7 +45,7 @@ export default function Testimonials() {
           <div>
             <p className="text-sm font-semibold uppercase text-amber-300">Depoimentos</p>
             <h2 id="testimonials-title" className="mt-3 font-nacelle text-3xl font-semibold text-white md:text-4xl">
-              Pessoas reais usando o pack no carro, no pen drive e no paredao.
+              Pessoas reais usando o pack no pen drive, no carro e na caixa de som.
             </h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">

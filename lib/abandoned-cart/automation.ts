@@ -9,7 +9,7 @@ const DEFAULT_CUSTOMER_NAME = "Cliente Som de Rua";
 const PRODUCT_IMAGE_PATH = "/images/pack-16gb-5000.png";
 
 const AUTOMATED_BENEFITS = [
-  "Mais de 10 mil faixas atualizadas para carro, pen drive e paredão.",
+  "Pack com mais de 10 mil músicas organizadas para pen drive e carro.",
   "Download liberado rapidamente após a confirmação do pagamento.",
   "Repertório organizado para tocar hoje sem perder tempo procurando música.",
   "Reembolso integral se uma falha técnica impedir o acesso e não puder ser solucionada.",

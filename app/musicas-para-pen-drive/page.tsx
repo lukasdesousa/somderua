@@ -16,7 +16,7 @@ const steps = [
 ];
 
 const benefits = [
-  "Repertório pronto para usar sem montar pasta por pasta.",
+  "Pack de músicas para pen drive pronto para usar sem montar pasta por pasta.",
   "Variedade para viagem, resenha, rotina e som automotivo.",
   "Organização simples para navegar no painel do carro.",
   "Acesso vitalício e reembolso integral em caso de falha técnica não solucionada.",
@@ -30,7 +30,7 @@ const compatibilityTips = [
 
 const faqs = [
   {
-    question: "Funciona em pen drive comum?",
+    question: "O pack de músicas funciona em pen drive comum?",
     answer: "Sim. Você baixa os arquivos e copia para um pen drive com espaço disponível.",
   },
   {
@@ -45,10 +45,10 @@ const faqs = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Musicas para pen drive 2026: pack organizado para carro",
-    description: "Guia e pack de musicas para pen drive com organizacao em pastas, uso no carro, download rapido e suporte do Som de Rua.",
+    title: "Pack de musicas para pen drive 2026",
+    description: "Pack de musicas para pen drive organizado em pastas, pronto para copiar e tocar no carro. Escolha entre 16 GB e mais de 28 GB com download automatico.",
     path: "/musicas-para-pen-drive",
-    keywords: ["musicas para pen drive", "pack para pen drive", "musicas para pen drive de carro", "repertorio para pen drive"],
+    keywords: ["pack de musicas para pen drive", "musicas para pen drive", "pack para pen drive", "musicas para pen drive de carro"],
   });
 }
 
@@ -65,15 +65,15 @@ export default function MusicasPenDrivePage() {
           <p className="mb-3 inline-flex rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-200">
             Opções a partir de {offerPriceLabels.entry}
           </p>
-          <h1 id="pen-drive-title" className="text-4xl font-semibold text-gray-100">Músicas para pen drive</h1>
+          <h1 id="pen-drive-title" className="text-4xl font-semibold text-gray-100">Pack de músicas para pen drive</h1>
           <p className="mt-3 text-lg text-indigo-200/75">
-            Conteúdo pronto para baixar, copiar e tocar no carro em poucos minutos, com pastas organizadas para facilitar a navegação.
+            Mais de 10 mil músicas prontas para baixar, copiar e tocar no carro, com pastas organizadas para facilitar a navegação no aparelho.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <Link href="/baixar-musicas#escolha-seu-pack" className="btn bg-linear-to-t from-indigo-600 to-indigo-500 text-white">
               Escolher meu pack
             </Link>
-            <Link href="/musicas-para-paredao" className="btn-sm bg-gray-800 hover:bg-gray-700">Ver músicas para paredão</Link>
+            <Link href="/blog/como-colocar-musicas-no-pen-drive-para-tocar-no-carro" className="btn-sm bg-gray-800 hover:bg-gray-700">Como copiar para o pen drive</Link>
             <Link href="/musicas-para-som-automotivo" className="btn-sm bg-gray-800 hover:bg-gray-700">Ver som automotivo</Link>
             <span className="text-sm text-indigo-100/65">Básico 16 GB por {offerPriceLabels.entry} ou Premium +28 GB por {offerPriceLabels.recommended}</span>
           </div>
@@ -81,7 +81,7 @@ export default function MusicasPenDrivePage() {
 
         <section className="mt-12 grid gap-8 md:grid-cols-[0.9fr_1fr]" aria-labelledby="pen-drive-steps-title">
           <div>
-            <h2 id="pen-drive-steps-title" className="text-3xl font-semibold text-gray-100">Como usar no pen drive</h2>
+            <h2 id="pen-drive-steps-title" className="text-3xl font-semibold text-gray-100">Como usar o pack no pen drive</h2>
             <p className="mt-3 text-indigo-200/70">
               A ideia é deixar o processo simples mesmo para quem quer só baixar o repertório e colocar para tocar.
             </p>

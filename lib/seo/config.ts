@@ -3,7 +3,7 @@ export const siteConfig = {
   shortName: "Som de Rua",
   alternateNames: ["SomDeRua", "somderua.com.br"],
   description:
-    "Packs de músicas para pen drive e paredão com entrega automática, áudio otimizado e atualização frequente.",
+    "Pack de músicas para pen drive com entrega automática, faixas organizadas por estilo e repertório atualizado para carro e aparelhos USB.",
   url: "https://somderua.com.br/",
   ogImage: "/images/og-image.png",
   logo: "/images/somderua_logo.png",
@@ -26,10 +26,10 @@ export const siteConfig = {
   gscVerification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ?? "",
   gaId: process.env.NEXT_PUBLIC_GA_ID ?? "",
   keywords: [
-    "pack de músicas",
+    "pack de músicas para pen drive",
     "pack de músicas 2026",
     "músicas para pen drive",
-    "pack de músicas para paredão",
+    "download de músicas para pen drive",
     "músicas para som automotivo",
     "repertório atualizado",
     "som automotivo",

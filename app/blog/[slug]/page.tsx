@@ -128,8 +128,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <Link className="btn-sm bg-gray-800 hover:bg-gray-700" href="/musicas-para-pen-drive">
             Músicas para pen drive
           </Link>
-          <Link className="btn-sm bg-gray-800 hover:bg-gray-700" href="/musicas-para-paredao">
-            Músicas para paredão
+          <Link className="btn-sm bg-gray-800 hover:bg-gray-700" href="/blog/como-organizar-pastas-de-musicas-no-pen-drive">
+            Organizar o pen drive
           </Link>
           <Link className="btn-sm bg-gray-800 hover:bg-gray-700" href="/musicas-para-som-automotivo">
             Som automotivo

@@ -32,7 +32,7 @@ export const blogPosts: BlogPost[] = [
       "Veja como preparar o pen drive, organizar as pastas e aumentar a chance de o som do carro reconhecer tudo de primeira.",
     keywords: ["como colocar músicas no pen drive", "músicas para carro", "pen drive no som automotivo"],
     publishedAt: "2026-04-12T08:00:00.000Z",
-    updatedAt: "2026-05-06T08:00:00.000Z",
+    updatedAt: "2026-08-26T08:00:00.000Z",
     content: [
       {
         heading: "Prepare o pen drive antes de copiar",
@@ -50,7 +50,7 @@ export const blogPosts: BlogPost[] = [
         heading: "Copie em uma ordem fácil de navegar",
         paragraphs: [
           "Depois do download, extraia os arquivos se eles estiverem compactados e copie as pastas principais para a raiz do pen drive.",
-          "Uma organização simples facilita encontrar funk, remix, paredão, automotivo e músicas internacionais direto no painel do carro.",
+          "Uma organização simples facilita encontrar funk, remix, grave pesado, automotivo e músicas internacionais direto no painel do carro.",
         ],
       },
       {
@@ -77,20 +77,20 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "musicas-com-grave-forte-para-paredao",
-    title: "Músicas para paredão: como escolher grave forte sem distorção",
+    slug: "musicas-com-grave-forte-para-pen-drive",
+    title: "Músicas com grave forte para pen drive: como escolher sem distorção",
     description:
-      "Critérios simples para escolher músicas para paredão com grave forte, volume consistente e boa navegação nas pastas.",
+      "Critérios simples para escolher músicas com grave forte para pen drive, volume consistente e boa navegação nas pastas do som automotivo.",
     excerpt:
-      "Entenda como qualidade do arquivo, organização e variação de estilos ajudam o paredão a tocar com mais pressão e menos distorção.",
-    keywords: ["músicas para paredão", "grave forte", "som automotivo"],
+      "Entenda como qualidade do arquivo, organização e variedade ajudam seu pen drive a entregar grave forte com menos distorção.",
+    keywords: ["músicas com grave forte para pen drive", "músicas para pen drive", "grave forte", "som automotivo"],
     publishedAt: "2026-02-18T08:00:00.000Z",
-    updatedAt: "2026-05-06T08:00:00.000Z",
+    updatedAt: "2026-08-26T08:00:00.000Z",
     content: [
       {
         heading: "Grave forte depende de arquivo e seleção",
         paragraphs: [
-          "Nem toda música que parece alta no celular funciona bem em paredão. Em volume elevado, arquivos ruins evidenciam chiado, saturação e perda de definição.",
+          "Nem toda música que parece alta no celular funciona bem no som do carro ou na caixa. Em volume elevado, arquivos ruins evidenciam chiado, saturação e perda de definição.",
           "Um bom repertório mistura faixas conhecidas, remixes atuais e músicas com grave limpo para manter energia sem cansar o ouvido.",
         ],
       },
@@ -116,8 +116,8 @@ export const blogPosts: BlogPost[] = [
         answer: "Não. O ideal é ter impacto no grave sem estourar voz, médio e agudo.",
       },
       {
-        question: "Paredão toca os mesmos formatos de som automotivo comum?",
-        answer: "Na maioria dos casos sim, mas sempre vale testar no aparelho que será usado no evento ou no carro.",
+        question: "O pen drive toca os mesmos formatos em qualquer aparelho?",
+        answer: "Nem sempre. A compatibilidade depende do aparelho, por isso vale conferir o manual e testar algumas faixas antes do uso.",
       },
     ],
     relatedSlugs: [
@@ -132,10 +132,10 @@ export const blogPosts: BlogPost[] = [
     description:
       "Aprenda uma estrutura simples para organizar músicas por estilo, uso e intensidade sem se perder no som do carro.",
     excerpt:
-      "Uma boa estrutura de pastas deixa o repertório mais fácil de usar em viagens, festas, paredão e som automotivo.",
+      "Uma boa estrutura de pastas deixa o repertório mais fácil de usar em viagens, festas e no som automotivo.",
     keywords: ["organizar pastas de músicas", "pen drive com músicas", "repertório organizado"],
     publishedAt: "2026-04-20T08:00:00.000Z",
-    updatedAt: "2026-05-06T08:00:00.000Z",
+    updatedAt: "2026-08-26T08:00:00.000Z",
     content: [
       {
         heading: "Comece pelos estilos principais",
@@ -190,7 +190,7 @@ export const blogPosts: BlogPost[] = [
       "Veja os sinais de uma compra segura e como evitar problemas na hora de baixar seu repertório.",
     keywords: ["baixar pack de músicas", "download de músicas", "compra segura"],
     publishedAt: "2026-02-05T08:00:00.000Z",
-    updatedAt: "2026-05-06T08:00:00.000Z",
+    updatedAt: "2026-08-26T08:00:00.000Z",
     content: [
       {
         heading: "Confira os sinais básicos de segurança",
@@ -230,7 +230,7 @@ export const blogPosts: BlogPost[] = [
     ],
     relatedSlugs: [
       "como-colocar-musicas-no-pen-drive-para-tocar-no-carro",
-      "musicas-com-grave-forte-para-paredao",
+      "musicas-com-grave-forte-para-pen-drive",
       "repertorio-atualizado-para-som-automotivo",
     ],
   },
@@ -294,14 +294,14 @@ export const blogPosts: BlogPost[] = [
       "Guia prático para montar repertório atualizado para pen drive com variedade, grave limpo e boa experiência no som automotivo.",
     excerpt:
       "Aprenda a equilibrar músicas virais, clássicos, remixes e faixas de grave para manter o repertório sempre útil.",
-    keywords: ["repertório atualizado", "músicas para pen drive", "hits para paredão"],
+    keywords: ["repertório atualizado", "músicas para pen drive", "hits para pen drive"],
     publishedAt: "2026-03-01T08:00:00.000Z",
-    updatedAt: "2026-05-06T08:00:00.000Z",
+    updatedAt: "2026-08-26T08:00:00.000Z",
     content: [
       {
         heading: "Atualizado não significa bagunçado",
         paragraphs: [
-          "Um repertório atualizado precisa trazer músicas novas, mas também manter faixas que funcionam em diferentes situações: estrada, resenha, festa e paredão.",
+          "Um repertório atualizado precisa trazer músicas novas, mas também manter faixas que funcionam em diferentes situações: estrada, resenha, festa e viagem.",
           "O segredo é equilibrar novidade com músicas que o público reconhece rápido.",
         ],
       },
@@ -333,7 +333,7 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     relatedSlugs: [
-      "musicas-com-grave-forte-para-paredao",
+      "musicas-com-grave-forte-para-pen-drive",
       "como-organizar-pastas-de-musicas-no-pen-drive",
       "repertorio-atualizado-para-som-automotivo",
     ],
@@ -344,10 +344,10 @@ export const blogPosts: BlogPost[] = [
     description:
       "Como escolher repertório para som automotivo com grave, variedade, organização e músicas prontas para usar no dia a dia.",
     excerpt:
-      "Veja como montar uma seleção prática para carro, caixa, viagem e paredão sem depender de playlists soltas.",
+      "Veja como montar uma seleção prática para pen drive, carro, caixa e viagem sem depender de playlists soltas.",
     keywords: ["repertório para som automotivo", "músicas para carro", "pack automotivo"],
     publishedAt: "2026-05-01T08:00:00.000Z",
-    updatedAt: "2026-05-06T08:00:00.000Z",
+    updatedAt: "2026-08-26T08:00:00.000Z",
     content: [
       {
         heading: "Pense no uso real do carro",
@@ -382,7 +382,7 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     relatedSlugs: [
-      "musicas-com-grave-forte-para-paredao",
+      "musicas-com-grave-forte-para-pen-drive",
       "como-colocar-musicas-no-pen-drive-para-tocar-no-carro",
       "como-baixar-pack-de-musicas-com-seguranca",
     ],

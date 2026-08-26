@@ -24,7 +24,7 @@ const genres = [
     image: WorkflowImg03,
   },
   {
-    name: "Paredao",
+    name: "Favoritas do pen drive",
     quantity: "+1.500 faixas",
     update: "Curadoria revisada",
     image: WorkflowImg02,

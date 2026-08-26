@@ -129,7 +129,7 @@ Som de Rua`;
           <tr>
             <td class="email-pad" style="padding:22px 38px;border-top:1px solid #202c3d;background:#0a0f19;">
               <p style="margin:0;color:#718096;font-size:12px;line-height:19px;text-align:center;">
-                © ${currentYear} Som de Rua<br />Packs de músicas organizados para carro, pen drive e paredão.
+                © ${currentYear} Som de Rua<br />Packs de músicas organizados para pen drive e carro.
               </p>
             </td>
           </tr>

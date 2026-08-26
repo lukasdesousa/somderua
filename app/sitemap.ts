@@ -5,12 +5,11 @@ import { absoluteUrl } from "@/lib/seo/metadata";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
-    { route: "/", lastModified: "2026-08-18", changeFrequency: "weekly" as const, priority: 1 },
-    { route: "/blog", lastModified: "2026-05-06", changeFrequency: "weekly" as const, priority: 0.8 },
-    { route: "/baixar-musicas", lastModified: "2026-08-18", changeFrequency: "monthly" as const, priority: 0.82 },
-    { route: "/musicas-para-pen-drive", lastModified: "2026-08-18", changeFrequency: "monthly" as const, priority: 0.82 },
-    { route: "/musicas-para-paredao", lastModified: "2026-08-18", changeFrequency: "monthly" as const, priority: 0.82 },
-    { route: "/musicas-para-som-automotivo", lastModified: "2026-08-18", changeFrequency: "monthly" as const, priority: 0.82 },
+    { route: "/", lastModified: "2026-08-26", changeFrequency: "weekly" as const, priority: 1 },
+    { route: "/blog", lastModified: "2026-08-26", changeFrequency: "weekly" as const, priority: 0.8 },
+    { route: "/baixar-musicas", lastModified: "2026-08-26", changeFrequency: "monthly" as const, priority: 0.82 },
+    { route: "/musicas-para-pen-drive", lastModified: "2026-08-26", changeFrequency: "monthly" as const, priority: 0.9 },
+    { route: "/musicas-para-som-automotivo", lastModified: "2026-08-26", changeFrequency: "monthly" as const, priority: 0.78 },
     { route: "/tutorial", lastModified: "2026-08-22", changeFrequency: "monthly" as const, priority: 0.72 },
     { route: "/suporte", lastModified: "2026-08-20", changeFrequency: "monthly" as const, priority: 0.65 },
   ];
