@@ -2,7 +2,6 @@ import Image from "next/image";
 import WorkflowImg01 from "@/public/images/workflow-01.png";
 import WorkflowImg02 from "@/public/images/workflow-02.png";
 import WorkflowImg03 from "@/public/images/workflow-03.png";
-import Spotlight from "@/components/spotlight";
 
 const genres = [
   {
@@ -78,7 +77,7 @@ export default function Workflows() {
             </p>
           </div>
 
-          <Spotlight className="group mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="group mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {genres.map((genre) => (
               <a
                 key={genre.name}
@@ -104,7 +103,7 @@ export default function Workflows() {
                 </div>
               </a>
             ))}
-          </Spotlight>
+          </div>
         </div>
       </section>
 

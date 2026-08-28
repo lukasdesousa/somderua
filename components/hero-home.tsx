@@ -44,27 +44,16 @@ export default function HeroHome() {
           <span className="inline-flex rounded-lg border border-cyan-300/30 bg-cyan-300/10 px-4 py-1 text-xs font-semibold uppercase text-cyan-100">
             Pack Som de Rua atualizado para 2026
           </span>
-          <h1
-            className="mt-6 font-nacelle text-4xl font-semibold text-white md:text-6xl"
-            data-aos="fade-up"
-          >
+          <h1 className="mt-6 font-nacelle text-4xl font-semibold text-white md:text-6xl">
             Pack de músicas para pen drive atualizado em 2026.
           </h1>
-          <p
-            className="mx-auto mt-5 max-w-3xl text-lg text-slate-200 md:text-xl"
-            data-aos="fade-up"
-            data-aos-delay={150}
-          >
+          <p className="mx-auto mt-5 max-w-3xl text-lg text-slate-200 md:text-xl">
             Mais de 10 mil músicas separadas por estilo, prontas para copiar
             para o pen drive e tocar no carro, na caixa de som ou em aparelhos
             USB sem procurar faixa por faixa.
           </p>
 
-          <div
-            className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row"
-            data-aos="fade-up"
-            data-aos-delay={250}
-          >
+          <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
               className="btn min-h-12 w-full bg-linear-to-t from-emerald-500 to-lime-400 px-6 text-sm font-bold text-slate-950 shadow-[0_16px_40px_rgba(16,185,129,0.28)] hover:from-emerald-400 hover:to-lime-300 sm:w-auto"
               href="/baixar-musicas#escolha-seu-pack"

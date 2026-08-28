@@ -1,9 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import { useState } from "react";
 import type { StaticImageData } from "next/image";
-import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import Image from "next/image";
+
+const VideoDialog = dynamic(() => import("@/components/video-dialog"), {
+  ssr: false,
+});
 
 interface ModalVideoProps {
   thumb: StaticImageData;
@@ -33,7 +37,6 @@ export default function ModalVideo({
   loop = true,
 }: ModalVideoProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   return (
     <div className="relative">
@@ -44,15 +47,13 @@ export default function ModalVideo({
           setModalOpen(true);
         }}
         aria-label={ariaLabel}
-        data-aos="fade-up"
-        data-aos-delay={200}
       >
         <Image
           className="w-full object-cover opacity-90 transition duration-300 group-hover:scale-[1.02] group-hover:opacity-100"
           src={thumb}
           width={thumbWidth}
           height={thumbHeight}
-          priority
+          loading="lazy"
           sizes="(max-width: 768px) 100vw, 1104px"
           alt={thumbAlt}
         />
@@ -70,34 +71,15 @@ export default function ModalVideo({
         </span>
       </button>
 
-      <Dialog initialFocus={videoRef} open={modalOpen} onClose={() => setModalOpen(false)}>
-        <DialogBackdrop
-          transition
-          className="fixed inset-0 z-[99999] bg-black/75 transition-opacity duration-300 ease-out data-closed:opacity-0"
+      {modalOpen ? (
+        <VideoDialog
+          video={video}
+          videoWidth={videoWidth}
+          videoHeight={videoHeight}
+          loop={loop}
+          onClose={() => setModalOpen(false)}
         />
-        <div className="fixed inset-0 z-[99999] flex px-4 py-6 sm:px-6">
-          <div className="mx-auto flex h-full max-w-6xl items-center">
-            <DialogPanel
-              transition
-              className="aspect-video max-h-full w-full overflow-hidden rounded-lg bg-black shadow-2xl duration-300 ease-out data-closed:scale-95 data-closed:opacity-0"
-            >
-              <video
-                ref={videoRef}
-                className="h-full w-full bg-black object-contain"
-                width={videoWidth}
-                height={videoHeight}
-                loop={loop}
-                controls
-                playsInline
-                preload="metadata"
-              >
-                <source src={video} type="video/mp4" />
-                Seu navegador não suporta a tag de vídeo.
-              </video>
-            </DialogPanel>
-          </div>
-        </div>
-      </Dialog>
+      ) : null}
     </div>
   );
 }
