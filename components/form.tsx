@@ -321,7 +321,7 @@ export default function Form() {
                 <>
                   <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-400/15 text-3xl text-emerald-300" aria-hidden="true">✓</div>
                   <h2 className="mt-4 text-2xl font-semibold text-white">Pagamento confirmado</h2>
-                  <p className="mt-2 text-indigo-100/70">A confirmação veio do Mercado Pago e seu acesso foi liberado.</p>
+                  <p className="mt-2 text-indigo-100/70">Seu pagamento foi confirmado, seu download foi liberado.</p>
                   {errorMessage ? <p role="alert" className="mt-4 text-sm text-red-200">{errorMessage}</p> : null}
                   <button type="button" onClick={() => void handleDownload()} disabled={downloadLoading} className="btn mt-6 w-full bg-linear-to-t from-emerald-500 to-lime-400 font-bold text-slate-950 disabled:opacity-60">
                     {downloadLoading ? "Preparando download..." : "Baixar agora"}
