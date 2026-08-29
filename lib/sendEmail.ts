@@ -3,6 +3,7 @@ import "server-only";
 import crypto from "crypto";
 import { EmailDeliveryError } from "@/lib/abandoned-cart/errors";
 import { getResendClient } from "@/lib/abandoned-cart/mailer";
+import { createOrderAccessToken } from "@/lib/payments/access";
 import { siteConfig } from "@/lib/seo/config";
 
 const DEFAULT_FROM_EMAIL = "Som de Rua <pack@somderua.com.br>";
@@ -22,7 +23,8 @@ export async function sendPurchaseEmail(to: string, reference: string): Promise<
     throw new EmailDeliveryError("Missing purchase email recipient", "resend");
   }
 
-  const downloadUrl = getDownloadUrl(reference);
+  const orderAccessToken = await createOrderAccessToken(reference);
+  const downloadUrl = getDownloadUrl(reference, orderAccessToken);
   const tutorialUrl = getTutorialUrl();
   const idempotencyKey = createPurchaseEmailIdempotencyKey(recipient, reference);
   const currentYear = new Date().getFullYear();
@@ -179,9 +181,10 @@ function renderEmailStep(number: string, description: string): string {
   </tr>`;
 }
 
-function getDownloadUrl(reference: string): string {
-  const url = new URL("/download", getBaseUrl());
+function getDownloadUrl(reference: string, accessToken: string): string {
+  const url = new URL("/api/order-access", getBaseUrl());
   url.searchParams.set("reference", reference);
+  url.searchParams.set("access_token", accessToken);
   return url.toString();
 }
 

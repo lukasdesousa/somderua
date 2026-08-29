@@ -127,5 +127,5 @@ async function readJsonResponse<T>(response: Response): Promise<T> {
 }
 
 function isRejectedPaymentStatus(status?: string | null): boolean {
-  return Boolean(status && ["cancelled", "rejected", "refunded", "charged_back"].includes(status));
+  return Boolean(status && ["cancelled", "rejected", "expired", "refunded", "chargeback", "charged_back"].includes(status));
 }

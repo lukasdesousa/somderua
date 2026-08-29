@@ -1,9 +1,10 @@
 import type { PaymentResponse } from "mercadopago/dist/clients/payment/commonTypes";
 import { NextResponse } from "next/server";
-import crypto from "crypto";
+import { validateMercadoPagoWebhookSignature } from "@/lib/payments/webhook-signature";
 
 // Instância do cliente Mercado Pago
 const MERCADO_PAGO_API_URL = "https://api.mercadopago.com";
+const MERCADO_PAGO_TIMEOUT_MS = 15_000;
 
 export type MercadoPagoPreferenceResponse = {
   id?: string | null;
@@ -11,11 +12,71 @@ export type MercadoPagoPreferenceResponse = {
   sandbox_init_point?: string | null;
 };
 
+export type MercadoPagoPixPaymentRequest = {
+  transaction_amount: number;
+  description: string;
+  payment_method_id: "pix";
+  external_reference: string;
+  notification_url: string;
+  metadata: {
+    id: string;
+    offer_id: string;
+    offer_name: string;
+    offer_price_cents: number;
+    product_id: string;
+  };
+  payer: {
+    email: string;
+    first_name: string;
+    identification: {
+      type: "CPF";
+      number: string;
+    };
+  };
+  additional_info: {
+    items: Array<{
+      id: string;
+      title: string;
+      description: string;
+      category_id: string;
+      quantity: number;
+      unit_price: number;
+    }>;
+  };
+};
+
+export class MercadoPagoRequestError extends Error {
+  readonly status: number;
+
+  constructor(
+    message: string,
+    status: number,
+  ) {
+    super(message);
+    this.name = "MercadoPagoRequestError";
+    this.status = status;
+  }
+}
+
 export async function createMercadoPagoPreference(
   body: Record<string, unknown>,
   idempotencyKey: string,
 ): Promise<MercadoPagoPreferenceResponse> {
   return mercadoPagoRequest<MercadoPagoPreferenceResponse>("/checkout/preferences", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Idempotency-Key": idempotencyKey,
+    },
+    body: JSON.stringify(body),
+  });
+}
+
+export async function createMercadoPagoPixPayment(
+  body: MercadoPagoPixPaymentRequest,
+  idempotencyKey: string,
+): Promise<PaymentResponse> {
+  return mercadoPagoRequest<PaymentResponse>("/v1/payments", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -42,22 +103,32 @@ async function mercadoPagoRequest<T>(path: string, init: RequestInit): Promise<T
     throw new Error("MERCADO_PAGO_ACCESS_TOKEN contem caracteres invalidos");
   }
 
-  const response = await fetch(`${MERCADO_PAGO_API_URL}${path}`, {
-    ...init,
-    cache: "no-store",
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${accessToken}`,
-      ...init.headers,
-    },
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(`${MERCADO_PAGO_API_URL}${path}`, {
+      ...init,
+      cache: "no-store",
+      signal: init.signal ?? AbortSignal.timeout(MERCADO_PAGO_TIMEOUT_MS),
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
+        ...init.headers,
+      },
+    });
+  } catch {
+    throw new MercadoPagoRequestError("Falha de rede ou timeout ao consultar o Mercado Pago", 0);
+  }
 
   const responseText = await response.text();
   const responseBody = parseJsonResponse(responseText);
 
   if (!response.ok) {
     const message = getMercadoPagoErrorMessage(responseBody);
-    throw new Error(`Mercado Pago respondeu HTTP ${response.status}${message ? `: ${message}` : ""}`);
+    throw new MercadoPagoRequestError(
+      `Mercado Pago respondeu HTTP ${response.status}${message ? `: ${message}` : ""}`,
+      response.status,
+    );
   }
 
   return responseBody as T;
@@ -87,44 +158,7 @@ function getMercadoPagoErrorMessage(body: unknown): string {
 export function verifyMercadoPagoSignature(request: Request): NextResponse | null {
   const xSignature = request.headers.get("x-signature");
   const xRequestId = request.headers.get("x-request-id");
-  if (!xSignature || !xRequestId) {
-    return NextResponse.json(
-      { error: "Missing x-signature or x-request-id header" },
-      { status: 400 }
-    );
-  }
-
-  const signatureParts = xSignature.split(",");
-  let ts = "";
-  let v1 = "";
-  signatureParts.forEach((part) => {
-    const [key, value] = part.split("=");
-    if (key.trim() === "ts") {
-      ts = value.trim();
-    } else if (key.trim() === "v1") {
-      v1 = value.trim();
-    }
-  });
-
-  if (!ts || !v1) {
-    return NextResponse.json(
-      { error: "Invalid x-signature header format" },
-      { status: 400 }
-    );
-  }
-
   const url = new URL(request.url);
-  const dataId = url.searchParams.get("data.id");
-
-  let manifest = "";
-  if (dataId) {
-    manifest += `id:${dataId};`;
-  }
-  if (xRequestId) {
-    manifest += `request-id:${xRequestId};`;
-  }
-  manifest += `ts:${ts};`;
-
   const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET?.trim();
 
   if (!secret) {
@@ -135,12 +169,19 @@ export function verifyMercadoPagoSignature(request: Request): NextResponse | nul
     );
   }
 
-  const hmac = crypto.createHmac("sha256", secret);
-  hmac.update(manifest);
-  const generatedHash = hmac.digest("hex");
+  const validation = validateMercadoPagoWebhookSignature({
+    xSignature,
+    xRequestId,
+    dataId: url.searchParams.get("data.id"),
+    secret,
+  });
 
-  if (generatedHash !== v1) {
-    return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+  if (validation === "MISSING_HEADERS" || validation === "INVALID_FORMAT") {
+    return NextResponse.json({ error: "Invalid webhook signature headers" }, { status: 400 });
+  }
+
+  if (validation === "EXPIRED" || validation === "INVALID_SIGNATURE") {
+    return NextResponse.json({ error: "Invalid webhook signature" }, { status: 401 });
   }
 
   return null;

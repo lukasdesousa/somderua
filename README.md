@@ -53,3 +53,15 @@ pnpm wrangler secret put NOME_DA_VARIAVEL
 ```
 
 O `DEPLOY_TARGET=cloudflare` já está definido em `wrangler.jsonc`.
+
+## Checkout Pix interno
+
+Antes de publicar uma versão que contenha o checkout Pix, aplique as migrations pendentes com o procedimento de produção do projeto (`prisma migrate deploy`). A migration do Pix é aditiva, preserva os registros existentes e separa o ID de preference do ID real de pagamento.
+
+No painel do Mercado Pago, configure o evento de **Pagamentos** para:
+
+```text
+https://somderua.com.br/api/mercado-pago/webhook
+```
+
+O valor de `MERCADO_PAGO_WEBHOOK_SECRET` deve ser exatamente a assinatura secreta exibida para essa URL no painel. O checkout não deve ser ativado em produção antes de a migration e o webhook estarem configurados.

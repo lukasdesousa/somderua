@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createPrismaClient } from "@/lib/prisma";
+import { getOrderAccessCookieName, verifyOrderAccessToken } from "@/lib/payments/access";
 import { digitalProduct } from "@/lib/pricing";
 
 export const runtime = "nodejs";
@@ -35,8 +36,24 @@ export async function GET(req: NextRequest) {
       select: {
         approved: true,
         offerId: true,
+        checkoutMode: true,
       },
     });
+
+    if (
+      payment?.checkoutMode === "PIX"
+      && !await verifyOrderAccessToken(
+        searchParams.get("access_token")
+          ?? req.cookies.get(getOrderAccessCookieName(reference))?.value
+          ?? null,
+        reference,
+      )
+    ) {
+      return NextResponse.json(
+        { error: "Acesso não autorizado" },
+        { status: 403, headers: privateResponseHeaders },
+      );
+    }
 
     if (!payment?.approved) {
       return NextResponse.json(
@@ -85,7 +102,10 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ url }, { headers: privateResponseHeaders });
   } catch (err) {
-    console.error(err);
+    console.error("[Download] Failed to generate download URL", {
+      orderId: reference,
+      errorName: err instanceof Error ? err.name : "UnknownError",
+    });
     return NextResponse.json(
       { error: "Erro ao gerar URL de download" },
       { status: 500, headers: privateResponseHeaders },

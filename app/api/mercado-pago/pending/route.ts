@@ -1,68 +1,71 @@
-// app/api/mercado-pago/pending/route.ts
 import { NextResponse } from "next/server";
-import { getMercadoPagoPayment } from "@/lib/mercado-pago";
 import { handleMercadoPagoPayment } from "@/app/server/handle-payment";
+import { getMercadoPagoPayment } from "@/lib/mercado-pago";
 
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-
-    // IDs necessários
     const paymentId = searchParams.get("payment_id");
-    const externalRef = searchParams.get("external_reference");
+    const externalReference = searchParams.get("external_reference");
 
-    if (!paymentId || !externalRef) {
-      return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
+    if (!paymentId || !/^\d+$/.test(paymentId) || !externalReference) {
+      return NextResponse.json({ error: "Missing or invalid parameters" }, { status: 400 });
     }
 
-    // Obtém o status real do pagamento via SDK
     const paymentData = await getMercadoPagoPayment(paymentId);
+    const result = await handleMercadoPagoPayment(paymentData, {
+      throwOnPurchaseEmailError: false,
+    });
 
-    if (!paymentData || !paymentData.status) {
-      return NextResponse.json({ error: "Payment not found" }, { status: 404 });
-    }
-
-    const paymentReference = paymentData.metadata?.id ?? paymentData.external_reference;
-
-    if (paymentReference !== externalRef) {
-      console.warn("[MP Pending] Payment reference mismatch", {
-        expectedReference: externalRef,
-        paymentReference,
+    if (!result.handled || result.orderId !== externalReference || !result.status) {
+      console.warn("[MP Pending] Payment reconciliation failed", {
+        expectedReference: externalReference,
+        paymentId,
+        reason: result.reason,
       });
-      return NextResponse.redirect(new URL(`/pagamento-recusado?status=reference_mismatch&external_reference=${externalRef}`, request.url));
+      return redirectTo(request, "/pagamento-recusado", {
+        status: "reference_mismatch",
+        external_reference: externalReference,
+      });
     }
 
-    if (paymentData.status === "approved" || paymentData.date_approved) {
-      await handleMercadoPagoPayment(paymentData, { throwOnPurchaseEmailError: false });
-      return NextResponse.redirect(new URL(`/download?reference=${externalRef}&payment_id=${paymentId}`, request.url));
+    if (result.status === "APPROVED") {
+      return redirectTo(request, "/download", {
+        reference: externalReference,
+        payment_id: paymentId,
+      });
     }
 
-    if (isRejectedPaymentStatus(paymentData.status)) {
-      return NextResponse.redirect(
-        new URL(
-          `/pagamento-recusado?external_reference=${externalRef}&payment_id=${paymentId}&status=${paymentData.status}`,
-          request.url
-        )
-      );
+    if (isRejectedPaymentStatus(result.status)) {
+      return redirectTo(request, "/pagamento-recusado", {
+        external_reference: externalReference,
+        payment_id: paymentId,
+        status: result.status.toLowerCase(),
+      });
     }
 
-    return NextResponse.redirect(
-      new URL(
-        `/pagamento-pendente?external_reference=${externalRef}&payment_id=${paymentId}&status=${paymentData.status}`,
-        request.url
-      )
-    );
+    return redirectTo(request, "/pagamento-pendente", {
+      external_reference: externalReference,
+      payment_id: paymentId,
+      status: result.status.toLowerCase(),
+    });
   } catch (error) {
-    console.error("Erro ao processar rota /pending:", error);
-    return NextResponse.json(
-      { error: "Failed to check payment status" },
-      { status: 500 }
-    );
+    console.error("[MP Pending] Failed to reconcile payment", {
+      errorName: error instanceof Error ? error.name : "UnknownError",
+    });
+    return NextResponse.json({ error: "Failed to check payment status" }, { status: 500 });
   }
 }
 
+function redirectTo(request: Request, pathname: string, params: Record<string, string>) {
+  const url = new URL(pathname, request.url);
+  Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
+  return NextResponse.redirect(url);
+}
+
 function isRejectedPaymentStatus(status: string): boolean {
-  return ["cancelled", "rejected", "refunded", "charged_back"].includes(status);
+  return ["CANCELLED", "REJECTED", "EXPIRED", "REFUNDED", "CHARGEBACK"].includes(status);
 }

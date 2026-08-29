@@ -26,6 +26,7 @@ export default function DownloadHome() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const reference = searchParams.get("reference");
+  const accessToken = searchParams.get("access_token");
   const mercadoPagoPaymentId = searchParams.get("payment_id") ?? searchParams.get("collection_id");
   const [downloadState, setDownloadState] = useState<DownloadState>("checking");
   const [statusMessage, setStatusMessage] = useState("Verificando pagamento...");
@@ -50,6 +51,9 @@ export default function DownloadHome() {
 
         if (mercadoPagoPaymentId) {
           params.set("payment_id", mercadoPagoPaymentId);
+        }
+        if (accessToken) {
+          params.set("access_token", accessToken);
         }
 
         const res = await fetch(`/api/mercado-pago/payment-status?${params.toString()}`, {
@@ -122,7 +126,7 @@ export default function DownloadHome() {
       cancelled = true;
       if (retryTimeout) clearTimeout(retryTimeout);
     };
-  }, [reference, mercadoPagoPaymentId, router, verificationAttempt]);
+  }, [reference, accessToken, mercadoPagoPaymentId, router, verificationAttempt]);
 
 
   async function getDownloadUrl(file: string) {
@@ -131,6 +135,9 @@ export default function DownloadHome() {
     }
 
     const params = new URLSearchParams({ reference, file });
+    if (accessToken) {
+      params.set("access_token", accessToken);
+    }
     const res = await fetch(`/api/download?${params.toString()}`);
     const data = await readJsonResponse<{ url?: string; error?: string }>(res);
 
@@ -216,5 +223,5 @@ async function readJsonResponse<T>(response: Response): Promise<T> {
 }
 
 function isRejectedPaymentStatus(status?: string | null): boolean {
-  return Boolean(status && ["cancelled", "rejected", "refunded", "charged_back"].includes(status));
+  return Boolean(status && ["cancelled", "rejected", "expired", "refunded", "chargeback", "charged_back"].includes(status));
 }
