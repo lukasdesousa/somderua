@@ -28,6 +28,7 @@ model user_payment {
   mpPaymentId                     String?   @unique
   mpPreferenceId                  String?   @unique
   activeCheckoutKey               String?   @unique
+  orderAccessVersion              Int       @default(1)
   payment_method                  String?
   offerId                         String?
   offerName                       String?

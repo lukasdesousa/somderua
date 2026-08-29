@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { handleMercadoPagoPayment } from "@/app/server/handle-payment";
 import { getMercadoPagoPayment } from "@/lib/mercado-pago";
 import { getOrderAccessCookieName, verifyOrderAccessToken } from "@/lib/payments/access";
+import { requiresSignedOrderAccess } from "@/lib/payments/access-policy";
 import { isTerminalPaymentStatus } from "@/lib/payments/core";
 import { extractMercadoPagoPixData, type PixDisplayData } from "@/lib/payments/pix";
 import { createPrismaClient } from "@/lib/prisma";
@@ -35,7 +36,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (
-      payment.checkoutMode === "PIX"
+      requiresSignedOrderAccess(payment)
       && !await verifyOrderAccessToken(
         searchParams.get("access_token")
           ?? request.cookies.get(getOrderAccessCookieName(reference))?.value
@@ -49,9 +50,28 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // The old schema used `approved` as the source of truth. Heal any row
+    // caught between that representation and the newer status state machine
+    // without delaying an already entitled customer on a provider request.
+    if (payment.approved && !isTerminalPaymentStatus(payment.status)) {
+      await prisma.user_payment.updateMany({
+        where: {
+          id: payment.id,
+          approved: true,
+          status: payment.status,
+        },
+        data: {
+          status: "APPROVED",
+          activeCheckoutKey: null,
+        },
+      });
+      payment = await findPayment(reference) ?? payment;
+    }
+
     let pix: PixDisplayData | null = null;
     const providerPaymentId = getProviderPaymentId(payment, requestedPaymentId);
     const shouldSync = providerPaymentId
+      && !payment.approved
       && !isTerminalPaymentStatus(payment.status)
       && (includePix || await claimProviderSync(payment.id, payment.lastProviderSyncAt));
 
@@ -125,6 +145,7 @@ async function findPayment(reference: string) {
       status: true,
       statusDetail: true,
       checkoutMode: true,
+      orderAccessVersion: true,
       mpPaymentId: true,
       offerId: true,
       pixExpiresAt: true,

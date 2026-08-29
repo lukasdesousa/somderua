@@ -21,19 +21,38 @@ type DownloadState = "checking" | "approved" | "error";
 
 const MAX_STATUS_RETRIES = 4;
 const STATUS_RETRY_DELAYS_MS = [1500, 3000, 5000, 5000] as const;
+const STATUS_REQUEST_TIMEOUT_MS = 10_000;
 
 export default function DownloadHome() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const reference = searchParams.get("reference");
-  const accessToken = searchParams.get("access_token");
+  const queryAccessToken = searchParams.get("access_token");
   const mercadoPagoPaymentId = searchParams.get("payment_id") ?? searchParams.get("collection_id");
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [accessTokenReady, setAccessTokenReady] = useState(false);
   const [downloadState, setDownloadState] = useState<DownloadState>("checking");
   const [statusMessage, setStatusMessage] = useState("Verificando pagamento...");
   const [verificationAttempt, setVerificationAttempt] = useState(0);
 
   useEffect(() => {
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    const fragmentAccessToken = hashParams.get("order_access");
+
+    setAccessToken(queryAccessToken || fragmentAccessToken);
+    setAccessTokenReady(true);
+
+    if (fragmentAccessToken) {
+      hashParams.delete("order_access");
+      const cleanUrl = new URL(window.location.href);
+      cleanUrl.hash = hashParams.toString();
+      window.history.replaceState(null, "", `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
+    }
+  }, [queryAccessToken]);
+
+  useEffect(() => {
     if (!reference) return router.replace("/baixar-musicas#escolha-seu-pack");
+    if (!accessTokenReady) return;
 
     let cancelled = false;
     let retryTimeout: ReturnType<typeof setTimeout> | undefined;
@@ -56,9 +75,17 @@ export default function DownloadHome() {
           params.set("access_token", accessToken);
         }
 
-        const res = await fetch(`/api/mercado-pago/payment-status?${params.toString()}`, {
+        const res = await fetchWithTimeout(`/api/mercado-pago/payment-status?${params.toString()}`, {
           cache: "no-store",
+          credentials: "same-origin",
         });
+
+        if (res.status === 401 || res.status === 403) {
+          setDownloadState("error");
+          setStatusMessage("Este link de acesso não pôde ser validado. Abra novamente o botão original do e-mail ou fale com o suporte.");
+          return;
+        }
+
         const data = await readJsonResponse<PaymentStatusResponse>(res);
 
         if (cancelled) return;
@@ -126,7 +153,7 @@ export default function DownloadHome() {
       cancelled = true;
       if (retryTimeout) clearTimeout(retryTimeout);
     };
-  }, [reference, accessToken, mercadoPagoPaymentId, router, verificationAttempt]);
+  }, [reference, accessToken, accessTokenReady, mercadoPagoPaymentId, router, verificationAttempt]);
 
 
   async function getDownloadUrl(file: string) {
@@ -138,7 +165,10 @@ export default function DownloadHome() {
     if (accessToken) {
       params.set("access_token", accessToken);
     }
-    const res = await fetch(`/api/download?${params.toString()}`);
+    const res = await fetchWithTimeout(`/api/download?${params.toString()}`, {
+      cache: "no-store",
+      credentials: "same-origin",
+    });
     const data = await readJsonResponse<{ url?: string; error?: string }>(res);
 
     if (data.url) {
@@ -154,6 +184,8 @@ export default function DownloadHome() {
       window.location.href = url;
     } catch (err) {
       console.error(err);
+      setDownloadState("error");
+      setStatusMessage(err instanceof Error ? err.message : "Não foi possível preparar o download agora.");
     }
   }
 
@@ -209,6 +241,17 @@ export default function DownloadHome() {
       </div>
     </section>
   );
+}
+
+async function fetchWithTimeout(input: RequestInfo | URL, init: RequestInit = {}): Promise<Response> {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), STATUS_REQUEST_TIMEOUT_MS);
+
+  try {
+    return await fetch(input, { ...init, signal: controller.signal });
+  } finally {
+    window.clearTimeout(timeout);
+  }
 }
 
 async function readJsonResponse<T>(response: Response): Promise<T> {

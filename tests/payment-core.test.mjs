@@ -9,6 +9,7 @@ import {
   resolvePaymentStatus,
   validatePaymentIntegrity,
 } from "../lib/payments/core.ts";
+import { requiresSignedOrderAccess } from "../lib/payments/access-policy.ts";
 
 const expectedOrder = {
   orderId: "4b497500-9425-4c41-bb45-83e7f9c47b55",
@@ -117,4 +118,10 @@ test("eventos duplicados ou fora de ordem não rebaixam uma aprovação", () => 
   assert.equal(resolvePaymentStatus("APPROVED", true, "APPROVED"), "APPROVED");
   assert.equal(resolvePaymentStatus("APPROVED", true, "REFUNDED"), "REFUNDED");
   assert.equal(resolvePaymentStatus("CHARGEBACK", false, "PENDING"), "CHARGEBACK");
+});
+
+test("mantém links legados e exige assinatura em todos os novos pedidos Pix", () => {
+  assert.equal(requiresSignedOrderAccess({ checkoutMode: "PIX", orderAccessVersion: 0 }), false);
+  assert.equal(requiresSignedOrderAccess({ checkoutMode: "PIX", orderAccessVersion: 1 }), true);
+  assert.equal(requiresSignedOrderAccess({ checkoutMode: "HOSTED", orderAccessVersion: 1 }), false);
 });

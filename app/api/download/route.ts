@@ -3,6 +3,7 @@ import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createPrismaClient } from "@/lib/prisma";
 import { getOrderAccessCookieName, verifyOrderAccessToken } from "@/lib/payments/access";
+import { requiresSignedOrderAccess } from "@/lib/payments/access-policy";
 import { digitalProduct } from "@/lib/pricing";
 
 export const runtime = "nodejs";
@@ -37,11 +38,13 @@ export async function GET(req: NextRequest) {
         approved: true,
         offerId: true,
         checkoutMode: true,
+        orderAccessVersion: true,
       },
     });
 
     if (
-      payment?.checkoutMode === "PIX"
+      payment
+      && requiresSignedOrderAccess(payment)
       && !await verifyOrderAccessToken(
         searchParams.get("access_token")
           ?? req.cookies.get(getOrderAccessCookieName(reference))?.value

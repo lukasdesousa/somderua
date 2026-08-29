@@ -26,6 +26,10 @@ export async function GET(request: NextRequest) {
 
   const destination = new URL("/download", request.url);
   destination.searchParams.set("reference", reference);
+  // Keep a fragment-only fallback for browsers that do not persist the cookie
+  // set on redirects. URL fragments are never sent in HTTP requests/referrers,
+  // and the client removes it immediately after reading it.
+  destination.hash = new URLSearchParams({ order_access: accessToken }).toString();
   const response = NextResponse.redirect(destination);
 
   response.headers.set("Cache-Control", "private, no-store, max-age=0");

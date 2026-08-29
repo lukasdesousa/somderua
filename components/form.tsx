@@ -381,7 +381,7 @@ function CheckoutHeader({ offer }: { offer: ReturnType<typeof getPackOffer> }) {
   return (
     <div className="pb-10 text-center">
       <p className="mb-3 inline-flex rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-200">Oferta escolhida: {offer.name}</p>
-      <h1 id="checkout-title" className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-indigo-200),var(--color-gray-50),var(--color-indigo-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-3xl font-semibold text-transparent md:text-4xl">Checkout Pix no Som de Rua</h1>
+      <h1 id="checkout-title" className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-indigo-200),var(--color-gray-50),var(--color-indigo-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-3xl font-semibold text-transparent md:text-4xl">Checkout Rápido</h1>
       <div className="mt-4" aria-label="Resumo da oferta escolhida">
         {offer.originalPriceLabel ? <p className="text-sm text-indigo-100/55">De <span className="line-through">{offer.originalPriceLabel}</span> por</p> : null}
         <p className="text-3xl font-semibold text-indigo-100">{offer.priceLabel}</p>
