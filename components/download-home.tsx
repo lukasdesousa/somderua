@@ -34,6 +34,7 @@ export default function DownloadHome() {
   const [downloadState, setDownloadState] = useState<DownloadState>("checking");
   const [statusMessage, setStatusMessage] = useState("Verificando pagamento...");
   const [verificationAttempt, setVerificationAttempt] = useState(0);
+  const [downloadLoading, setDownloadLoading] = useState(false);
 
   useEffect(() => {
     const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
@@ -179,11 +180,17 @@ export default function DownloadHome() {
   }
 
   async function handleDownload() {
+    if (downloadLoading) return;
+
+    setDownloadLoading(true);
+    setStatusMessage("Iniciando seu download. Em arquivos grandes, o navegador pode levar alguns segundos...");
+
     try {
       const url = await getDownloadUrl(digitalProduct.deliveryFile);
       window.location.href = url;
     } catch (err) {
       console.error(err);
+      setDownloadLoading(false);
       setDownloadState("error");
       setStatusMessage(err instanceof Error ? err.message : "Não foi possível preparar o download agora.");
     }
@@ -212,15 +219,24 @@ export default function DownloadHome() {
                   <div data-aos="fade-up" data-aos-delay={400}>
                     <button
                       type="button"
-                      className="btn group mb-4 w-full bg-linear-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] sm:mb-0 sm:w-auto"
-                      onClick={() => handleDownload()}
+                      className="btn group mb-4 w-full bg-linear-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] disabled:cursor-wait disabled:opacity-75 sm:mb-0 sm:w-auto"
+                      onClick={() => void handleDownload()}
+                      disabled={downloadLoading}
+                      aria-busy={downloadLoading}
                     >
-                      <span className="relative inline-flex items-center">
-                        Download
-                        <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
-                          -&gt;
+                      {downloadLoading ? (
+                        <span className="relative inline-flex items-center gap-2" role="status">
+                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden="true" />
+                          Iniciando download...
                         </span>
-                      </span>
+                      ) : (
+                        <span className="relative inline-flex items-center">
+                          Download
+                          <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
+                            -&gt;
+                          </span>
+                        </span>
+                      )}
                     </button>
                   </div>
                 </div>
