@@ -187,7 +187,9 @@ export default function DownloadHome() {
 
     try {
       const url = await getDownloadUrl(digitalProduct.deliveryFile);
-      window.location.href = url;
+      window.location.assign(url);
+      setDownloadLoading(false);
+      setStatusMessage("Download iniciado. Verifique os downloads do seu navegador.");
     } catch (err) {
       console.error(err);
       setDownloadLoading(false);

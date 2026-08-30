@@ -90,6 +90,8 @@ export async function GET(req: NextRequest) {
     const command = new GetObjectCommand({
       Bucket: process.env.R2_BUCKET,
       Key: key,
+      ResponseContentDisposition: `attachment; filename="${digitalProduct.deliveryFile}"`,
+      ResponseContentType: "application/zip",
     });
 
     const r2 = new S3Client({
