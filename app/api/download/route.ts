@@ -5,6 +5,7 @@ import { createPrismaClient } from "@/lib/prisma";
 import { getOrderAccessCookieName, verifyOrderAccessToken } from "@/lib/payments/access";
 import { requiresSignedOrderAccess } from "@/lib/payments/access-policy";
 import { digitalProduct } from "@/lib/pricing";
+import { normalizeGoogleDriveUrl, parseDownloadProvider } from "@/lib/downloads";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -22,6 +23,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const reference = searchParams.get("reference");
   const key = searchParams.get("file") ?? digitalProduct.deliveryFile;
+  const provider = parseDownloadProvider(searchParams.get("provider"));
 
   if (!reference) {
     return NextResponse.json({ error: "Pedido não informado" }, { status: 400 });
@@ -29,6 +31,10 @@ export async function GET(req: NextRequest) {
 
   if (!allowedDownloadFiles.has(key)) {
     return NextResponse.json({ error: "Arquivo não autorizado" }, { status: 403 });
+  }
+
+  if (!provider) {
+    return NextResponse.json({ error: "Opção de download inválida" }, { status: 400 });
   }
 
   try {
@@ -70,6 +76,23 @@ export async function GET(req: NextRequest) {
     if (payment.offerId === "essencial") {
       return NextResponse.json(
         { url: ESSENTIAL_PACK_DOWNLOAD_URL },
+        { headers: privateResponseHeaders },
+      );
+    }
+
+    if (provider === "google_drive") {
+      const googleDriveUrl = normalizeGoogleDriveUrl(process.env.PREMIUM_PACK_GOOGLE_DRIVE_URL);
+
+      if (!googleDriveUrl) {
+        console.error("[Download] Premium Google Drive URL is missing or invalid");
+        return NextResponse.json(
+          { error: "O download pelo Google Drive estará disponível em breve. Use o download direto por enquanto." },
+          { status: 503, headers: privateResponseHeaders },
+        );
+      }
+
+      return NextResponse.json(
+        { url: googleDriveUrl },
         { headers: privateResponseHeaders },
       );
     }

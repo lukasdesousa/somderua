@@ -11,7 +11,7 @@ import {
   type PackOfferId,
 } from "@/lib/pricing";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { breadcrumbSchema, faqPageSchema, productOffersSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, digitalProductOffersSchema, faqPageSchema } from "@/lib/seo/schema";
 
 export const revalidate = 3600;
 
@@ -120,16 +120,18 @@ export default function BaixarMusicasPage() {
       <JsonLd id="baixar-musicas-breadcrumb" data={breadcrumbSchema(crumbs)} />
       <JsonLd
         id="baixar-musicas-product"
-        data={productOffersSchema({
+        data={digitalProductOffersSchema({
           name: digitalProduct.checkoutName,
           description: digitalProduct.description,
           productPath: "/baixar-musicas",
           offers: packOfferList.map((offer) => ({
+            id: offer.id,
             name: offer.name,
             description: offer.description,
             price: offer.price,
+            originalPrice: offer.originalPrice,
             currency: digitalProduct.currency,
-            offerPath: "/baixar-musicas#escolha-seu-pack",
+            offerPath: `/baixar-musicas#pack-${offer.id}`,
           })),
         })}
       />
@@ -145,6 +147,9 @@ export default function BaixarMusicasPage() {
           </h1>
           <p className="mt-4 max-w-3xl text-lg text-indigo-200/75">
             Escolha seu pack de músicas para pen drive: 16 GB de bons repertórios no Básico ou mais de 28 GB no Premium, com hits do momento e músicas organizadas por estilo.
+          </p>
+          <p className="mt-3 max-w-3xl text-sm font-medium text-emerald-200">
+            Produto 100% digital: o acesso é liberado por download após a aprovação do pagamento. Não há envio de pen drive ou de qualquer item físico.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <a href="#escolha-seu-pack" className="btn bg-linear-to-t from-indigo-600 to-indigo-500 text-white">
@@ -173,6 +178,7 @@ export default function BaixarMusicasPage() {
               return (
                 <article
                   key={offer.id}
+                  id={`pack-${offer.id}`}
                   className={[
                     "relative isolate flex h-full min-h-[610px] overflow-hidden rounded-2xl border p-6 shadow-[0_22px_55px_rgba(0,0,0,0.25)] transition duration-300 hover:-translate-y-1 sm:p-7",
                     offer.recommended

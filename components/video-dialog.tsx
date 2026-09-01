@@ -4,24 +4,21 @@ import { useRef } from "react";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 
 type VideoDialogProps = {
-  video: string;
-  videoWidth: number;
-  videoHeight: number;
-  loop: boolean;
+  youtubeVideoId: string;
+  title: string;
   onClose: () => void;
 };
 
 export default function VideoDialog({
-  video,
-  videoWidth,
-  videoHeight,
-  loop,
+  youtubeVideoId,
+  title,
   onClose,
 }: VideoDialogProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const playerRef = useRef<HTMLIFrameElement>(null);
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeVideoId)}?autoplay=1&rel=0`;
 
   return (
-    <Dialog initialFocus={videoRef} open onClose={onClose}>
+    <Dialog initialFocus={playerRef} open onClose={onClose}>
       <DialogBackdrop
         transition
         className="fixed inset-0 z-[99999] bg-black/75 transition-opacity duration-300 ease-out data-closed:opacity-0"
@@ -32,19 +29,15 @@ export default function VideoDialog({
             transition
             className="aspect-video max-h-full w-full overflow-hidden rounded-lg bg-black shadow-2xl duration-300 ease-out data-closed:scale-95 data-closed:opacity-0"
           >
-            <video
-              ref={videoRef}
-              className="h-full w-full bg-black object-contain"
-              width={videoWidth}
-              height={videoHeight}
-              loop={loop}
-              controls
-              playsInline
-              preload="metadata"
-            >
-              <source src={video} type="video/mp4" />
-              Seu navegador não suporta a tag de vídeo.
-            </video>
+            <iframe
+              ref={playerRef}
+              className="h-full w-full bg-black"
+              src={embedUrl}
+              title={title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
           </DialogPanel>
         </div>
       </div>

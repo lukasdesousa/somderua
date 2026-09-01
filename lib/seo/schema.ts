@@ -3,13 +3,17 @@ import { siteConfig } from "@/lib/seo/config";
 
 type BreadcrumbItem = { name: string; path: string };
 type FaqItem = { question: string; answer: string };
-type ProductSchemaOffer = {
+type DigitalProductSchemaOffer = {
+  id: string;
   name: string;
   description: string;
   price: number;
+  originalPrice?: number;
   currency: string;
   offerPath?: string;
 };
+
+const directDownloadDeliveryMethod = "http://purl.org/goodrelations/v1#DeliveryModeDirectDownload";
 
 function organizationId() {
   return absoluteUrl("/#organization");
@@ -92,7 +96,7 @@ export function breadcrumbSchema(items: BreadcrumbItem[]) {
   };
 }
 
-export function productOffersSchema({
+export function digitalProductOffersSchema({
   name,
   description,
   productPath = "/",
@@ -103,75 +107,55 @@ export function productOffersSchema({
   description: string;
   productPath?: string;
   image?: string;
-  offers: ProductSchemaOffer[];
+  offers: DigitalProductSchemaOffer[];
 }) {
   const productUrl = absoluteUrl(productPath);
 
   return {
     "@context": "https://schema.org",
     "@type": "Product",
+    "@id": absoluteUrl("/baixar-musicas#product"),
     name,
     description,
-    image,
+    image: {
+      "@type": "ImageObject",
+      url: image,
+      contentUrl: image,
+      caption: "Imagem ilustrativa do pack digital de músicas; nenhum pen drive físico está incluído.",
+    },
     url: productUrl,
+    category: "Música > Conteúdo digital > Pack de músicas para download",
     brand: {
       "@type": "Brand",
       name: siteConfig.name,
     },
+    additionalProperty: {
+      "@type": "PropertyValue",
+      name: "Forma de acesso",
+      value: "Download digital após a aprovação do pagamento; sem envio físico",
+    },
     offers: offers.map((offer) => ({
       "@type": "Offer",
+      "@id": absoluteUrl(`/baixar-musicas#offer-${offer.id}`),
       name: offer.name,
       description: offer.description,
       url: absoluteUrl(offer.offerPath ?? productPath),
       priceCurrency: offer.currency,
       price: offer.price.toFixed(2),
-      availability: "https://schema.org/InStock",
-      itemCondition: "https://schema.org/NewCondition",
+      ...(offer.originalPrice
+        ? {
+            priceSpecification: {
+              "@type": "UnitPriceSpecification",
+              price: offer.originalPrice.toFixed(2),
+              priceCurrency: offer.currency,
+              priceType: "https://schema.org/StrikethroughPrice",
+            },
+          }
+        : {}),
+      availability: "https://schema.org/OnlineOnly",
+      availableDeliveryMethod: directDownloadDeliveryMethod,
       seller: organizationReference(),
     })),
-  };
-}
-
-export function productOfferSchema({
-  name,
-  description,
-  price,
-  currency,
-  productPath = "/",
-  offerPath = productPath,
-  image = absoluteUrl("/images/pack-16gb-5000.png"),
-}: {
-  name: string;
-  description: string;
-  price: number;
-  currency: string;
-  productPath?: string;
-  offerPath?: string;
-  image?: string;
-}) {
-  const productUrl = absoluteUrl(productPath);
-  const offerUrl = absoluteUrl(offerPath);
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name,
-    description,
-    image,
-    url: productUrl,
-    brand: {
-      "@type": "Brand",
-      name: siteConfig.name,
-    },
-    offers: {
-      "@type": "Offer",
-      url: offerUrl,
-      priceCurrency: currency,
-      price: price.toFixed(2),
-      availability: "https://schema.org/InStock",
-      itemCondition: "https://schema.org/NewCondition",
-      seller: organizationReference(),
-    },
   };
 }
 

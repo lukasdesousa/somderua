@@ -6,7 +6,7 @@ import { entryPackOffer, recommendedPackOffer } from "@/lib/pricing";
 
 const badges = [
   "Compra segura via Mercado Pago",
-  "PIX com entrega automática",
+  "Produto digital, sem envio físico",
   "Reembolso em caso de falha técnica",
   "Compatível com carro, USB e celular",
 ];
@@ -73,7 +73,9 @@ export default function HeroHome() {
             aria-label="Resumo da oferta"
           >
             <span>Básico 16 GB · {entryPackOffer.priceLabel}</span>
-            <strong className="font-nacelle text-3xl text-white">Premium +28 GB · {recommendedPackOffer.priceLabel}</strong>
+            <strong className="font-nacelle text-3xl text-white">
+              Premium +28 GB · {recommendedPackOffer.priceLabel}
+            </strong>
             <span className="rounded-lg bg-emerald-300 px-3 py-1 text-xs font-bold uppercase text-slate-950">
               {recommendedPackOffer.badge}
             </span>
@@ -97,8 +99,12 @@ export default function HeroHome() {
           >
             {heroStats.map((stat) => (
               <div key={stat.label} className="bg-slate-950/80 p-4 text-center">
-                <dt className="text-xs uppercase text-slate-400">{stat.label}</dt>
-                <dd className="mt-1 font-nacelle text-2xl font-semibold text-white">{stat.value}</dd>
+                <dt className="text-xs uppercase text-slate-400">
+                  {stat.label}
+                </dt>
+                <dd className="mt-1 font-nacelle text-2xl font-semibold text-white">
+                  {stat.value}
+                </dd>
               </div>
             ))}
           </dl>
@@ -114,9 +120,7 @@ export default function HeroHome() {
             thumbWidth={1104}
             thumbHeight={576}
             thumbAlt="Prévia do pack de músicas Som de Rua"
-            video="videos/somderua_preview.mp4"
-            videoWidth={1920}
-            videoHeight={1080}
+            youtubeVideoId="YW7SlsHKPmA"
           />
         </div>
       </div>

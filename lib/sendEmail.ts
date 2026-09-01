@@ -5,6 +5,7 @@ import { EmailDeliveryError } from "@/lib/abandoned-cart/errors";
 import { getResendClient } from "@/lib/abandoned-cart/mailer";
 import { createOrderAccessToken } from "@/lib/payments/access";
 import { siteConfig } from "@/lib/seo/config";
+import { SEVEN_ZIP_OFFICIAL_URL, ZARCHIVER_GOOGLE_PLAY_URL } from "@/lib/seven-zip";
 
 const DEFAULT_FROM_EMAIL = "Som de Rua <pack@somderua.com.br>";
 
@@ -30,6 +31,8 @@ export async function sendPurchaseEmail(to: string, reference: string): Promise<
   const currentYear = new Date().getFullYear();
   const downloadUrlHtml = escapeHtml(downloadUrl);
   const tutorialUrlHtml = escapeHtml(tutorialUrl);
+  const sevenZipUrlHtml = escapeHtml(SEVEN_ZIP_OFFICIAL_URL);
+  const zArchiverUrlHtml = escapeHtml(ZARCHIVER_GOOGLE_PLAY_URL);
 
   const text = `Compra confirmada!
 
@@ -37,6 +40,24 @@ Seu Pack Som de Rua já está liberado para download.
 
 BAIXAR MEU PACK
 ${downloadUrl}
+
+ANTES DE EXTRAIR SEU PACK
+O Pack é um arquivo grande. Para evitar problemas com o extrator padrão do Windows, recomendamos utilizar o 7-Zip.
+
+Windows: use 7-Zip.
+Android: use ZArchiver.
+
+1. Aguarde o download finalizar completamente.
+2. Instale o 7-Zip.
+3. Clique com o botão direito no arquivo baixado.
+4. Escolha 7-Zip → Extrair para...
+5. Aguarde a extração finalizar.
+
+BAIXAR 7-ZIP — SITE OFICIAL
+${SEVEN_ZIP_OFFICIAL_URL}
+
+BAIXAR ZARCHIVER — GOOGLE PLAY
+${ZARCHIVER_GOOGLE_PLAY_URL}
 
 Precisa de ajuda para baixar, extrair ou transferir as músicas?
 Assista ao tutorial: ${tutorialUrl}
@@ -104,6 +125,47 @@ Som de Rua`;
           </tr>
           <tr>
             <td class="email-pad" style="padding:0 38px 28px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#0f1926;border:1px solid #28463f;border-radius:16px;">
+                <tr>
+                  <td style="padding:22px;">
+                    <p style="margin:0 0 6px;color:#6ee7b7;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;">Extração recomendada</p>
+                    <h2 style="margin:0;color:#ffffff;font-size:21px;line-height:27px;">Antes de extrair seu Pack</h2>
+                    <p style="margin:9px 0 17px;color:#aebbd0;font-size:14px;line-height:22px;">
+                      O Pack é um arquivo grande. Para evitar problemas com o extrator padrão do Windows, recomendamos utilizar o 7-Zip.
+                    </p>
+                    <p style="margin:0 0 17px;padding:12px 14px;border:1px solid #2d3d55;border-radius:10px;background:#111a2a;color:#cbd5e1;font-size:14px;line-height:22px;">
+                      <strong style="color:#f8fafc;">Windows:</strong> use 7-Zip.<br />
+                      <strong style="color:#f8fafc;">Android:</strong> use ZArchiver.
+                    </p>
+                    <p style="margin:0 0 12px;color:#6ee7b7;font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;">Passo a passo no Windows</p>
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      ${renderEmailStep("1", "Aguarde o download finalizar completamente.")}
+                      ${renderEmailStep("2", "Instale o 7-Zip.")}
+                      ${renderEmailStep("3", "Clique com o botão direito no arquivo baixado.")}
+                      ${renderEmailStep("4", 'Escolha <strong style="color:#f8fafc;font-weight:700;">7-Zip &rarr; Extrair para...</strong>')}
+                      ${renderEmailStep("5", "Aguarde a extração finalizar.")}
+                    </table>
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:10px 0 0;">
+                      <tr>
+                        <td style="border:1px solid #4d8a79;border-radius:10px;background:#132b27;">
+                          <a href="${sevenZipUrlHtml}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:11px 16px;color:#a7f3d0;text-decoration:none;font-size:13px;font-weight:800;">Baixar 7-Zip — Site Oficial&nbsp; ↗</a>
+                        </td>
+                      </tr>
+                    </table>
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:8px 0 0;">
+                      <tr>
+                        <td style="border:1px solid #59699b;border-radius:10px;background:#171d38;">
+                          <a href="${zArchiverUrlHtml}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:11px 16px;color:#c7d2fe;text-decoration:none;font-size:13px;font-weight:800;">Baixar ZArchiver — Google Play&nbsp; ↗</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td class="email-pad" style="padding:0 38px 28px;">
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#111a2a;border:1px solid #26354a;border-radius:16px;">
                 <tr>
                   <td style="padding:22px;">
@@ -115,16 +177,6 @@ Som de Rua`;
                     <a href="${tutorialUrlHtml}" style="display:inline-block;padding:12px 18px;border:1px solid #818cf8;border-radius:10px;color:#c7d2fe;text-decoration:none;font-size:14px;font-weight:800;">Abrir tutorial&nbsp; →</a>
                   </td>
                 </tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td class="email-pad" style="padding:0 38px 32px;">
-              <p style="margin:0 0 13px;color:#f8fafc;font-size:14px;font-weight:800;">Seu caminho rápido:</p>
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-                ${renderEmailStep("1", "Abra o link e inicie o download.")}
-                ${renderEmailStep("2", "Espere o arquivo terminar de baixar.")}
-                ${renderEmailStep("3", "Extraia as pastas antes de transferir.")}
               </table>
             </td>
           </tr>

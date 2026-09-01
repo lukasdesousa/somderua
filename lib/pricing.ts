@@ -2,7 +2,7 @@ export const digitalProduct = {
   id: "pack-som-de-rua-16gb",
   name: "Pack Som de Rua 2026",
   checkoutName: "Pack Som de Rua 2026",
-  description: "Packs de músicas organizadas e atualizadas em 2026, com opções de 16 GB e mais de 28 GB.",
+  description: "Pack digital de músicas organizadas e atualizadas em 2026, com opções de 16 GB e mais de 28 GB, entregue exclusivamente por download após a aprovação do pagamento.",
   deliveryFile: "28gb-musicas-somderua.zip",
   currency: "BRL",
   categoryId: "5805",

@@ -3,14 +3,18 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { trackOfferEvent } from "@/lib/analytics";
-import { digitalProduct } from "@/lib/pricing";
+import PremiumDownloadOptions from "@/components/premium-download-options";
+import SevenZipExtractionGuide from "@/components/seven-zip-extraction-guide";
+import type { DownloadProvider } from "@/lib/downloads";
+import { digitalProduct, type PackOfferId } from "@/lib/pricing";
 
 type PaymentStatusResponse = {
   status: boolean | "not_found" | "missing_reference";
   paymentStatus?: string | null;
   error?: string;
   offer?: {
-    name: "essencial" | "completo";
+    id?: PackOfferId;
+    name: PackOfferId;
     price: number;
     priceCents: number;
     productId: typeof digitalProduct.id;
@@ -34,7 +38,8 @@ export default function DownloadHome() {
   const [downloadState, setDownloadState] = useState<DownloadState>("checking");
   const [statusMessage, setStatusMessage] = useState("Verificando pagamento...");
   const [verificationAttempt, setVerificationAttempt] = useState(0);
-  const [downloadLoading, setDownloadLoading] = useState(false);
+  const [approvedOfferId, setApprovedOfferId] = useState<PackOfferId | null>(null);
+  const [downloadLoading, setDownloadLoading] = useState<DownloadProvider | null>(null);
 
   useEffect(() => {
     const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
@@ -113,6 +118,8 @@ export default function DownloadHome() {
         }
 
         setDownloadState("approved");
+        // Approved legacy orders predate offer IDs and use the existing Premium delivery.
+        setApprovedOfferId(data.offer?.id ?? data.offer?.name ?? "completo");
         setStatusMessage("Pagamento aprovado. Seu download está liberado.");
 
         if (data.offer) {
@@ -157,12 +164,12 @@ export default function DownloadHome() {
   }, [reference, accessToken, accessTokenReady, mercadoPagoPaymentId, router, verificationAttempt]);
 
 
-  async function getDownloadUrl(file: string) {
+  async function getDownloadUrl(file: string, provider: DownloadProvider) {
     if (!reference) {
       throw new Error("Pedido não informado");
     }
 
-    const params = new URLSearchParams({ reference, file });
+    const params = new URLSearchParams({ reference, file, provider });
     if (accessToken) {
       params.set("access_token", accessToken);
     }
@@ -179,22 +186,29 @@ export default function DownloadHome() {
     throw new Error(data.error || "Não foi possível gerar URL");
   }
 
-  async function handleDownload() {
+  async function handleDownload(provider: DownloadProvider) {
     if (downloadLoading) return;
 
-    setDownloadLoading(true);
-    setStatusMessage("Iniciando seu download. Em arquivos grandes, o navegador pode levar alguns segundos...");
+    setDownloadLoading(provider);
+    setStatusMessage(
+      provider === "google_drive"
+        ? "Abrindo o Google Drive..."
+        : "Iniciando seu download. Em arquivos grandes, o navegador pode levar alguns segundos...",
+    );
 
     try {
-      const url = await getDownloadUrl(digitalProduct.deliveryFile);
+      const url = await getDownloadUrl(digitalProduct.deliveryFile, provider);
       window.location.assign(url);
-      setDownloadLoading(false);
-      setStatusMessage("Download iniciado. Verifique os downloads do seu navegador.");
+      setStatusMessage(
+        provider === "google_drive"
+          ? "Google Drive aberto. Siga as instruções para baixar o pack."
+          : "Download iniciado. Verifique os downloads do seu navegador.",
+      );
     } catch (err) {
       console.error(err);
-      setDownloadLoading(false);
-      setDownloadState("error");
       setStatusMessage(err instanceof Error ? err.message : "Não foi possível preparar o download agora.");
+    } finally {
+      setDownloadLoading(null);
     }
   }
 
@@ -216,17 +230,32 @@ export default function DownloadHome() {
                 {statusMessage}
               </p>
 
-              {downloadState === "approved" ? (
+              {downloadState === "approved" && approvedOfferId === "completo" ? (
+                <div className="mx-auto max-w-2xl" data-aos="fade-up" data-aos-delay={400}>
+                  <PremiumDownloadOptions
+                    loadingProvider={downloadLoading}
+                    onDownload={(provider) => void handleDownload(provider)}
+                  />
+                  <SevenZipExtractionGuide
+                    headingId="seven-zip-download-title"
+                    compact
+                    premium
+                    className="mt-6"
+                  />
+                </div>
+              ) : null}
+
+              {downloadState === "approved" && approvedOfferId !== "completo" ? (
                 <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center">
                   <div data-aos="fade-up" data-aos-delay={400}>
                     <button
                       type="button"
                       className="btn group mb-4 w-full bg-linear-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] disabled:cursor-wait disabled:opacity-75 sm:mb-0 sm:w-auto"
-                      onClick={() => void handleDownload()}
-                      disabled={downloadLoading}
-                      aria-busy={downloadLoading}
+                      onClick={() => void handleDownload("direct")}
+                      disabled={downloadLoading !== null}
+                      aria-busy={downloadLoading === "direct"}
                     >
-                      {downloadLoading ? (
+                      {downloadLoading === "direct" ? (
                         <span className="relative inline-flex items-center gap-2" role="status">
                           <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden="true" />
                           Iniciando download...

@@ -10,7 +10,7 @@ import JsonLd from "@/components/seo/json-ld";
 import ConversionWidgets from "@/components/conversion-widgets";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { digitalProduct, offerPriceLabels, packOfferList } from "@/lib/pricing";
-import { breadcrumbSchema, faqPageSchema, productOffersSchema, websiteSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, digitalProductOffersSchema, faqPageSchema, websiteSchema } from "@/lib/seo/schema";
 
 export const revalidate = 3600;
 
@@ -163,16 +163,18 @@ export default function Home() {
       <JsonLd id="home-breadcrumb-jsonld" data={breadcrumbSchema(breadcrumbs)} />
       <JsonLd
         id="home-product-jsonld"
-        data={productOffersSchema({
+        data={digitalProductOffersSchema({
           name: digitalProduct.checkoutName,
           description: digitalProduct.description,
           productPath: "/",
           offers: packOfferList.map((offer) => ({
+            id: offer.id,
             name: offer.name,
             description: offer.description,
             price: offer.price,
+            originalPrice: offer.originalPrice,
             currency: digitalProduct.currency,
-            offerPath: "/baixar-musicas#escolha-seu-pack",
+            offerPath: `/baixar-musicas#pack-${offer.id}`,
           })),
         })}
       />
