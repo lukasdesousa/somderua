@@ -93,7 +93,7 @@ const homeFaqs = [
   {
     question: "O download e liberado na hora?",
     answer:
-      "Sim. Depois que o pagamento e aprovado, o acesso ao download e liberado automaticamente.",
+      "Sim. Depois que o pagamento e aprovado, o acesso ao download e liberado automaticamente em segundos.",
   },
   {
     question: "Funciona em pen drive comum?",
