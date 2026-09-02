@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import LiveChatButton from "@/components/live-chat-button";
 import Breadcrumbs from "@/components/seo/breadcrumbs";
 import JsonLd from "@/components/seo/json-ld";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -32,7 +33,7 @@ const messageChecklist = [
 export function generateMetadata(): Metadata {
   return buildMetadata({
     title: "Suporte",
-    description: "Fale com o suporte do Som de Rua por e-mail para receber ajuda com compra, acesso, download ou uso do seu pack.",
+    description: "Fale com o suporte do Som de Rua pelo chat ao vivo ou por e-mail para receber ajuda com compra, acesso, download ou uso do seu pack.",
     path: "/suporte",
     keywords: ["suporte Som de Rua", "ajuda com download", "contato Som de Rua"],
   });
@@ -63,35 +64,58 @@ export default function SuportePage() {
                 Central de suporte
               </p>
               <h1 id="support-title" className="mt-5 max-w-2xl font-nacelle text-4xl font-semibold leading-tight text-white md:text-5xl">
-                Precisa de ajuda? Fale com a gente por e-mail.
+                Precisa de ajuda? Fale com a gente.
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-300">
-                Dúvidas sobre compra, acesso, download ou uso do pack podem ser enviadas diretamente para nossa equipe.
+                Converse com nossa equipe pelo chat ao vivo ou envie um e-mail. Estamos aqui para ajudar com sua compra, acesso, download ou uso do pack.
               </p>
               <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-slate-300">
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2">Atendimento por e-mail</span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2">Ajuda com seu pedido</span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2">Orientação pós-compra</span>
+                <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-2 text-emerald-100">Chat ao vivo</span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2">Todos os dias</span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2">Das 9h às 17h</span>
               </div>
             </div>
 
-            <aside className="rounded-2xl border border-white/10 bg-slate-950/75 p-6 shadow-2xl shadow-slate-950/40 sm:p-7" aria-label="Canal de atendimento">
-              <div className="grid h-12 w-12 place-items-center rounded-xl border border-emerald-300/20 bg-emerald-300/10 text-emerald-200" aria-hidden="true">
-                <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <path d="M4 6.75A1.75 1.75 0 0 1 5.75 5h12.5A1.75 1.75 0 0 1 20 6.75v10.5A1.75 1.75 0 0 1 18.25 19H5.75A1.75 1.75 0 0 1 4 17.25V6.75Z" />
-                  <path d="m5 7 7 5 7-5" />
-                </svg>
+            <aside className="rounded-2xl border border-white/10 bg-slate-950/75 p-6 shadow-2xl shadow-slate-950/40 sm:p-7" aria-label="Canais de atendimento">
+              <div className="flex items-start gap-4">
+                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-emerald-300/20 bg-emerald-300/10 text-emerald-200" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <path d="M7.5 18.5 3.5 21v-5.15A8.5 8.5 0 1 1 7.5 18.5Z" />
+                    <path d="M8 10.5h.01M12 10.5h.01M16 10.5h.01" strokeLinecap="round" strokeWidth="2.4" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.14em] text-emerald-200">Chat ao vivo</p>
+                  <p className="mt-1 font-nacelle text-xl font-semibold text-white">Todos os dias, das 9h às 17h</p>
+                </div>
               </div>
-              <p className="mt-5 text-sm font-semibold uppercase tracking-[0.14em] text-emerald-200">Único canal de suporte</p>
-              <a className="mt-2 block break-all font-nacelle text-xl font-semibold text-white transition hover:text-emerald-200 sm:text-2xl" href={supportHref}>
-                {supportEmail}
-              </a>
-              <p className="mt-3 text-sm leading-relaxed text-slate-400">
-                Envie sua solicitação e acompanhe a resposta na mesma caixa de entrada utilizada no contato.
+              <p className="mt-4 text-sm leading-relaxed text-slate-400">
+                Se nossa equipe estiver offline, você também pode deixar sua mensagem no chat. Responderemos assim que o atendimento estiver disponível.
               </p>
+              <LiveChatButton className="btn mt-6 min-h-12 w-full bg-linear-to-t from-emerald-500 to-lime-400 text-center font-bold text-slate-950 shadow-lg shadow-emerald-950/30 hover:from-emerald-400 hover:to-lime-300">
+                Abrir chat ao vivo
+              </LiveChatButton>
+
+              <div className="my-6 flex items-center gap-3" aria-hidden="true">
+                <span className="h-px grow bg-white/10" />
+                <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">ou por e-mail</span>
+                <span className="h-px grow bg-white/10" />
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-indigo-300/15 bg-indigo-300/10 text-indigo-200" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <path d="M4 6.75A1.75 1.75 0 0 1 5.75 5h12.5A1.75 1.75 0 0 1 20 6.75v10.5A1.75 1.75 0 0 1 18.25 19H5.75A1.75 1.75 0 0 1 4 17.25V6.75Z" />
+                    <path d="m5 7 7 5 7-5" />
+                  </svg>
+                </div>
+                <a className="min-w-0 break-all text-sm font-semibold text-white transition hover:text-indigo-200" href={supportHref}>
+                  {supportEmail}
+                </a>
+              </div>
               <a
                 href={supportHref}
-                className="btn mt-6 min-h-12 w-full bg-linear-to-t from-emerald-500 to-lime-400 text-center font-bold text-slate-950 shadow-lg shadow-emerald-950/30 hover:from-emerald-400 hover:to-lime-300"
+                className="btn-sm mt-4 w-full border border-white/10 bg-white/10 text-center text-white hover:bg-white/15"
               >
                 Enviar e-mail ao suporte
               </a>

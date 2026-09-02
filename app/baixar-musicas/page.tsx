@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import LiveChatButton from "@/components/live-chat-button";
 import OfferCheckoutLink from "@/components/offer-checkout-link";
 import Breadcrumbs from "@/components/seo/breadcrumbs";
 import JsonLd from "@/components/seo/json-ld";
@@ -33,7 +34,7 @@ const downloadFlow = [
 const safetyChecks = [
   "Página com valor e produto explicados antes da compra.",
   "Checkout seguro para processar o pagamento.",
-  "Suporte por e-mail para dúvidas de acesso.",
+  "Suporte por chat ao vivo e e-mail para dúvidas de acesso.",
   "Reembolso integral em caso de falha técnica não solucionada.",
 ];
 
@@ -285,19 +286,35 @@ export default function BaixarMusicasPage() {
             })}
           </div>
 
-          <div className="mt-5 flex flex-col gap-4 rounded-xl border border-indigo-300/15 bg-indigo-400/[0.06] p-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
-            <div>
-              <p className="font-semibold text-white">Ficou com alguma dúvida antes de escolher?</p>
-              <p className="mt-1 text-sm text-indigo-100/65">
-                Acione nosso suporte. Responderemos rapidamente para ajudar você a escolher o pack ideal.
-              </p>
+          <div className="relative mt-5 overflow-hidden rounded-2xl border border-emerald-300/20 bg-[linear-gradient(120deg,rgba(16,185,129,0.12),rgba(79,70,229,0.08))] p-5 sm:p-6">
+            <div className="absolute -right-12 -top-16 h-36 w-36 rounded-full bg-emerald-400/10 blur-3xl" aria-hidden="true" />
+            <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex max-w-2xl items-start gap-4">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-emerald-300/20 bg-emerald-300/10 text-emerald-200" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <path d="M7.5 18.5 3.5 21v-5.15A8.5 8.5 0 1 1 7.5 18.5Z" />
+                    <path d="M8 10.5h.01M12 10.5h.01M16 10.5h.01" strokeLinecap="round" strokeWidth="2.4" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="font-nacelle text-xl font-semibold text-white">Ficou com alguma dúvida antes de escolher?</p>
+                  <p className="mt-2 text-sm leading-relaxed text-indigo-100/70">
+                    Fale com a gente pelo chat ao vivo, todos os dias, das 9h às 17h. Se estivermos offline, deixe sua mensagem por lá ou envie um e-mail.
+                  </p>
+                </div>
+              </div>
+              <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+                <LiveChatButton className="btn-sm min-h-11 bg-emerald-300 px-5 text-center font-bold text-slate-950 hover:bg-emerald-200">
+                  Abrir chat ao vivo
+                </LiveChatButton>
+                <a
+                  href="mailto:somderua.suporte@gmail.com?subject=D%C3%BAvida%20sobre%20o%20Pack%20Som%20de%20Rua"
+                  className="btn-sm min-h-11 border border-white/10 bg-white/10 px-5 text-center text-white hover:bg-white/15"
+                >
+                  Enviar e-mail
+                </a>
+              </div>
             </div>
-            <Link
-              href="/suporte"
-              className="btn-sm shrink-0 border border-white/10 bg-white/10 text-center text-white hover:bg-white/15"
-            >
-              Falar com o suporte
-            </Link>
           </div>
         </section>
 
