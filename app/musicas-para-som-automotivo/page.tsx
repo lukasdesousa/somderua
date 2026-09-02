@@ -56,7 +56,7 @@ const faqs = [
   {
     question: "Qual oferta escolher para som automotivo?",
     answer:
-      `O Pack Basico de 16 GB parte de ${offerPriceLabels.entry}. O Pack Premium com mais de 28 GB custa ${offerPriceLabels.recommended} e inclui hits atuais, virais e repertorio organizado para pen drive.`,
+      `O Pack Basico tem mais de 13 GB e mais de 5 mil faixas por ${offerPriceLabels.entry}. O Pack Premium tem mais de 26 GB e mais de 8 mil faixas por ${offerPriceLabels.recommended}.`,
   },
 ];
 
@@ -99,7 +99,7 @@ export default function MusicasParaSomAutomotivoPage() {
             <Link href="/musicas-para-pen-drive" className="btn-sm bg-gray-800 hover:bg-gray-700">
               Ver pack para pen drive
             </Link>
-            <span className="text-sm text-indigo-100/65">Básico 16 GB por {offerPriceLabels.entry} ou Premium +28 GB por {offerPriceLabels.recommended}</span>
+            <span className="text-sm text-indigo-100/65">Básico +13 GB por {offerPriceLabels.entry} ou Premium +26 GB por {offerPriceLabels.recommended}</span>
           </div>
         </section>
 

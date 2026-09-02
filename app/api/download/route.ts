@@ -1,20 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createPrismaClient } from "@/lib/prisma";
+import { getPackDownloadUrl } from "@/lib/pack-downloads";
 import { getOrderAccessCookieName, verifyOrderAccessToken } from "@/lib/payments/access";
 import { requiresSignedOrderAccess } from "@/lib/payments/access-policy";
-import { digitalProduct } from "@/lib/pricing";
-import { normalizeGoogleDriveUrl, parseDownloadProvider } from "@/lib/downloads";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const prisma = createPrismaClient();
-const allowedDownloadFiles = new Set<string>([digitalProduct.deliveryFile]);
-const ESSENTIAL_PACK_DOWNLOAD_URL = new URL(
-  "https://drive.google.com/drive/folders/1NoE9C7L7VwGNDFTDmF4iDuS4y9uG8Sg8?usp=drive_link",
-).toString();
 const privateResponseHeaders = {
   "Cache-Control": "private, no-store, max-age=0",
 };
@@ -22,19 +15,9 @@ const privateResponseHeaders = {
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const reference = searchParams.get("reference");
-  const key = searchParams.get("file") ?? digitalProduct.deliveryFile;
-  const provider = parseDownloadProvider(searchParams.get("provider"));
 
   if (!reference) {
     return NextResponse.json({ error: "Pedido não informado" }, { status: 400 });
-  }
-
-  if (!allowedDownloadFiles.has(key)) {
-    return NextResponse.json({ error: "Arquivo não autorizado" }, { status: 403 });
-  }
-
-  if (!provider) {
-    return NextResponse.json({ error: "Opção de download inválida" }, { status: 400 });
   }
 
   try {
@@ -71,64 +54,23 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // The delivery is chosen only from the offer stored with the approved payment.
-    // Complete and legacy payments keep the existing R2 delivery below.
-    if (payment.offerId === "essencial") {
+    const downloadUrl = getPackDownloadUrl(payment.offerId);
+
+    if (!downloadUrl) {
+      console.error("[Download] Approved order has an invalid offer", {
+        orderId: reference,
+        offerId: payment.offerId,
+      });
       return NextResponse.json(
-        { url: ESSENTIAL_PACK_DOWNLOAD_URL },
-        { headers: privateResponseHeaders },
-      );
-    }
-
-    if (provider === "google_drive") {
-      const googleDriveUrl = normalizeGoogleDriveUrl(process.env.PREMIUM_PACK_GOOGLE_DRIVE_URL);
-
-      if (!googleDriveUrl) {
-        console.error("[Download] Premium Google Drive URL is missing or invalid");
-        return NextResponse.json(
-          { error: "O download pelo Google Drive estará disponível em breve. Use o download direto por enquanto." },
-          { status: 503, headers: privateResponseHeaders },
-        );
-      }
-
-      return NextResponse.json(
-        { url: googleDriveUrl },
-        { headers: privateResponseHeaders },
-      );
-    }
-
-    if (
-      !process.env.R2_ENDPOINT?.trim() ||
-      !process.env.R2_ACCESS_KEY_ID?.trim() ||
-      !process.env.R2_SECRET_ACCESS_KEY?.trim() ||
-      !process.env.R2_BUCKET?.trim()
-    ) {
-      console.error("[Download] Missing R2 environment variables");
-      return NextResponse.json(
-        { error: "Configuração de download indisponível" },
+        { error: "Não foi possível identificar o arquivo deste pedido" },
         { status: 500, headers: privateResponseHeaders },
       );
     }
 
-    const command = new GetObjectCommand({
-      Bucket: process.env.R2_BUCKET,
-      Key: key,
-      ResponseContentDisposition: `attachment; filename="${digitalProduct.deliveryFile}"`,
-      ResponseContentType: "application/zip",
-    });
-
-    const r2 = new S3Client({
-      region: "auto",
-      endpoint: process.env.R2_ENDPOINT,
-      credentials: {
-        accessKeyId: process.env.R2_ACCESS_KEY_ID!,
-        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
-      },
-    });
-
-    const url = await getSignedUrl(r2, command, { expiresIn: 3600 });
-
-    return NextResponse.json({ url }, { headers: privateResponseHeaders });
+    return NextResponse.json(
+      { url: downloadUrl },
+      { headers: privateResponseHeaders },
+    );
   } catch (err) {
     console.error("[Download] Failed to generate download URL", {
       orderId: reference,

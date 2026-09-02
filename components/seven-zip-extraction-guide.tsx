@@ -6,7 +6,8 @@ import {
 type SevenZipExtractionGuideProps = {
   headingId: string;
   compact?: boolean;
-  premium?: boolean;
+  packName?: string;
+  packSize?: string;
   className?: string;
 };
 
@@ -53,7 +54,8 @@ const androidExtractionSteps = [
 export default function SevenZipExtractionGuide({
   headingId,
   compact = false,
-  premium = false,
+  packName,
+  packSize,
   className = "",
 }: SevenZipExtractionGuideProps) {
   return (
@@ -105,8 +107,8 @@ export default function SevenZipExtractionGuide({
             Como extrair o Pack sem erros
           </h2>
           <p className="mt-4 leading-relaxed text-slate-300">
-            {premium
-              ? "O Pack Premium tem mais de 28 GB e chega em um arquivo"
+            {packName && packSize
+              ? `O ${packName} tem ${packSize} e chega em um arquivo`
               : "O Pack é entregue em um arquivo"}{" "}
             <code className="rounded bg-black/25 px-1.5 py-0.5 font-mono text-[0.9em] text-emerald-100">
               .zip

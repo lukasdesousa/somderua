@@ -12,8 +12,7 @@
     "binding": "ASSETS"
   },
   "vars": {
-    "DEPLOY_TARGET": "cloudflare",
-    "PREMIUM_PACK_GOOGLE_DRIVE_URL": "https://drive.google.com/file/d/1EEVcmdQ2VDpvkOx0sq3amwc9v-DCo4ZG/view?usp=drive_link"
+    "DEPLOY_TARGET": "cloudflare"
   },
   "observability": {
     "enabled": true

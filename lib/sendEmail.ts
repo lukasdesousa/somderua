@@ -41,8 +41,12 @@ Seu Pack Som de Rua já está liberado para download.
 BAIXAR MEU PACK
 ${downloadUrl}
 
+CONTEÚDO DOS PACKS
+Pack Básico: mais de 13 GB, mais de 5 mil faixas e repertório atualizado até maio de 2026.
+Pack Premium: mais de 26 GB, mais de 8 mil faixas e repertório atualizado até setembro de 2026, mais atual e com mais hits do momento.
+
 ANTES DE EXTRAIR SEU PACK
-O Pack é um arquivo grande. Para evitar problemas com o extrator padrão do Windows, recomendamos utilizar o 7-Zip.
+Esta dica vale para os dois packs. Como ambos são arquivos grandes, o Pack Básico e o Pack Premium podem precisar do 7-Zip para evitar problemas com o extrator padrão do Windows.
 
 Windows: use 7-Zip.
 Android: use ZArchiver.
@@ -113,7 +117,7 @@ Som de Rua`;
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:28px 0 0;">
                 <tr>
                   <td bgcolor="#34d399" style="border-radius:12px;">
-                    <a href="${downloadUrlHtml}" class="email-button" style="display:inline-block;padding:15px 25px;color:#06251d;text-decoration:none;font-size:15px;font-weight:800;">Baixar meu Pack Som de Rua&nbsp; →</a>
+                    <a href="${downloadUrlHtml}" class="email-button" style="display:inline-block;padding:15px 25px;color:#06251d;text-decoration:none;font-size:15px;font-weight:800;">Baixar meu Pack&nbsp; →</a>
                   </td>
                 </tr>
               </table>
@@ -131,7 +135,11 @@ Som de Rua`;
                     <p style="margin:0 0 6px;color:#6ee7b7;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;">Extração recomendada</p>
                     <h2 style="margin:0;color:#ffffff;font-size:21px;line-height:27px;">Antes de extrair seu Pack</h2>
                     <p style="margin:9px 0 17px;color:#aebbd0;font-size:14px;line-height:22px;">
-                      O Pack é um arquivo grande. Para evitar problemas com o extrator padrão do Windows, recomendamos utilizar o 7-Zip.
+                      Esta dica vale para os dois packs. Como ambos são arquivos grandes, o Pack Básico e o Pack Premium podem precisar do 7-Zip para evitar problemas com o extrator padrão do Windows.
+                    </p>
+                    <p style="margin:0 0 17px;padding:12px 14px;border:1px solid #28463f;border-radius:10px;background:#0d211e;color:#cbd5e1;font-size:14px;line-height:22px;">
+                      <strong style="color:#a7f3d0;">Pack Básico:</strong> mais de 13 GB, mais de 5 mil faixas e repertório atualizado até maio de 2026.<br />
+                      <strong style="color:#a7f3d0;">Pack Premium:</strong> mais de 26 GB, mais de 8 mil faixas e repertório atualizado até setembro de 2026, mais atual e com mais hits do momento.
                     </p>
                     <p style="margin:0 0 17px;padding:12px 14px;border:1px solid #2d3d55;border-radius:10px;background:#111a2a;color:#cbd5e1;font-size:14px;line-height:22px;">
                       <strong style="color:#f8fafc;">Windows:</strong> use 7-Zip.<br />

@@ -2,7 +2,8 @@ import { ValidationError } from "./errors";
 import type { ValidatedAbandonedCartPayload } from "./types";
 
 const DEFAULT_BENEFITS = [
-  "Pack com mais de 10 mil músicas selecionadas para pen drive e carro.",
+  "Básico: mais de 13 GB e mais de 5 mil faixas; Premium: mais de 26 GB e mais de 8 mil faixas.",
+  "Básico atualizado até maio/2026; Premium até setembro/2026, mais atual e com mais hits do momento.",
   "Download liberado rapidamente após a confirmação do pagamento.",
   "Repertório organizado para tocar sem perder tempo procurando música.",
   "Reembolso integral se uma falha técnica impedir o acesso e não puder ser solucionada.",

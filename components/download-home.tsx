@@ -3,9 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { trackOfferEvent } from "@/lib/analytics";
-import PremiumDownloadOptions from "@/components/premium-download-options";
 import SevenZipExtractionGuide from "@/components/seven-zip-extraction-guide";
-import type { DownloadProvider } from "@/lib/downloads";
 import { digitalProduct, type PackOfferId } from "@/lib/pricing";
 
 type PaymentStatusResponse = {
@@ -39,7 +37,7 @@ export default function DownloadHome() {
   const [statusMessage, setStatusMessage] = useState("Verificando pagamento...");
   const [verificationAttempt, setVerificationAttempt] = useState(0);
   const [approvedOfferId, setApprovedOfferId] = useState<PackOfferId | null>(null);
-  const [downloadLoading, setDownloadLoading] = useState<DownloadProvider | null>(null);
+  const [downloadLoading, setDownloadLoading] = useState(false);
 
   useEffect(() => {
     const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
@@ -164,12 +162,12 @@ export default function DownloadHome() {
   }, [reference, accessToken, accessTokenReady, mercadoPagoPaymentId, router, verificationAttempt]);
 
 
-  async function getDownloadUrl(file: string, provider: DownloadProvider) {
+  async function getDownloadUrl() {
     if (!reference) {
       throw new Error("Pedido não informado");
     }
 
-    const params = new URLSearchParams({ reference, file, provider });
+    const params = new URLSearchParams({ reference });
     if (accessToken) {
       params.set("access_token", accessToken);
     }
@@ -186,29 +184,21 @@ export default function DownloadHome() {
     throw new Error(data.error || "Não foi possível gerar URL");
   }
 
-  async function handleDownload(provider: DownloadProvider) {
+  async function handleDownload() {
     if (downloadLoading) return;
 
-    setDownloadLoading(provider);
-    setStatusMessage(
-      provider === "google_drive"
-        ? "Abrindo o Google Drive..."
-        : "Iniciando seu download. Em arquivos grandes, o navegador pode levar alguns segundos...",
-    );
+    setDownloadLoading(true);
+    setStatusMessage("Iniciando seu download pelo navegador. Em arquivos grandes, essa etapa pode levar alguns segundos...");
 
     try {
-      const url = await getDownloadUrl(digitalProduct.deliveryFile, provider);
+      const url = await getDownloadUrl();
       window.location.assign(url);
-      setStatusMessage(
-        provider === "google_drive"
-          ? "Google Drive aberto. Siga as instruções para baixar o pack."
-          : "Download iniciado. Verifique os downloads do seu navegador.",
-      );
+      setStatusMessage("Download iniciado. Verifique os downloads do seu navegador.");
     } catch (err) {
       console.error(err);
       setStatusMessage(err instanceof Error ? err.message : "Não foi possível preparar o download agora.");
     } finally {
-      setDownloadLoading(null);
+      setDownloadLoading(false);
     }
   }
 
@@ -232,30 +222,36 @@ export default function DownloadHome() {
 
               {downloadState === "approved" && approvedOfferId === "completo" ? (
                 <div className="mx-auto max-w-2xl" data-aos="fade-up" data-aos-delay={400}>
-                  <PremiumDownloadOptions
-                    loadingProvider={downloadLoading}
-                    onDownload={(provider) => void handleDownload(provider)}
-                  />
+                  <button
+                    type="button"
+                    className="btn group w-full bg-linear-to-t from-emerald-500 to-lime-400 font-bold text-slate-950 shadow-[0_16px_40px_rgba(16,185,129,0.2)] disabled:cursor-wait disabled:opacity-70 sm:w-auto"
+                    onClick={() => void handleDownload()}
+                    disabled={downloadLoading}
+                    aria-busy={downloadLoading}
+                  >
+                    {downloadLoading ? "Preparando download..." : "Baixar Pack Premium pelo navegador"}
+                  </button>
                   <SevenZipExtractionGuide
                     headingId="seven-zip-download-title"
                     compact
-                    premium
+                    packName="Pack Premium"
+                    packSize="mais de 26 GB"
                     className="mt-6"
                   />
                 </div>
               ) : null}
 
               {downloadState === "approved" && approvedOfferId !== "completo" ? (
-                <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center">
-                  <div data-aos="fade-up" data-aos-delay={400}>
+                <div className="mx-auto max-w-2xl">
+                  <div className="flex justify-center" data-aos="fade-up" data-aos-delay={400}>
                     <button
                       type="button"
                       className="btn group mb-4 w-full bg-linear-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] disabled:cursor-wait disabled:opacity-75 sm:mb-0 sm:w-auto"
-                      onClick={() => void handleDownload("direct")}
-                      disabled={downloadLoading !== null}
-                      aria-busy={downloadLoading === "direct"}
+                      onClick={() => void handleDownload()}
+                      disabled={downloadLoading}
+                      aria-busy={downloadLoading}
                     >
-                      {downloadLoading === "direct" ? (
+                      {downloadLoading ? (
                         <span className="relative inline-flex items-center gap-2" role="status">
                           <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden="true" />
                           Iniciando download...
@@ -270,6 +266,13 @@ export default function DownloadHome() {
                       )}
                     </button>
                   </div>
+                  <SevenZipExtractionGuide
+                    headingId="seven-zip-basic-download-title"
+                    compact
+                    packName="Pack Básico"
+                    packSize="mais de 13 GB"
+                    className="mt-6"
+                  />
                 </div>
               ) : null}
 

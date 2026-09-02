@@ -39,7 +39,7 @@ export default function Cta() {
             <p className="mt-4 text-sm font-semibold uppercase text-emerald-200">{recommendedPackOffer.name}</p>
             <p className="mt-1 font-nacelle text-5xl font-semibold text-white">{recommendedPackOffer.priceLabel}</p>
             <p className="mt-2 text-sm text-slate-300">
-              Mais de 28 GB com repertório 2026, hits do momento, virais e músicas organizadas para pen drive.
+              Mais de 26 GB com repertório 2026, mais hits do momento, virais e músicas organizadas para pen drive.
             </p>
             <ul className="mt-5 grid gap-2 text-sm text-slate-300" aria-label="Vantagens da oferta">
               {offerBullets.map((hook) => (

@@ -18,7 +18,7 @@ export const revalidate = 3600;
 const downloadFlow = [
   {
     title: "Escolha",
-    text: "Compare o Básico de 16 GB com o Premium de mais de 28 GB e escolha o ideal para você.",
+    text: "Compare o Básico de mais de 13 GB com o Premium de mais de 26 GB e escolha o ideal para você.",
   },
   {
     title: "Pagamento",
@@ -38,12 +38,11 @@ const safetyChecks = [
 ];
 
 const comparisonRows = [
-  { label: "Volume do pack", essencial: "16 GB", completo: "Mais de 28 GB" },
-  { label: "Quantidade de faixas", essencial: "Mais de 4.950", completo: "10 mil" },
-  { label: "Repertórios atualizados em 2026", essencial: "✓", completo: "✓" },
-  { label: "Hits de maio a agosto de 2026", essencial: "Não inclusos", completo: "Inclusos" },
-  { label: "Hits do momento e músicas virais", essencial: "—", completo: "✓" },
-  { label: "Seleção para pen drive", essencial: "Seleção base", completo: "Seleção atualizada" },
+  { label: "Volume do pack", essencial: "Mais de 13 GB", completo: "Mais de 26 GB" },
+  { label: "Quantidade de faixas", essencial: "Mais de 5 mil", completo: "Mais de 8 mil" },
+  { label: "Atualização do repertório", essencial: "Até maio de 2026", completo: "Até setembro de 2026" },
+  { label: "Amplitude do repertório", essencial: "Seleção essencial", completo: "Mais atual e mais hits do momento" },
+  { label: "Seleção para pen drive", essencial: "Organizada", completo: "Organizada" },
   { label: "Pastas organizadas por estilos", essencial: "✓", completo: "✓" },
   { label: "Download após a aprovação", essencial: "Imediato", completo: "Imediato" },
   { label: "Preço", essencial: entryPackOffer.priceLabel, completo: recommendedPackOffer.priceLabel },
@@ -57,12 +56,12 @@ const offerDetails: Record<PackOfferId, {
   benefits: string[];
 }> = {
   essencial: {
-    volume: "16 GB",
+    volume: "+13 GB",
     volumeLabel: "de músicas",
-    updateLabel: "Repertórios 2026",
-    availabilityNote: "Não inclui os hits lançados entre maio e agosto de 2026.",
+    updateLabel: "Atualizado até maio/2026",
+    availabilityNote: "Mais de 5 mil faixas em mais de 13 GB.",
     benefits: [
-      "Bons repertórios, variados e atualizados",
+      "Repertório atualizado até maio de 2026",
       "Pastas organizadas por estilos musicais",
       "Seleção para carro, pen drive e uso diário",
       "Download liberado após a aprovação",
@@ -70,13 +69,14 @@ const offerDetails: Record<PackOfferId, {
     ],
   },
   completo: {
-    volume: "+28 GB",
+    volume: "+26 GB",
     volumeLabel: "de músicas",
-    updateLabel: "Atualizado em 2026",
-    availabilityNote: "Inclui os hits atuais de maio a agosto de 2026.",
+    updateLabel: "Atualizado até setembro/2026",
+    availabilityNote: "Mais de 8 mil faixas em mais de 26 GB.",
     benefits: [
-      "Hits do momento e músicas virais",
-      "Repertório atualizado e organizado para pen drive",
+      "Mais de 8 mil faixas em mais de 26 GB",
+      "Repertório atualizado até setembro de 2026",
+      "Mais atual e com mais hits do momento",
       "Seleções para som automotivo, festas e resenhas",
       "Download rápido e imediato após a aprovação",
       "Reembolso integral para falha técnica não solucionada",
@@ -87,11 +87,11 @@ const offerDetails: Record<PackOfferId, {
 const faqs = [
   {
     question: "Os dois packs têm conteúdos diferentes?",
-    answer: "Sim. O Pack Básico tem 16 GB de repertórios atualizados, mas não inclui os hits de maio a agosto de 2026. O Pack Premium tem mais de 28 GB e inclui hits do momento, virais e músicas organizadas para pen drive.",
+    answer: "Sim. O Pack Básico tem mais de 5 mil faixas em mais de 13 GB e foi atualizado até maio de 2026. O Pack Premium oferece mais de 8 mil faixas em mais de 26 GB, está atualizado até setembro de 2026 e traz um repertório mais atual, com mais hits do momento.",
   },
   {
     question: "Qual o valor?",
-    answer: `Na promoção O Patrão Endoidou, o Pack Básico de 16 GB baixou de ${entryPackOffer.originalPriceLabel} para ${entryPackOffer.priceLabel}. O Pack Premium de mais de 28 GB custa ${recommendedPackOffer.priceLabel}.`,
+    answer: `Na promoção O Patrão Endoidou, o Pack Básico de mais de 13 GB baixou de ${entryPackOffer.originalPriceLabel} para ${entryPackOffer.priceLabel}. O Pack Premium de mais de 26 GB custa ${recommendedPackOffer.priceLabel}.`,
   },
   {
     question: "Como baixar músicas agora?",
@@ -106,7 +106,7 @@ const faqs = [
 export function generateMetadata(): Metadata {
   return buildMetadata({
     title: "Baixar pack de musicas para pen drive em 2026",
-    description: "Baixe um pack de musicas para pen drive organizado por estilos. Escolha entre 16 GB no Basico ou mais de 28 GB no Premium, com acesso automatico.",
+    description: "Pack Basico com mais de 5 mil faixas atualizado ate maio de 2026 ou Premium com mais de 8 mil, atualizado ate setembro de 2026 e mais hits atuais.",
     path: "/baixar-musicas",
     keywords: ["pack de musicas para pen drive", "baixar pack de musicas", "musicas para pen drive", "download de musicas para pen drive"],
   });
@@ -140,13 +140,13 @@ export default function BaixarMusicasPage() {
       <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6" aria-labelledby="baixar-musicas-title">
         <section className="max-w-4xl">
           <p className="mb-3 inline-flex rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-200">
-            Packs atualizados em 2026
+            Packs atualizados em setembro de 2026
           </p>
           <h1 id="baixar-musicas-title" className="text-4xl font-semibold text-gray-100 md:text-5xl">
-            Do repertório essencial aos hits que estão tocando agora.
+            Dois packs atuais. O Premium entrega ainda mais faixas.
           </h1>
           <p className="mt-4 max-w-3xl text-lg text-indigo-200/75">
-            Escolha seu pack de músicas para pen drive: 16 GB de bons repertórios no Básico ou mais de 28 GB no Premium, com hits do momento e músicas organizadas por estilo.
+            O Básico tem mais de 5 mil faixas em mais de 13 GB e foi atualizado até maio de 2026. O Premium tem mais de 8 mil faixas em mais de 26 GB, está atualizado até setembro de 2026 e traz um repertório mais atual, com mais hits do momento.
           </p>
           <p className="mt-3 max-w-3xl text-sm font-medium text-emerald-200">
             Produto 100% digital: o acesso é liberado por download após a aprovação do pagamento. Não há envio de pen drive ou de qualquer item físico.
@@ -167,7 +167,7 @@ export default function BaixarMusicasPage() {
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-emerald-300">Escolha seu pack</p>
             <h2 id="offers-title" className="mt-2 text-3xl font-semibold text-gray-100">Compare e escolha sem dúvida</h2>
             <p className="mt-3 text-indigo-200/70">
-              Os dois packs têm pagamento único, conteúdo organizado e acesso após a aprovação. A diferença está no tamanho e na atualização do repertório.
+              O Básico foi atualizado até maio de 2026. O Premium vai até setembro de 2026, tem repertório mais atual e oferece mais hits do momento.
             </p>
           </div>
 

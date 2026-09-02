@@ -46,7 +46,7 @@ const faqs = [
 export function generateMetadata(): Metadata {
   return buildMetadata({
     title: "Pack de musicas para pen drive 2026",
-    description: "Pack de musicas para pen drive organizado em pastas, pronto para copiar e tocar no carro. Escolha entre 16 GB e mais de 28 GB com download automatico.",
+    description: "Pack de musicas para pen drive organizado em pastas e pronto para tocar no carro. Escolha entre mais de 13 GB e mais de 26 GB.",
     path: "/musicas-para-pen-drive",
     keywords: ["pack de musicas para pen drive", "musicas para pen drive", "pack para pen drive", "musicas para pen drive de carro"],
   });
@@ -67,7 +67,7 @@ export default function MusicasPenDrivePage() {
           </p>
           <h1 id="pen-drive-title" className="text-4xl font-semibold text-gray-100">Pack de músicas para pen drive</h1>
           <p className="mt-3 text-lg text-indigo-200/75">
-            Mais de 10 mil músicas prontas para baixar, copiar e tocar no carro, com pastas organizadas para facilitar a navegação no aparelho.
+            Escolha entre mais de 5 mil faixas no Básico e mais de 8 mil no Premium, com pastas organizadas para facilitar a navegação no aparelho.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <Link href="/baixar-musicas#escolha-seu-pack" className="btn bg-linear-to-t from-indigo-600 to-indigo-500 text-white">
@@ -75,7 +75,7 @@ export default function MusicasPenDrivePage() {
             </Link>
             <Link href="/blog/como-colocar-musicas-no-pen-drive-para-tocar-no-carro" className="btn-sm bg-gray-800 hover:bg-gray-700">Como copiar para o pen drive</Link>
             <Link href="/musicas-para-som-automotivo" className="btn-sm bg-gray-800 hover:bg-gray-700">Ver som automotivo</Link>
-            <span className="text-sm text-indigo-100/65">Básico 16 GB por {offerPriceLabels.entry} ou Premium +28 GB por {offerPriceLabels.recommended}</span>
+            <span className="text-sm text-indigo-100/65">Básico +13 GB por {offerPriceLabels.entry} ou Premium +26 GB por {offerPriceLabels.recommended}</span>
           </div>
         </section>
 

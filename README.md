@@ -43,9 +43,9 @@ No Cloudflare, copie as variáveis do ambiente de produção para **Build Variab
 - `DATABASE_URL`
 - `MERCADO_PAGO_ACCESS_TOKEN`, `MERCADO_PAGO_WEBHOOK_SECRET` e `JWT_SECRET`
 - `RESEND_API_KEY`, `ABANDONED_CART_FROM_EMAIL`, `ABANDONED_CART_REPLY_TO` e `ABANDONED_CART_API_SECRET`
-- `R2_ENDPOINT`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` e `R2_BUCKET`
-- `PREMIUM_PACK_GOOGLE_DRIVE_URL` para a segunda opção de entrega do Pack Premium; por não ser um segredo, seu valor de produção já está versionado em `wrangler.jsonc`
 - as variáveis públicas `NEXT_PUBLIC_*` usadas pelo site
+
+Os links dos packs ficam centralizados no servidor em `lib/pack-downloads.ts`. A API entrega o link MediaFire correspondente somente depois de validar o pedido e a oferta aprovada.
 
 Para cadastrar um segredo pela CLI:
 

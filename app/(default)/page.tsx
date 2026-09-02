@@ -88,7 +88,7 @@ const homeFaqs = [
   {
     question: "O que vem no Pack Som de Rua?",
     answer:
-      "Um pack de musicas para pen drive com mais de 10 mil faixas organizadas em pastas, pronto para usar no carro, na caixa de som e em aparelhos USB.",
+      "Um pack de musicas para pen drive com mais de 5 mil faixas no Basico ou mais de 8 mil no Premium, organizadas em pastas e prontas para usar no carro, na caixa de som e em aparelhos USB.",
   },
   {
     question: "O download e liberado na hora?",
@@ -112,7 +112,7 @@ const homeFaqs = [
   },
   {
     question: "Qual e o valor atual?",
-    answer: `O Pack Basico de 16 GB custa ${offerPriceLabels.entry}. O Pack Premium com mais de 28 GB custa ${offerPriceLabels.recommended} e inclui os hits atuais. Ambos sao vendidos em ${offerPriceLabels.installment}.`,
+    answer: `O Pack Basico com mais de 13 GB custa ${offerPriceLabels.entry}. O Pack Premium com mais de 26 GB custa ${offerPriceLabels.recommended} e inclui mais hits atuais. Ambos sao vendidos em ${offerPriceLabels.installment}.`,
   },
 ];
 
@@ -148,7 +148,7 @@ export function generateMetadata(): Metadata {
   return buildMetadata({
     title: "Pack de musicas para pen drive 2026",
     description:
-      "Pack de musicas para pen drive com mais de 10 mil faixas organizadas por estilo, pronto para carro e aparelhos USB, com download automatico.",
+      "Pack de musicas para pen drive com mais de 8 mil faixas organizadas por estilo, pronto para carro e aparelhos USB, com download automatico.",
     path: "/",
     keywords: ["pack de musicas para pen drive", "pack de musicas 2026", "musicas para pen drive", "download de musicas para pen drive"],
   });

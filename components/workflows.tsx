@@ -7,7 +7,7 @@ const genres = [
   {
     name: "Funk automotivo",
     quantity: "+1.500 faixas",
-    update: "Atualizado em julho/2026",
+    update: "Premium · atualizado até setembro/2026",
     image: WorkflowImg01,
   },
   {

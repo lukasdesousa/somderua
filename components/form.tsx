@@ -8,9 +8,7 @@ import useMercadoPago, {
   CheckoutApiError,
   type MercadoPagoPixCheckoutResponse,
 } from "@/hooks/useMercadoPago";
-import PremiumDownloadOptions from "@/components/premium-download-options";
 import { trackOfferEvent } from "@/lib/analytics";
-import type { DownloadProvider } from "@/lib/downloads";
 import { digitalProduct, getPackOffer } from "@/lib/pricing";
 
 const checkoutTrustHooks = [
@@ -62,7 +60,7 @@ export default function Form() {
   const [pix, setPix] = useState<PixData | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [copyLabel, setCopyLabel] = useState("Copiar código Pix");
-  const [downloadLoading, setDownloadLoading] = useState<DownloadProvider | null>(null);
+  const [downloadLoading, setDownloadLoading] = useState(false);
   const { createMercadoPagoPix } = useMercadoPago();
 
   useEffect(() => {
@@ -236,16 +234,14 @@ export default function Form() {
     }
   }
 
-  async function handleDownload(provider: DownloadProvider) {
+  async function handleDownload() {
     if (!activeOrder || downloadLoading) return;
-    setDownloadLoading(provider);
+    setDownloadLoading(true);
     setErrorMessage(null);
 
     try {
       const params = new URLSearchParams({
         reference: activeOrder.orderId,
-        file: digitalProduct.deliveryFile,
-        provider,
       });
       const response = await fetch(`/api/download?${params.toString()}`, { cache: "no-store" });
       const data = await readJsonResponse<{ url?: string; error?: string }>(response);
@@ -258,7 +254,7 @@ export default function Form() {
           : "Pagamento confirmado, mas o download não pôde ser aberto. Tente novamente.",
       );
     } finally {
-      setDownloadLoading(null);
+      setDownloadLoading(false);
     }
   }
 
@@ -330,16 +326,9 @@ export default function Form() {
                   <h2 className="mt-4 text-2xl font-semibold text-white">Pagamento confirmado</h2>
                   <p className="mt-2 text-indigo-100/70">Seu pagamento foi confirmado, seu download foi liberado.</p>
                   {errorMessage ? <p role="alert" className="mt-4 text-sm text-red-200">{errorMessage}</p> : null}
-                  {activeOrder.offerId === "completo" ? (
-                    <PremiumDownloadOptions
-                      loadingProvider={downloadLoading}
-                      onDownload={(provider) => void handleDownload(provider)}
-                    />
-                  ) : (
-                    <button type="button" onClick={() => void handleDownload("direct")} disabled={downloadLoading !== null} className="btn mt-6 w-full bg-linear-to-t from-emerald-500 to-lime-400 font-bold text-slate-950 disabled:opacity-60">
-                      {downloadLoading === "direct" ? "Preparando download..." : "Baixar agora"}
-                    </button>
-                  )}
+                  <button type="button" onClick={() => void handleDownload()} disabled={downloadLoading} className="btn mt-6 w-full bg-linear-to-t from-emerald-500 to-lime-400 font-bold text-slate-950 disabled:opacity-60">
+                    {downloadLoading ? "Preparando download..." : "Baixar pelo navegador"}
+                  </button>
                 </>
               ) : null}
 

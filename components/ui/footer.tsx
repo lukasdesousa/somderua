@@ -57,8 +57,8 @@ export default function Footer() {
 
           <div className="rounded-lg border border-white/10 bg-white/5 p-5">
             <p className="text-sm font-semibold text-emerald-200">Escolha seu pack</p>
-            <p className="mt-2 text-sm text-slate-400">Básico 16 GB · {offerPriceLabels.entry}</p>
-            <p className="font-nacelle text-3xl font-semibold text-white">Premium +28 GB · {offerPriceLabels.recommended}</p>
+            <p className="mt-2 text-sm text-slate-400">Básico +13 GB · {offerPriceLabels.entry}</p>
+            <p className="font-nacelle text-3xl font-semibold text-white">Premium +26 GB · {offerPriceLabels.recommended}</p>
             <Link className="btn mt-4 w-full bg-white text-slate-950 hover:bg-emerald-200" href="/baixar-musicas#escolha-seu-pack">
               Ver opções
             </Link>

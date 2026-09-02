@@ -12,7 +12,7 @@ const badges = [
 ];
 
 const heroStats = [
-  { value: "10 mil", label: "músicas organizadas" },
+  { value: "+8 mil", label: "faixas no Premium" },
   { value: "+40", label: "gêneros e pastas" },
   { value: "320kbps", label: "qualidade de áudio" },
   { value: "Imediato", label: "acesso após aprovação" },
@@ -48,9 +48,9 @@ export default function HeroHome() {
             Pack de músicas para pen drive atualizado em 2026.
           </h1>
           <p className="mx-auto mt-5 max-w-3xl text-lg text-slate-200 md:text-xl">
-            Mais de 10 mil músicas separadas por estilo, prontas para copiar
-            para o pen drive e tocar no carro, na caixa de som ou em aparelhos
-            USB sem procurar faixa por faixa.
+            Mais de 8 mil músicas no Pack Premium, separadas por estilo, prontas
+            para copiar para o pen drive e tocar no carro, na caixa de som ou em
+            aparelhos USB sem procurar faixa por faixa.
           </p>
 
           <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -72,9 +72,9 @@ export default function HeroHome() {
             className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-slate-300"
             aria-label="Resumo da oferta"
           >
-            <span>Básico 16 GB · {entryPackOffer.priceLabel}</span>
+            <span>Básico +13 GB · {entryPackOffer.priceLabel}</span>
             <strong className="font-nacelle text-3xl text-white">
-              Premium +28 GB · {recommendedPackOffer.priceLabel}
+              Premium +26 GB · {recommendedPackOffer.priceLabel}
             </strong>
             <span className="rounded-lg bg-emerald-300 px-3 py-1 text-xs font-bold uppercase text-slate-950">
               {recommendedPackOffer.badge}
