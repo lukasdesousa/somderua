@@ -12,6 +12,7 @@
     "lint": "next lint",
     "test:payments": "node --experimental-strip-types --test tests/payment-core.test.mjs tests/mercado-pago-signature.test.mjs",
     "test:downloads": "node --experimental-strip-types --test tests/pack-downloads.test.mjs",
+    "verify:r2": "node scripts/verify-r2-downloads.mjs",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "deploy:cloudflare": "opennextjs-cloudflare deploy",

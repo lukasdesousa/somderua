@@ -146,7 +146,7 @@ export default function BaixarMusicasPage() {
             Dois packs atuais. O Premium entrega ainda mais faixas.
           </h1>
           <p className="mt-4 max-w-3xl text-lg text-indigo-200/75">
-            O Básico tem mais de 5 mil faixas em mais de 13 GB e foi atualizado até maio de 2026. O Premium tem mais de 8 mil faixas em mais de 26 GB, está atualizado até setembro de 2026 e traz um repertório mais atual, com mais hits do momento.
+            Escolha entre o PACK BÁSICO e o PACK PREMIUM. Ambos são atualizados, organizados e prontos para download imediato após a aprovação do pagamento.
           </p>
           <p className="mt-3 max-w-3xl text-sm font-medium text-emerald-200">
             Produto 100% digital: o acesso é liberado por download após a aprovação do pagamento. Não há envio de pen drive ou de qualquer item físico.
