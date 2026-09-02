@@ -12,7 +12,9 @@
     "binding": "ASSETS"
   },
   "vars": {
-    "DEPLOY_TARGET": "cloudflare"
+    "DEPLOY_TARGET": "cloudflare",
+    "R2_ENDPOINT": "https://d7f0a7501928764e309dfe77c5487c4f.r2.cloudflarestorage.com",
+    "R2_BUCKET": "pack"
   },
   "observability": {
     "enabled": true

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createPrismaClient } from "@/lib/prisma";
-import { getPackDownloadUrl } from "@/lib/pack-downloads";
+import { getPackDownloadObject } from "@/lib/pack-downloads";
 import { getOrderAccessCookieName, verifyOrderAccessToken } from "@/lib/payments/access";
 import { requiresSignedOrderAccess } from "@/lib/payments/access-policy";
 
@@ -11,6 +13,7 @@ const prisma = createPrismaClient();
 const privateResponseHeaders = {
   "Cache-Control": "private, no-store, max-age=0",
 };
+const signedUrlExpirationSeconds = 60 * 60;
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -54,9 +57,9 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const downloadUrl = getPackDownloadUrl(payment.offerId);
+    const downloadObject = getPackDownloadObject(payment.offerId);
 
-    if (!downloadUrl) {
+    if (!downloadObject) {
       console.error("[Download] Approved order has an invalid offer", {
         orderId: reference,
         offerId: payment.offerId,
@@ -66,6 +69,25 @@ export async function GET(req: NextRequest) {
         { status: 500, headers: privateResponseHeaders },
       );
     }
+
+    const r2Config = getR2Config();
+    const r2 = new S3Client({
+      region: "auto",
+      endpoint: r2Config.endpoint,
+      credentials: {
+        accessKeyId: r2Config.accessKeyId,
+        secretAccessKey: r2Config.secretAccessKey,
+      },
+    });
+    const command = new GetObjectCommand({
+      Bucket: r2Config.bucket,
+      Key: downloadObject.key,
+      ResponseContentDisposition: `attachment; filename="${downloadObject.filename}"`,
+      ResponseContentType: "application/zip",
+    });
+    const downloadUrl = await getSignedUrl(r2, command, {
+      expiresIn: signedUrlExpirationSeconds,
+    });
 
     return NextResponse.json(
       { url: downloadUrl },
@@ -81,4 +103,33 @@ export async function GET(req: NextRequest) {
       { status: 500, headers: privateResponseHeaders },
     );
   }
+}
+
+function getR2Config(): {
+  endpoint: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+  bucket: string;
+} {
+  const endpoint = process.env.R2_ENDPOINT?.trim();
+  const accessKeyId = process.env.R2_ACCESS_KEY_ID?.trim();
+  const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY?.trim();
+  const bucket = process.env.R2_BUCKET?.trim();
+
+  if (!endpoint || !accessKeyId || !secretAccessKey || !bucket) {
+    throw new Error("Missing R2 download configuration");
+  }
+
+  const endpointUrl = new URL(endpoint);
+
+  if (endpointUrl.protocol !== "https:") {
+    throw new Error("R2 endpoint must use HTTPS");
+  }
+
+  return {
+    endpoint: endpointUrl.toString(),
+    accessKeyId,
+    secretAccessKey,
+    bucket,
+  };
 }

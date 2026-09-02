@@ -1,37 +1,30 @@
 import type { PackOfferId } from "@/lib/pricing";
 
-const mediaFireUrls = {
-  essencial:
-    "https://www.mediafire.com/file_premium/cm5fbfv3z9dfnpy/16gb-somderua-2026.zip/file",
-  completo:
-    "https://www.mediafire.com/file_premium/21bz4vvd25zm6ca/27gb-atualizacao2026-.zip/file",
-} satisfies Record<PackOfferId, string>;
+export type PackDownloadObject = {
+  key: string;
+  filename: string;
+};
 
-export function getPackDownloadUrl(offerId: string | null): string | null {
+const packDownloadObjects = {
+  essencial: {
+    key: "pack/16gb-somderua-2026.zip",
+    filename: "16gb-somderua-2026.zip",
+  },
+  completo: {
+    key: "pack/27gb-atualizacao2026-.zip",
+    filename: "27gb-atualizacao2026-.zip",
+  },
+} as const satisfies Record<PackOfferId, PackDownloadObject>;
+
+export function getPackDownloadObject(offerId: string | null): PackDownloadObject | null {
   if (offerId === "essencial") {
-    return validateMediaFireUrl(mediaFireUrls.essencial);
+    return packDownloadObjects.essencial;
   }
 
   // Approved legacy orders predate offer IDs and use the Premium delivery.
   if (offerId === "completo" || offerId === null) {
-    return validateMediaFireUrl(mediaFireUrls.completo);
+    return packDownloadObjects.completo;
   }
 
   return null;
-}
-
-function validateMediaFireUrl(value: string): string {
-  const url = new URL(value);
-  const isTrustedHost =
-    url.hostname === "mediafire.com" || url.hostname === "www.mediafire.com";
-
-  if (
-    url.protocol !== "https:" ||
-    !isTrustedHost ||
-    !/^\/file_premium\/[^/]+\/[^/]+\/file$/.test(url.pathname)
-  ) {
-    throw new Error("Invalid MediaFire pack URL");
-  }
-
-  return url.toString();
 }

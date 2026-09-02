@@ -43,9 +43,10 @@ No Cloudflare, copie as variáveis do ambiente de produção para **Build Variab
 - `DATABASE_URL`
 - `MERCADO_PAGO_ACCESS_TOKEN`, `MERCADO_PAGO_WEBHOOK_SECRET` e `JWT_SECRET`
 - `RESEND_API_KEY`, `ABANDONED_CART_FROM_EMAIL`, `ABANDONED_CART_REPLY_TO` e `ABANDONED_CART_API_SECRET`
+- `R2_ACCESS_KEY_ID` e `R2_SECRET_ACCESS_KEY`
 - as variáveis públicas `NEXT_PUBLIC_*` usadas pelo site
 
-Os links dos packs ficam centralizados no servidor em `lib/pack-downloads.ts`. A API entrega o link MediaFire correspondente somente depois de validar o pedido e a oferta aprovada.
+Os objetos dos packs ficam centralizados no servidor em `lib/pack-downloads.ts`. Depois de validar o pedido e a oferta aprovada, a API gera uma URL privada e temporária para o arquivo correspondente no Cloudflare R2. O endpoint e o bucket estão definidos em `wrangler.jsonc`; as credenciais devem ser cadastradas como segredos do Worker.
 
 Para cadastrar um segredo pela CLI:
 
