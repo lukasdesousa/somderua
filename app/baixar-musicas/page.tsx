@@ -106,7 +106,7 @@ const faqs = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Baixar pack de musicas para pen drive em 2026",
+    title: "Baixar pack de músicas para pen drive em 2026",
     description: "Pack Basico com mais de 5 mil faixas atualizado ate maio de 2026 ou Premium com mais de 8 mil, atualizado ate setembro de 2026 e mais hits atuais.",
     path: "/baixar-musicas",
     keywords: ["pack de musicas para pen drive", "baixar pack de musicas", "musicas para pen drive", "download de musicas para pen drive"],

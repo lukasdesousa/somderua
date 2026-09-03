@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
 
   return buildMetadata({
-    title: post.title,
+    title: post.seoTitle ?? post.title,
     description: post.description,
     path: `/blog/${post.slug}`,
     keywords: post.keywords,

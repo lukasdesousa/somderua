@@ -45,7 +45,7 @@ const faqs = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Pack de musicas para pen drive 2026",
+    title: "Músicas para pen drive: pack organizado",
     description: "Pack de musicas para pen drive organizado em pastas e pronto para tocar no carro. Escolha entre mais de 13 GB e mais de 26 GB.",
     path: "/musicas-para-pen-drive",
     keywords: ["pack de musicas para pen drive", "musicas para pen drive", "pack para pen drive", "musicas para pen drive de carro"],

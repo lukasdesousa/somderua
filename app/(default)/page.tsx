@@ -146,7 +146,7 @@ const relatedLinks = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Pack de musicas para pen drive 2026",
+    title: "Pack de músicas para pen drive 2026",
     description:
       "Pack de musicas para pen drive com mais de 8 mil faixas organizadas por estilo, pronto para carro e aparelhos USB, com download automatico.",
     path: "/",

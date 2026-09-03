@@ -62,7 +62,7 @@ const faqs = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Musicas para som automotivo 2026: pack para carro",
+    title: "Músicas para som automotivo 2026: pack para carro",
     description:
       "Repertorio para som automotivo e pack de musicas para pen drive, organizado em pastas para tocar no carro, com download automatico.",
     path: "/musicas-para-som-automotivo",

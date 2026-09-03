@@ -32,7 +32,7 @@ const messageChecklist = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Suporte",
+    title: "Suporte para compra, acesso e download",
     description: "Fale com o suporte do Som de Rua pelo chat ao vivo ou por e-mail para receber ajuda com compra, acesso, download ou uso do seu pack.",
     path: "/suporte",
     keywords: ["suporte Som de Rua", "ajuda com download", "contato Som de Rua"],

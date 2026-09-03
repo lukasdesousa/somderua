@@ -12,6 +12,7 @@ export type BlogFaq = {
 export type BlogPost = {
   slug: string;
   title: string;
+  seoTitle?: string;
   description: string;
   excerpt: string;
   keywords: string[];
@@ -79,6 +80,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "musicas-com-grave-forte-para-pen-drive",
     title: "Músicas com grave forte para pen drive: como escolher sem distorção",
+    seoTitle: "Músicas com grave forte para pen drive",
     description:
       "Critérios simples para escolher músicas com grave forte para pen drive, volume consistente e boa navegação nas pastas do som automotivo.",
     excerpt:
@@ -184,6 +186,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "como-baixar-pack-de-musicas-com-seguranca",
     title: "Como baixar pack de músicas com segurança e entrega imediata",
+    seoTitle: "Como baixar pack de músicas com segurança",
     description:
       "Checklist para avaliar página de compra, checkout, suporte e liberação do download antes de adquirir um pack de músicas.",
     excerpt:
@@ -290,6 +293,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "repertorio-para-pen-drive-atualizado",
     title: "Repertório atualizado para pen drive: como escolher músicas que engajam",
+    seoTitle: "Repertório atualizado para pen drive",
     description:
       "Guia prático para montar repertório atualizado para pen drive com variedade, grave limpo e boa experiência no som automotivo.",
     excerpt:

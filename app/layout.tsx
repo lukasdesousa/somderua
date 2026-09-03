@@ -29,10 +29,7 @@ const nacelle = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: {
-    default: siteConfig.name,
-    template: "%s | Som de Rua",
-  },
+  title: siteConfig.name,
   description: siteConfig.description,
   applicationName: siteConfig.name,
   referrer: "origin-when-cross-origin",
@@ -57,7 +54,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "Som de Rua | Pack de músicas para pen drive",
+    title: "Pack de músicas para pen drive 2026",
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
@@ -73,7 +70,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Som de Rua | Repertório atualizado para pen drive",
+    title: "Pack de músicas para pen drive 2026",
     description: siteConfig.description,
     images: [absoluteUrl(siteConfig.ogImage)],
     creator: siteConfig.twitter,

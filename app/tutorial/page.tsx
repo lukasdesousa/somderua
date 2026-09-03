@@ -71,7 +71,7 @@ const faqs = [
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
-    title: "Tutorial Som de Rua: como baixar e usar seu pack",
+    title: "Tutorial: como baixar e usar seu pack",
     description:
       "Tutorial em vídeo para baixar, extrair com o 7-Zip e transferir o Pack Som de Rua para celular, computador ou pen drive.",
     path: "/tutorial",
