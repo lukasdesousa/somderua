@@ -13,7 +13,7 @@ const prisma = createPrismaClient();
 const privateResponseHeaders = {
   "Cache-Control": "private, no-store, max-age=0",
 };
-const signedUrlExpirationSeconds = 60 * 60;
+const signedUrlExpirationSeconds = 60 * 60 * 24;
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
